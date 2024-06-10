@@ -70,7 +70,8 @@ jobs:
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
             doesn't start with an uppercase character.
-          headerPatternCorrespondence: type, subject
+          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
+          headerPatternCorrespondence: type, scope, subject
           validateSingleCommit: true
           
   check_commit_messages:
