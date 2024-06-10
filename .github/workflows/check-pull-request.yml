@@ -52,8 +52,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          types: |
+            fix
+            feat
+            chore
+            test
+            docs
+            build
+            ci
+            style
+            refactor
+            perf
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            doesn't start with an uppercase character.
+          headerPatternCorrespondence: type, subject
           validateSingleCommit: true
-
+          
   check_commit_messages:
     name: Conventional Commits Message
     runs-on: ubuntu-latest
