@@ -36,7 +36,7 @@ data ConditionExpr
     = Condition Value ComparisonOperator Value
     | ConditionAnd ConditionExpr ConditionExpr
     | ConditionOr ConditionExpr ConditionExpr
-    | ConditionBool BoolLiteral
+    | ConditionBool Bool
     deriving (Show, Eq)
 
 data ThenExpr 
