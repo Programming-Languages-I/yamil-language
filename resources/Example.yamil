@@ -1,0 +1,48 @@
+def calculate(a: int, b: int) -> int = {
+let sum: int = a + b
+let product: int = a * b
+if sum > 10 then
+    product
+else
+    sum
+}
+calculate(2, 3)
+def add(x: int, y: int) -> int = {
+    x + y
+}
+add(4, 5)
+def match_example(x: int) -> string = {
+    0 -> "Zero"
+    | 1 -> "One"
+    | x -> "Other"
+    | otherwise -> "Unknown"
+}
+match_example(0)
+match_example(1)
+match_example(42)
+
+def max_of_three(a: int, b: int, c: int) -> int = {
+if a > b then
+    if a > c then
+        a
+    else
+        c
+else
+    if b > c then
+        b
+    else
+        c
+}
+
+max_of_three(3, 7, 5) 
+max_of_three(10, 3, 5) 
+max_of_three(1, 2, 3)  
+
+def filter_greater_than(threshold: int, value: int) -> bool = {
+    let is_greater: bool = lambda(x: int) -> bool = { x > threshold }
+    is_greater(value)
+}
+
+filter_greater_than(10, 15)  
+filter_greater_than(10, 5)  
+
