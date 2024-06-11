@@ -21,7 +21,7 @@ data Type
 -- Expressions
 data Expr
     = FunctionCall Identifier [Value]
-    | IfExpr ConditionExpr Expr Expr
+    | IfExpr ConditionExpr ThenExpr ThenExpr
     | BinaryExpr Value ArithmeticOperator Value
     | LambdaExpr [TypedIdentifier] Expr
     deriving (Show, Eq)
@@ -36,8 +36,14 @@ data ConditionExpr
     = Condition Value ComparisonOperator Value
     | ConditionAnd ConditionExpr ConditionExpr
     | ConditionOr ConditionExpr ConditionExpr
-    | ConditionBool Bool
+    | ConditionBool BoolLiteral
     deriving (Show, Eq)
+
+data ThenExpr 
+    = ThenMainExpr Expr Expr
+    | ThenLiteral Literal
+    | ThenIdentifier Identifier
+    deriving(Show, Eq)
 
 -- Parameters and types
 data TypedIdentifier = TypedIdentifier Identifier Type
