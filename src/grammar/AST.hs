@@ -1,4 +1,24 @@
-module AST where
+module AST
+  ( Identifier,
+    Literal (..),
+    Type (..),
+    Expr (..),
+    Value (..),
+    ConditionExpr (..),
+    ThenExpr (..),
+    TypedIdentifier (..),
+    ArithmeticOperator (..),
+    ComparisonOperator (..),
+    Pattern (..),
+    PatternMatch (..),
+    Function (..),
+    FunctionBody (..),
+    LetStatement (..),
+    Comment,
+    Program (..),
+    ProgramElement (..),
+  )
+where
 
 -- Identifier and literals
 type Identifier = String
