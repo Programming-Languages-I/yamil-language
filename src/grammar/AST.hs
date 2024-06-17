@@ -14,7 +14,6 @@ module AST
     Function (..),
     FunctionBody (..),
     LetStatement (..),
-    Comment,
     Program (..),
     ProgramElement (..),
   )
@@ -97,15 +96,11 @@ data FunctionBody
     = FBExpr Expr
     | FBPatternMatch [PatternMatch]
     | FBLetStatement LetStatement
-    | FBComment Comment
     deriving (Show, Eq)
 
 -- Let Statement
 data LetStatement = LetStatement TypedIdentifier Expr
     deriving (Show, Eq)
-
--- Comments
-type Comment = String
 
 -- Program (start)
 data Program = Program [ProgramElement]
@@ -114,6 +109,5 @@ data Program = Program [ProgramElement]
 data ProgramElement
     = PEFunction Function
     | PELetStatement LetStatement
-    | PEComment Comment
     | PEFunctionCall Expr
     deriving (Show, Eq)
