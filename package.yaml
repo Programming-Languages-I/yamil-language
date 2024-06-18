@@ -36,6 +36,8 @@ ghc-options:
 
 library:
   source-dirs: src
+  other-modules:
+  - Grammar.AST
 
 executables:
   yamil-language-exe:

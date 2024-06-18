@@ -28,9 +28,7 @@ library
       LexerParser
       Lib
   other-modules:
-      Paths_yamil_language
-  autogen-modules:
-      Paths_yamil_language
+      Grammar.AST
   hs-source-dirs:
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
