@@ -1,5 +1,5 @@
-module Grammar.AST
-  ( Identifier,
+module AST
+  ( module AST, 
     Literal (..),
     Type (..),
     Expr (..),

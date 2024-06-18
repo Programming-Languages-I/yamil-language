@@ -3,7 +3,7 @@ module LexerParser (module LexerParser) where
 import Text.Parsec.String
 import Text.Parsec.Language
 import Text.Parsec.Token
-import Grammar.AST
+import AST
 import Text.Parsec (many1, digit, string)
 
 
