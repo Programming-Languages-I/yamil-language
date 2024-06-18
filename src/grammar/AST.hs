@@ -1,4 +1,4 @@
-module AST
+module Grammar.AST
   ( Identifier,
     Literal (..),
     Type (..),
