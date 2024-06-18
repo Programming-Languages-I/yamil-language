@@ -3,12 +3,14 @@ module Parser where
 import Text.Parsec.String
 import Text.Parsec.Language
 import Text.Parsec.Token
-
+import Grammar.AST
+import Text.Parsec (many1, digit, string)
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
     { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!="]
     , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda"]
+    , commentLine = "//"
     }
 
 lexer :: TokenParser st
@@ -23,3 +25,11 @@ reservedOps = Text.Parsec.Token.reservedOp lexer
 reservedNa :: String -> Parser ()
 reservedNa = Text.Parsec.Token.reserved lexer
 
+parseLiteral :: Parser Literal
+parseLiteral = parseInt
+
+parseInt :: Parser Literal
+parseInt =  parseIntSym *> (IntLiteral . read <$> many1 digit)
+
+parseIntSym :: Parser String
+parseIntSym = string "int" 

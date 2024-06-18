@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Lib
+      Grammar.AST
       Parser
   other-modules:
       Paths_yamil_language
