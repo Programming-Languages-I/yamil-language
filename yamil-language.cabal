@@ -26,8 +26,9 @@ source-repository head
 library
   exposed-modules:
       AST
-      LexerParser
       Lib
+      Parser.LexerParser
+      Parser.ParserValueTypes
   other-modules:
       Paths_yamil_language
   autogen-modules:
@@ -38,6 +39,7 @@ library
   build-depends:
       HUnit
     , base >=4.7 && <5
+    , hspec
     , parsec
   default-language: Haskell2010
 
@@ -53,6 +55,7 @@ executable yamil-language-exe
   build-depends:
       HUnit
     , base >=4.7 && <5
+    , hspec
     , parsec
     , yamil-language
   default-language: Haskell2010
@@ -61,6 +64,7 @@ test-suite yamil-language-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Parser.TestParserValueTypes
       Paths_yamil_language
   autogen-modules:
       Paths_yamil_language
@@ -70,6 +74,7 @@ test-suite yamil-language-test
   build-depends:
       HUnit
     , base >=4.7 && <5
+    , hspec
     , parsec
     , yamil-language
   default-language: Haskell2010
