@@ -16,20 +16,20 @@ jobs:
         with:
           fetch-depth: 1
 
-      - uses: actions/cache@v4
-        name: Set up Cache Stack Packages
-        with:
-          path: .stack-work
-          key: ${{ runner.os }}-stack-work-${{ hashFiles('stack.yaml') }}-${{ hashFiles('package.yaml') }}-${{ hashFiles('**/*.hs') }}
-          restore-keys: |
-            ${{ runner.os }}-stack-work-
-
       - name: Set up Haskell
         uses: haskell-actions/setup@v2
         with: 
           ghc-version: '9.4.8'
           enable-stack: true
           stack-version: '2.13.1'
+
+      - name: Set up Cache Stack Packages 
+        uses: actions/cache@v4
+        with:
+          path: .stack-work
+          key: ${{ runner.os }}-stack-work-${{ hashFiles('stack.yaml') }}-${{ hashFiles('package.yaml') }}-${{ hashFiles('**/*.hs') }}
+          restore-keys: |
+            ${{ runner.os }}-stack-work-
 
       - name: Build using Stack
         run: stack build
