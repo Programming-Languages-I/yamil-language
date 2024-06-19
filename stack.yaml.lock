@@ -19,6 +19,13 @@ packages:
   original:
     hackage: stylish-haskell-0.14.6.0
 - completed:
+    hackage: hlint-3.8@sha256:c12a46452e85fc74fb7b0e25aa7653256716f5dc2f8168385b69c79c763d4a0d,4455
+    pantry-tree:
+      sha256: 2ea03fbf224056512452a896f811ac80ee9960cdb0a370fa3edb37dc81e8cb36
+      size: 6224
+  original:
+    hackage: hlint-3.8
+- completed:
     hackage: HUnit-1.6.2.0@sha256:1a79174e8af616117ad39464cac9de205ca923da6582825e97c10786fda933a4,1588
     pantry-tree:
       sha256: 4f20a5a33866171260d0ee1e256c27f53cc84d37a68d498c3e12347f4e3d05b4
