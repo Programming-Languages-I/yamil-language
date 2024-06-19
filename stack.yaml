@@ -37,6 +37,7 @@ packages:
 #
 extra-deps:
 - parsec-3.1.17.0
+- HUnit-1.6.2.0
 
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
