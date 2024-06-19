@@ -1,5 +1,5 @@
 module AST
-  ( Identifier,
+  ( module AST, 
     Literal (..),
     Type (..),
     Expr (..),
