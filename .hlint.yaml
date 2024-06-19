@@ -1,0 +1,14 @@
+- warn: {lhs: 80, hs: 80}
+
+- warn: {lhs: true, hs: true}
+
+- warn: {lhs: "Text.Parsec.string s", rhs: "string s", name: "Use unqualified string"}
+- warn: {lhs: "Text.Parsec.char c", rhs: "char c", name: "Use unqualified char"}
+- warn: {lhs: "Text.Parsec.digit", rhs: "digit", name: "Use unqualified digit"}
+- warn: {lhs: "Text.Parsec.letter", rhs: "letter", name: "Use unqualified letter"}
+- warn: {lhs: "Text.Parsec.many p", rhs: "many p", name: "Use unqualified many"}
+- warn: {lhs: "Text.Parsec.many1 p", rhs: "many1 p", name: "Use unqualified many1"}
+- warn: {lhs: "Text.Parsec.optionMaybe p", rhs: "optionMaybe p", name: "Use unqualified optionMaybe"}
+- warn: {lhs: "Text.Parsec.sepBy p sep", rhs: "sepBy p sep", name: "Use unqualified sepBy"}
+- warn: {lhs: "Text.Parsec.sepBy1 p sep", rhs: "sepBy1 p sep", name: "Use unqualified sepBy1"}
+- warn: {lhs: "Text.Parsec.endOfLine", rhs: "endOfLine", name: "Use unqualified endOfLine"}
