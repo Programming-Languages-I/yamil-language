@@ -23,9 +23,6 @@ jobs:
           enable-stack: true
           stack-version: '2.13.1'
 
-      - name: Install Dependencies
-        run: stack build --only-dependencies
-
       - name: Build using Stack
         run: stack build
 
