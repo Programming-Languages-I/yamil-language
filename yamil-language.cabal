@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      AST
+      LexerParser
       Lib
   other-modules:
       Paths_yamil_language
