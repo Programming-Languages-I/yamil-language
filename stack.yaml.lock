@@ -12,6 +12,13 @@ packages:
   original:
     hackage: parsec-3.1.17.0
 - completed:
+    hackage: stylish-haskell-0.14.6.0@sha256:00cf494e091219ad9c27ed425336737f53558f8011676b588f10085c345e7ed6,4552
+    pantry-tree:
+      sha256: 2d46ed4ad4425038896566b849a1ccf5056e521bddfb6891d5608d6c42f49ebf
+      size: 3891
+  original:
+    hackage: stylish-haskell-0.14.6.0
+- completed:
     hackage: HUnit-1.6.2.0@sha256:1a79174e8af616117ad39464cac9de205ca923da6582825e97c10786fda933a4,1588
     pantry-tree:
       sha256: 4f20a5a33866171260d0ee1e256c27f53cc84d37a68d498c3e12347f4e3d05b4
