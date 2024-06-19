@@ -1,2 +1,6 @@
+import Test.Hspec
+import Parser.TestParserValueTypes
+
 main :: IO ()
-main = putStrLn "Tests"
+main = hspec $ do
+  testParseValueTypes
