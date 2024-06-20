@@ -20,7 +20,11 @@ parsePatternMatches :: Parser [PatternMatch]
 parsePatternMatches = parsePatternMatchUsingGuards `sepBy` reservedOps "|"
 
 parsePatternMatchUsingGuards :: Parser PatternMatch
-parsePatternMatchUsingGuards = (try parsePatternMatch)
+parsePatternMatchUsingGuards = (try parsePatternMatch) <|> parseOtherwise
+-- parsePatternMatchUsingGuards = (try parsePatternMatch)
 
 parsePatternMatch :: Parser PatternMatch
 parsePatternMatch = AST.PatternMatch <$> parsePattern <* (whiteSpaces *> (reservedOps "->") <* whiteSpaces) <*> (parseLiteral)
+
+parseOtherwise :: Parser PatternMatch
+parseOtherwise = AST.Otherwise <$> (reservedNa "otherwise") <* (whiteSpaces *> (reservedOps "->") <* whiteSpaces) <*> (parseLiteral)
