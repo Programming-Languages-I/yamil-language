@@ -97,8 +97,8 @@ data Pattern
         deriving (Eq, Show)
 
 data PatternMatch
-        = PatternMatch Pattern Expr
-        | PatternMatch Pattern Literal
+        = PatternMatchExp Pattern Expr
+        | PatternMatchLit Pattern Literal
         | Otherwise Expr
         deriving (Show, Eq)
 
