@@ -9,7 +9,7 @@ import Text.Parsec
 languageDef :: LanguageDef st
 languageDef = emptyDef
     { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!="]
-    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda"]
+    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda", "let"]
     , commentLine = "//"
     }
 
@@ -54,4 +54,13 @@ parseStringSym = string "string"
 
 parseBoolValues :: Parser Bool
 parseBoolValues = (True <$ string "True") <|> (False <$ string "False")
+
+parseOpenParents :: Parser Char
+parseOpenParents = char '('
+
+parseCloseParents :: Parser Char
+parseCloseParents = char ')'
+
+parseComma :: Parser Char
+parseComma = char ','
 
