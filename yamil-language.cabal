@@ -40,8 +40,7 @@ library
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      HUnit
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , hspec
     , parsec
   default-language: Haskell2010
@@ -56,8 +55,7 @@ executable yamil-language-exe
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HUnit
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , hspec
     , parsec
     , yamil-language
@@ -78,8 +76,7 @@ test-suite yamil-language-test
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      HUnit
-    , base >=4.7 && <5
+      base >=4.7 && <5
     , hspec
     , parsec
     , yamil-language
