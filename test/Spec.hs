@@ -2,7 +2,7 @@ import Test.Hspec
 import Parser.TestParserValueTypes
 import Parser.TestParserOperations
 import Parser.TestParserExpresions
-import Parser.TestLetStatement
+import Parser.TestParserFunction
 
 main :: IO ()
 main = hspec $ do

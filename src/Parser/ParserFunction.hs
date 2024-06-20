@@ -1,4 +1,4 @@
-module Parser.LetStatement (module Parser.LetStatement) where
+module Parser.ParserFunction (module Parser.ParserFunction) where
 
 import AST
 import Parser.LexerParser

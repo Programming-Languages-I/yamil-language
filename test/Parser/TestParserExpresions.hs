@@ -72,4 +72,3 @@ testParserExpresions = do
     testParseBinaryExpr
     testParseExpr
     testParseParamsValues
-    

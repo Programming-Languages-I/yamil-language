@@ -1,9 +1,9 @@
-module Parser.TestLetStatement (module Parser.TestLetStatement) where
+module Parser.TestParserFunction (module Parser.TestParserFunction) where
 
 import AST
 import Test.Hspec
 import Text.Parsec
-import Parser.LetStatement
+import Parser.ParserFunction
 testParseLetStatement :: Spec
 testParseLetStatement = describe "parseLetStatement" $ do
     it "parses a let statement with sum" $ do
