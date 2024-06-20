@@ -9,7 +9,7 @@ testParsePatternMatching :: Spec
 testParsePatternMatching = describe "PatternMatchParser" $ do
     it "parses a single match case" $ do
         parse parsePatternMatches "" "0 -> \"Zero\"" `shouldBe` 
-                        Right [(PatternMatch (PLiteral (IntLiteral 0)) (StringLiteral "Zero"))]
+                        Right [(PatternMatchLit (PLiteral (IntLiteral 0)) (StringLiteral "Zero"))]
 
 testParsePatternMatches :: Spec
 testParsePatternMatches = do 
