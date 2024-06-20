@@ -13,7 +13,7 @@ parseIfExpr =
     IfExpr
         <$> (reservedNa "if" *> whiteSpaces *> parseConditionExpr)
         <*> (whiteSpaces *> reservedNa "then" *>  whiteSpaces *> parseThenExpr)
-        <*> (reservedNa "else" *>  whiteSpaces *> parseThenExpr)
+        <*> (whiteSpaces *> reservedNa "else" *>  whiteSpaces *> parseThenExpr)
 
 parseConditionExpr :: Parser ConditionExpr
 parseConditionExpr =

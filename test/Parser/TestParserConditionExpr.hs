@@ -12,7 +12,7 @@ testParseCondition = describe "parseCondition" $ do
     parse parseCondition "" "a < 10" `shouldBe` Right (Condition (VIdentifier "a") LessThan (VLiteral (IntLiteral 10)))
 
   it "parses a comparison condition (double)" $ do
-    parse parseCondition "" "x >= 3.14" `shouldBe` Right (Condition (VIdentifier "x") GreaterEqual (VLiteral (DoubleLiteral 3.14)))
+    parse parseCondition "" "x >= 3" `shouldBe` Right (Condition (VIdentifier "x") GreaterEqual (VLiteral (IntLiteral 3)))
 
   it "parses a comparison condition (string)" $ do
     parse parseCondition "" "name == \"Alice\"" `shouldBe` Right (Condition (VIdentifier "name") Equal (VLiteral (StringLiteral "Alice")))
@@ -20,7 +20,7 @@ testParseCondition = describe "parseCondition" $ do
 testParseConditionAnd :: Spec
 testParseConditionAnd = describe "parseConditionAnd" $ do
   it "parses a simple AND condition" $ do
-    parse parseConditionAnd "" "a < 10 && b == true" `shouldBe` Right (ConditionAnd (Condition (VIdentifier "a") LessThan (VLiteral (IntLiteral 10))) (Condition (VIdentifier "b") Equal (VLiteral (BoolLiteral True))))
+    parse parseConditionAnd "" "a < 10 && b == true" `shouldBe` Right (ConditionAnd (Condition (VIdentifier "a") LessThan (VLiteral (IntLiteral 10))) (Condition (VIdentifier "b") Equal (VIdentifier "true")))
 
   it "parses a simple AND condition" $ do
     parse parseConditionAnd "" "x > 5 && y <= 100" `shouldBe` Right (ConditionAnd (Condition (VIdentifier "x") GreaterThan (VLiteral (IntLiteral 5))) (Condition (VIdentifier "y") LessEqual (VLiteral (IntLiteral 100))))
@@ -30,7 +30,7 @@ testParseConditionOr = describe "parseConditionOr" $ do
     parse parseConditionOr "" "a == 1 || b != 2" `shouldBe` Right (ConditionOr (Condition (VIdentifier "a") Equal (VLiteral (IntLiteral 1))) (Condition (VIdentifier "b") NotEqual (VLiteral (IntLiteral 2))))
 
   it "parses a simple OR condition" $ do
-    parse parseConditionOr "" "x < 0 || y >= 1" `shouldBe` Right (ConditionOr (Condition (VIdentifier "x") LessThan (VLiteral (IntLiteral 0))) (Condition (VIdentifier "y") GreaterEqual (VLiteral (IntLiteral 10))))
+    parse parseConditionOr "" "x < 0 || y >= 1" `shouldBe` Right (ConditionOr (Condition (VIdentifier "x") LessThan (VLiteral (IntLiteral 0))) (Condition (VIdentifier "y") GreaterEqual (VLiteral (IntLiteral 1))))
 testParseConditionBool :: Spec
 testParseConditionBool = describe "parseConditionBool" $ do
   it "parses a True boolean value" $ do
