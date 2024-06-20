@@ -42,7 +42,7 @@ data Expr
     = FunctionCall Identifier [Value]
     | IfExpr ConditionExpr ThenExpr ThenExpr
     | BinaryExpr Value ArithmeticOperator Value
-    | LambdaExpr [TypedIdentifier] Expr
+    | LambdaExpr [TypedIdentifier] LetStatement
     deriving (Show, Eq)
 
 data Value

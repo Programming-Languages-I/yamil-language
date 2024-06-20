@@ -64,3 +64,5 @@ parseCloseParents = char ')'
 parseComma :: Parser Char
 parseComma = char ','
 
+parseLambdaSymbol :: Parser String 
+parseLambdaSymbol = string "lambda"
