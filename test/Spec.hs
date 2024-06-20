@@ -2,6 +2,7 @@ import           Parser.TestParserConditionExpr
 import           Parser.TestParserExpresions
 import           Parser.TestParserFunction
 import           Parser.TestParserOperations
+import           Parser.TestParserPatternMatching
 import           Parser.TestParserProgram
 import           Parser.TestParserThenExpr
 import           Parser.TestParserValueTypes
@@ -19,3 +20,4 @@ main = hspec $ do
   testParseThenExpression
   testParserFunctions
   testParserProgram
+  testParsePatternMatches
