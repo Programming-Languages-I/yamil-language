@@ -28,9 +28,11 @@ library
       AST
       Lib
       Parser.LexerParser
+      Parser.ParserConditionExpr
       Parser.ParserExpresions
       Parser.ParserFunction
       Parser.ParserOperations
+      Parser.ParserThenExpr
       Parser.ParserValueTypes
   other-modules:
       Paths_yamil_language
@@ -65,9 +67,11 @@ test-suite yamil-language-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Parser.TestParserConditionExpr
       Parser.TestParserExpresions
       Parser.TestParserFunction
       Parser.TestParserOperations
+      Parser.TestParserThenExpr
       Parser.TestParserValueTypes
       Paths_yamil_language
   autogen-modules:
