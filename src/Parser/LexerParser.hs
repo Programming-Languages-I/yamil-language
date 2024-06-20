@@ -55,3 +55,12 @@ parseStringSym = string "string"
 parseBoolValues :: Parser Bool
 parseBoolValues = (True <$ string "True") <|> (False <$ string "False")
 
+parseOpenParents :: Parser Char
+parseOpenParents = char '('
+
+parseCloseParents :: Parser Char
+parseCloseParents = char ')'
+
+parseComma :: Parser Char
+parseComma = char ','
+

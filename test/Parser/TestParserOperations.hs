@@ -2,7 +2,7 @@ module Parser.TestParserOperations (module Parser.TestParserOperations) where
 
 import Test.Hspec
 import Text.Parsec (parse)
-import Parser.ParserOperations
+import Parser.ParserOperations ( parseArithmeticOperator )
 import AST
 
 testParseArithmeticOperator :: Spec
