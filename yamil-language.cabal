@@ -27,6 +27,7 @@ library
   exposed-modules:
       AST
       Lib
+      Parser.LetStatement
       Parser.LexerParser
       Parser.ParserExpresions
       Parser.ParserOperations
@@ -66,6 +67,7 @@ test-suite yamil-language-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Parser.TestLetStatement
       Parser.TestParserExpresions
       Parser.TestParserOperations
       Parser.TestParserValueTypes

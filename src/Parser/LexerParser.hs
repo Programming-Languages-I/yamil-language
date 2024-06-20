@@ -9,7 +9,7 @@ import Text.Parsec
 languageDef :: LanguageDef st
 languageDef = emptyDef
     { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!="]
-    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda"]
+    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda", "let"]
     , commentLine = "//"
     }
 

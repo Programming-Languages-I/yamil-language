@@ -42,7 +42,7 @@ testParseBinaryExpr = describe "parseBinaryExpr" $ do
         parse parseBinaryExpr "" "3 - 4" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 3)) Subtract (VLiteral (IntLiteral 4)))
 
     it "parses a binary expression with multiplication with spaces in the middle" $ do
-        parse parseBinaryExpr "" " 5 * 6" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6)))
+        parse parseBinaryExpr "" "5 * 6" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6)))
 
     it "parses a binary expression with division with spaces in the middle" $ do
         parse parseBinaryExpr "" "7 / 8" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 7)) Divide (VLiteral (IntLiteral 8)))
@@ -72,3 +72,4 @@ testParserExpresions = do
     testParseBinaryExpr
     testParseExpr
     testParseParamsValues
+    
