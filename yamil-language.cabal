@@ -32,10 +32,10 @@ library
       Parser.ParserExpresions
       Parser.ParserFunction
       Parser.ParserOperations
+      Parser.ParserPatternMatching
       Parser.ParserProgram     
       Parser.ParserThenExpr
       Parser.ParserValueTypes
-      Parser.ParserPatternMatching
   other-modules:
       Paths_yamil_language
   autogen-modules:
@@ -73,10 +73,10 @@ test-suite yamil-language-test
       Parser.TestParserExpresions
       Parser.TestParserFunction
       Parser.TestParserOperations
+      Parser.ParserPatternMatching
       Parser.TestParserProgram
-      Parser.TestParserThenExpr   
+      Parser.TestParserThenExpr         
       Parser.TestParserValueTypes
-      Parser.TestParserPatternMatching
       Paths_yamil_language
   autogen-modules:
       Paths_yamil_language
