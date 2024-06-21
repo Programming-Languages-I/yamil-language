@@ -5,7 +5,7 @@ import Parser.ParserValueTypes
 import Parser.ParserExpresions
 import Parser.LexerParser
 import Text.Parsec.String (Parser)
-import Text.Parsec ((<|>), sepBy, try) 
+import Text.Parsec ((<|>), sepBy1, try) 
 
 parsePattern :: Parser Pattern
 parsePattern = (try parsePatternLiteral) <|> parsePatternIdentifier
@@ -26,5 +26,5 @@ parsePatternMatchUsingGuards = (try parsePatternMatchLit)
 parsePatternMatchLit :: Parser PatternMatch
 parsePatternMatchLit = AST.PatternMatchLit <$> parsePattern <* (whiteSpaces *> (reservedOps "->") <* whiteSpaces) <*> (parseLiteral)
 
--- parseOtherwise :: Parser PatternMatch
--- parseOtherwise = AST.Otherwise <$> (reservedNa "otherwise") <* (whiteSpaces *> (reservedOps "->") <* whiteSpaces) <*> (parseLiteral)
+parseOtherwiseLit :: Parser PatternMatch
+parseOtherwiseLit = AST.OtherwiseLit <$> (reservedNa "otherwise" *> reservedOps "->" *> parseLiteral)
