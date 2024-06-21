@@ -6,11 +6,12 @@ import Parser.ParserExpresions
 import Parser.ParserValueTypes
 import Text.Parsec
 import Text.Parsec.String (Parser)
+import Text.Parsec.Token (GenTokenParser(whiteSpace))
 
 parseLetStatement :: Parser LetStatement
 parseLetStatement =
   LetStatement
-    <$> (reservedNa "let" *> whiteSpaces *> parseTypedIdentifier)
+    <$> (whiteSpaces *> reservedNa "let" *> whiteSpaces *> parseTypedIdentifier)
     <*> (whiteSpaces *> reservedOps "=" *> whiteSpaces *> parseExpr)
 
 parseFunction :: Parser Function
@@ -47,7 +48,7 @@ parseFunctionParams =
 parseFunctionBody :: Parser FunctionBody
 parseFunctionBody =
   FBLambdaExpr <$> try parseLambda
-  <|> FBody <$> (parseFunctionBodyOpts `sepBy` parseLineBreak)
+  <|> FBody <$> (parseFunctionBodyOpts `sepEndBy` parseLineBreak)
 
 -- <|> FBPatternMatch <$> pasePatternMatch (TODO: Implement Pattern matching here)
 -- parsePatternMatch :: Pattern [Pattern]
@@ -55,5 +56,5 @@ parseFunctionBody =
 parseFunctionBodyOpts :: Parser FunctionBodyOpts
 parseFunctionBodyOpts =
   FBLetStatement <$> try parseLetStatement
-    <|> FBExpr <$> try parseExpr
+    <|> FBExpr <$> try (whiteSpaces *> parseExpr)
     <|> FBEmpty <$ (whiteSpaces)
