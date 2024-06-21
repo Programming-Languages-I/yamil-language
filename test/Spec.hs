@@ -5,6 +5,7 @@ import Parser.TestParserExpresions
 import Parser.TestParserFunction
 import Parser.TestParserConditionExpr
 import Parser.TestParserThenExpr
+import Parser.TestParserFunction
 
 
 main :: IO ()
@@ -16,4 +17,5 @@ main = hspec $ do
   testParseLambda
   testParserIfExpression
   testParseThenExpression
+  testParserFunctions
   

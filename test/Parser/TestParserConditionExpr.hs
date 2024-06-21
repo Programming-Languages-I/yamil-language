@@ -44,7 +44,7 @@ testParseConditionBool = describe "parseConditionBool" $ do
 testParseIfExpr :: Spec
 testParseIfExpr = describe "parseIfExpr" $ do
   it "parses a simple if-then expression" $ do
-   parse parseIfExpr "" "if y == 0 then 1+1 \n 2+2 else  2+3 \n 5+7" `shouldBe` Right (IfExpr (Condition (VIdentifier "y") Equal (VLiteral (IntLiteral 0))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 1))) (BinaryExpr (VLiteral (IntLiteral 2)) Add (VLiteral (IntLiteral 2)))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 2)) Add (VLiteral (IntLiteral 3))) (BinaryExpr (VLiteral (IntLiteral 5)) Add (VLiteral (IntLiteral 7)))))
+    parse parseIfExpr "" "if y == 0 then 1+1 \n else  2+3 \n" `shouldBe` Right (IfExpr (Condition (VIdentifier "y") Equal (VLiteral (IntLiteral 0))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 1)))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 2)) Add (VLiteral (IntLiteral 3)))))
 
 
 testParserIfExpression :: Spec

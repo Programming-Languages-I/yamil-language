@@ -9,7 +9,7 @@ import Text.Parsec
 languageDef :: LanguageDef st
 languageDef = emptyDef
     { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->"]
-    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda", "let"]
+    , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "def"]
     , commentLine = "//"
     }
 
@@ -40,20 +40,20 @@ parseUnderscore = char '_'
 parseQuotationMarks :: Parser Char
 parseQuotationMarks = char '"'
 
-parseIntSym :: Parser String
-parseIntSym = string "int"
+parseIntSym :: Parser()
+parseIntSym = reservedNa "int"
 
-parseBoolSym :: Parser String
-parseBoolSym = string "bool" 
+parseBoolSym :: Parser()
+parseBoolSym = reservedNa "bool" 
 
-parseDoubleSym :: Parser String
-parseDoubleSym = string "double" 
+parseDoubleSym :: Parser()
+parseDoubleSym = reservedNa "double" 
 
-parseStringSym :: Parser String
-parseStringSym = string "string" 
+parseStringSym :: Parser()
+parseStringSym = reservedNa "string" 
 
 parseBoolValues :: Parser Bool
-parseBoolValues = (True <$ string "True") <|> (False <$ string "False")
+parseBoolValues = (True <$ reservedNa "True") <|> (False <$ reservedNa "False")
 
 parseOpenParents :: Parser Char
 parseOpenParents = char '('

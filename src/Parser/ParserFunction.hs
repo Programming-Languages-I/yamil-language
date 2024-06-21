@@ -2,26 +2,32 @@ module Parser.ParserFunction (module Parser.ParserFunction) where
 
 import AST
 import Parser.LexerParser
-import Parser.ParserValueTypes
 import Parser.ParserExpresions
+import Parser.ParserValueTypes
+import Text.Parsec
 import Text.Parsec.String (Parser)
-import Text.Parsec 
 
 parseLetStatement :: Parser LetStatement
-parseLetStatement = LetStatement <$>
-         (reservedNa "let" *> whiteSpaces *> parseTypedIdentifier) <*> 
-         (whiteSpaces *> reservedOps "=" *> whiteSpaces *> parseExpr)
-         
+parseLetStatement =
+  LetStatement
+    <$> (reservedNa "let" *> whiteSpaces *> parseTypedIdentifier)
+    <*> (whiteSpaces *> reservedOps "=" *> whiteSpaces *> parseExpr)
+
 parseFunction :: Parser Function
 parseFunction =
   Function
-    <$> (reservedNa "def" *> parseIdentifier)
+    <$> (parseFunctionSym *> parseIdentifier)
     <*> parseFunctionParams
     <*> parseFunctionType
-    <*> (parseOpenBraces *> parseFunctionBody <* parseCloseBraces)
+    <*> ( parseOpenBraces
+            *> whiteSpaces
+            *> parseFunctionBody
+            <* whiteSpaces
+            <* parseCloseBraces
+        )
 
 parseFunctionType :: Parser Type
-parseFunctionType = whiteSpaces *> string "->" *> parseType
+parseFunctionType = whiteSpaces *> string "->" *> whiteSpaces *> parseSingleType
 
 parseFunctionParams :: Parser [TypedIdentifier]
 parseFunctionParams =
@@ -32,11 +38,15 @@ parseFunctionParams =
     <* parseCloseParents
 
 parseFunctionBody :: Parser FunctionBody
-parseFunctionBody = FBody <$> (parseFunctionBodyOpts `sepEndBy` parseLineBreak)
+parseFunctionBody =
+  FBLambdaExpr <$> try parseLambda
+  <|> FBody <$> (parseFunctionBodyOpts `sepBy` parseLineBreak)
+
+-- <|> FBPatternMatch <$> pasePatternMatch (TODO: Implement Pattern matching here)
+-- parsePatternMatch :: Pattern [Pattern]
 
 parseFunctionBodyOpts :: Parser FunctionBodyOpts
 parseFunctionBodyOpts =
-  FBExpr <$> parseExpr
-    <|> FBLetStatement <$> parseLetStatement
-
--- <|> FBPatternMatch <$> pasePatterMatch (TODO: Implement Pattern matching here)
+  FBLetStatement <$> try parseLetStatement
+    <|> FBExpr <$> try parseExpr
+    <|> FBEmpty <$ (whiteSpaces)
