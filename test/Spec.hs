@@ -10,3 +10,5 @@ main = hspec $ do
   testParseOperations
   testParserExpresions
   testParseLetStatement
+  testParseLambda
+  

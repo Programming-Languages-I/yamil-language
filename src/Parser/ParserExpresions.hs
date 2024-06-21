@@ -4,19 +4,14 @@ import AST
 import Parser.LexerParser
 import Text.Parsec ((<|>), sepBy) 
 import Text.Parsec.String (Parser)
-import Parser.ParserValueTypes ( parseIdentifier, parseValue, parseTypedIdentifier, parseManyTypedIdentifier )
+import Parser.ParserValueTypes ( parseIdentifier, parseValue, parseManyTypedIdentifier )
 import Parser.ParserOperations
-
-parseLetStatement :: Parser LetStatement
-parseLetStatement = LetStatement <$>
-         (reservedNa "let" *> whiteSpaces *> parseTypedIdentifier) <*> 
-         (whiteSpaces *> reservedOps "=" *> whiteSpaces *> parseExpr)
 
 parseExpr :: Parser Expr
 parseExpr =
-    parseFunctionCall
+    parseLambda
+        <|> parseFunctionCall
         <|> parseBinaryExpr
-        <|> parseLambda
 parseParamsValues :: Parser [Value]
 parseParamsValues = parseOpenParents *> whiteSpaces *> parseValue `sepBy` (whiteSpaces *> parseComma <* whiteSpaces) <* whiteSpaces <* parseCloseParents
 
@@ -29,6 +24,5 @@ parseBinaryExpr = BinaryExpr <$> parseValue <*> (whiteSpaces *> parseArithmeticO
 
 parseLambda :: Parser Expr
 parseLambda = LambdaExpr 
-              <$> (parseLambdaSymbol *> whiteSpaces *> parseOpenParents *> parseManyTypedIdentifier <* parseCloseParents <* whiteSpaces)
-              <*> parseLetStatement
-
+              <$> (reservedNa "lambda" *> whiteSpaces *> parseOpenParents *> parseManyTypedIdentifier <* parseCloseParents <* whiteSpaces <* reservedOps "->" <* whiteSpaces )
+              <*> parseExpr

@@ -66,9 +66,21 @@ testParseParamsValues = describe "parseParamsValues" $ do
     it "parses a list of values with multiple arguments" $ do
         parse parseParamsValues "" "(1,2)" `shouldBe` Right [VLiteral (IntLiteral 1), VLiteral (IntLiteral 2)]
 
+testParseLambda :: Spec 
+testParseLambda = do 
+    it "parses a lambda expression with functionCall" $ do
+        parse parseLambda "" "lambda (x:double) -> foo()" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (FunctionCall "foo" []) )
+
+    it "parses a lambda expression with BinaryExpr" $ do
+        parse parseLambda "" "lambda (x:double) -> 5 * 6" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6))) )
+    
+    it "parses a lambda expression with LambdaExpr" $ do
+        parse parseLambda "" "lambda (x:double) -> lambda (y:int) -> foo()" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (LambdaExpr [TypedIdentifier "y" TInt] (FunctionCall "foo" [])) )
+
 testParserExpresions :: Spec
 testParserExpresions = do
     testParseFunctionCall
     testParseBinaryExpr
     testParseExpr
     testParseParamsValues
+    testParseLambda
