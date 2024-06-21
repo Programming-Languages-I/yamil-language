@@ -99,7 +99,8 @@ data Pattern
 data PatternMatch
         = PatternMatchExp Pattern Expr
         | PatternMatchLit Pattern Literal
-        | Otherwise Expr
+        | OtherwiseExp Expr
+        | OtherwiseLit Literal
         deriving (Show, Eq)
 
 -- Functions
