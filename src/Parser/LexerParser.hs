@@ -29,6 +29,9 @@ reservedNa = Text.Parsec.Token.reserved lexer
 parseAssignSymbol :: Parser()
 parseAssignSymbol = reservedOps "="
 
+-- skipComments :: Parser ()
+-- skipComments = skipMany (try (string "//") *> manyTill anyChar (try newline <|> eof) *> pure ())
+
 parseDot :: Parser Char
 parseDot = char '.'
 
