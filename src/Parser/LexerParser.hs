@@ -8,8 +8,8 @@ import Text.Parsec
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
-    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->"]
-    , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda", "let"]
+    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "="]
+    , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "def"]
     , commentLine = "//"
     }
 
@@ -25,8 +25,8 @@ reservedOps = Text.Parsec.Token.reservedOp lexer
 reservedNa :: String -> Parser ()
 reservedNa = Text.Parsec.Token.reserved lexer
 
-parseAssignSymbol :: Parser Char
-parseAssignSymbol = char '='
+parseAssignSymbol :: Parser()
+parseAssignSymbol = reservedOps "="
 
 parseDot :: Parser Char
 parseDot = char '.'
@@ -40,20 +40,20 @@ parseUnderscore = char '_'
 parseQuotationMarks :: Parser Char
 parseQuotationMarks = char '"'
 
-parseIntSym :: Parser String
-parseIntSym = string "int"
+parseIntSym :: Parser()
+parseIntSym = reservedNa "int"
 
-parseBoolSym :: Parser String
-parseBoolSym = string "bool" 
+parseBoolSym :: Parser()
+parseBoolSym = reservedNa "bool" 
 
-parseDoubleSym :: Parser String
-parseDoubleSym = string "double" 
+parseDoubleSym :: Parser()
+parseDoubleSym = reservedNa "double" 
 
-parseStringSym :: Parser String
-parseStringSym = string "string" 
+parseStringSym :: Parser()
+parseStringSym = reservedNa "string" 
 
 parseBoolValues :: Parser Bool
-parseBoolValues = (True <$ string "True") <|> (False <$ string "False")
+parseBoolValues = (True <$ reservedNa "True") <|> (False <$ reservedNa "False")
 
 parseOpenParents :: Parser Char
 parseOpenParents = char '('
@@ -61,5 +61,17 @@ parseOpenParents = char '('
 parseCloseParents :: Parser Char
 parseCloseParents = char ')'
 
+parseOpenBraces :: Parser Char
+parseOpenBraces = char '{'
+
+parseCloseBraces :: Parser Char
+parseCloseBraces = char '}'
+
 parseComma :: Parser Char
 parseComma = char ','
+
+parseLineBreak :: Parser Char
+parseLineBreak = char '\n' <|> char '\r'
+
+parseFunctionSym :: Parser ()
+parseFunctionSym = reservedNa "def"

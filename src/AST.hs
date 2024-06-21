@@ -3,6 +3,7 @@ module AST
     Literal (..),
     Type (..),
     Expr (..),
+    LambdaExpr (..),
     Value (..),
     ConditionExpr (..),
     ThenExpr (..),
@@ -42,7 +43,10 @@ data Expr
     = FunctionCall Identifier [Value]
     | IfExpr ConditionExpr ThenExpr ThenExpr
     | BinaryExpr Value ArithmeticOperator Value
-    | LambdaExpr [TypedIdentifier] Expr
+    | ValueExpr Value
+    deriving (Show, Eq)
+
+data LambdaExpr = LambdaExpr [TypedIdentifier] Expr
     deriving (Show, Eq)
 
 data Value
@@ -59,7 +63,7 @@ data ConditionExpr
     deriving (Show, Eq)
 
 data ThenExpr 
-    = ThenMainExpr Expr Expr
+    = ThenMainExpr Expr
     | ThenLiteral Literal
     | ThenIdentifier Identifier
     deriving(Show, Eq)
@@ -93,9 +97,15 @@ data Function = Function Identifier [TypedIdentifier] Type FunctionBody
     deriving (Show, Eq)
 
 data FunctionBody
-    = FBExpr Expr
+    = FBody [FunctionBodyOpts] 
     | FBPatternMatch [PatternMatch]
+    | FBLambdaExpr LambdaExpr
+    deriving (Show, Eq)
+
+data FunctionBodyOpts
+    = FBExpr Expr
     | FBLetStatement LetStatement
+    | FBEmpty
     deriving (Show, Eq)
 
 -- Let Statement
