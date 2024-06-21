@@ -20,7 +20,7 @@ module AST
         , TypedIdentifier (..)
         , Value (..)
         ) where
-                
+
 -- Identifier and literals
 type Identifier = String
 
@@ -99,26 +99,18 @@ data Pattern
         deriving (Eq, Show)
 
 data PatternMatch
-<<<<<<< HEAD
         = PatternMatchExp Pattern Expr
         | PatternMatchLit Pattern Literal
-        | OtherwiseExp Expr
-        | OtherwiseLit Literal
         deriving (Show, Eq)
-=======
-    = PatternMatchExp Pattern Expr
-    | PatternMatchLit Pattern Literal
-    deriving (Show, Eq)
 
 data OtherwiseMatch
-    = OtherwiseExp Expr
-    | OtherwiseLit Literal
-    deriving (Show, Eq)
->>>>>>> 796cc23 (feat(AST): implement `OtherwiseMatch` and `PatternMatches` data types)
+        = OtherwiseExp Expr
+        | OtherwiseLit Literal
+        deriving (Show, Eq)
 
 data PatternMatches
-    = FullPatternMatch [PatternMatch] OtherwiseMatch
-    deriving (Show, Eq)
+        = FullPatternMatch [PatternMatch] OtherwiseMatch
+        deriving (Show, Eq)
 
 -- Functions
 data Function
