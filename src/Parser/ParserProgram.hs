@@ -7,7 +7,7 @@ import Text.Parsec.String (Parser)
 import Parser.ParserExpresions (parseExpr)
 
 parseProgram :: Parser Program
-parseProgram = Program <$> endBy parseProgramElement newline
+parseProgram = Program <$> endBy parseProgramElement newline <* eof
 
 parseProgramElement :: Parser ProgramElement
 parseProgramElement =
