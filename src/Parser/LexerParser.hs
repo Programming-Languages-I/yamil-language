@@ -8,7 +8,7 @@ import Text.Parsec
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
-    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->"]
+    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "="]
     , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "def"]
     , commentLine = "//"
     }
@@ -25,8 +25,8 @@ reservedOps = Text.Parsec.Token.reservedOp lexer
 reservedNa :: String -> Parser ()
 reservedNa = Text.Parsec.Token.reserved lexer
 
-parseAssignSymbol :: Parser Char
-parseAssignSymbol = char '='
+parseAssignSymbol :: Parser()
+parseAssignSymbol = reservedOps "="
 
 parseDot :: Parser Char
 parseDot = char '.'

@@ -25,16 +25,16 @@ testParseLetStatement = describe "parseLetStatement" $ do
 testParseFunctionType :: Spec
 testParseFunctionType = describe "parseFunctionType" $ do
   it "parses function type int" $ do
-    parse parseFunctionType "" "-> int" `shouldBe` Right (TInt)
+    parse parseFunctionType "" "-> int =" `shouldBe` Right (TInt)
 
   it "parses function type double" $ do
-    parse parseFunctionType "" "-> double" `shouldBe` Right (TDouble)
+    parse parseFunctionType "" "-> double =" `shouldBe` Right (TDouble)
 
   it "parses function type bool" $ do
-    parse parseFunctionType "" "-> bool" `shouldBe` Right (TBool)
+    parse parseFunctionType "" "-> bool =" `shouldBe` Right (TBool)
 
   it "parses function type string" $ do
-    parse parseFunctionType "" "-> string" `shouldBe` Right (TString)
+    parse parseFunctionType "" "-> string = " `shouldBe` Right (TString)
 
 testParseFunctionBody :: Spec
 testParseFunctionBody = describe "parseFunction" $ do
@@ -105,7 +105,7 @@ testParseFunctionBody = describe "parseFunction" $ do
 testParseFunction :: Spec
 testParseFunction = describe "parseFunction" $ do
   it "parses a function with binary expresion" $ do
-    parse parseFunction "" "def add(x: int, y: int) -> int {\n x+y }"
+    parse parseFunction "" "def add(x: int, y: int) -> int = {\n x+y }"
       `shouldBe` Right
         ( Function
             "add"
@@ -118,7 +118,7 @@ testParseFunction = describe "parseFunction" $ do
     parse
       parseFunction
       ""
-      "def calculate(a: int, b: int) -> int { \
+      "def calculate(a: int, b: int) -> int = { \
       \let sum: int = add(a, b)\n\
       \let product: int = a * b\n\
       \sum + product }"
@@ -139,7 +139,7 @@ testParseFunction = describe "parseFunction" $ do
     parse
       parseFunction
       ""
-      "def calculate(a: int, b: int) -> int { \
+      "def calculate(a: int, b: int) -> int = { \
       \let sum: int = add(a, b)\n\
       \let product: int = a * b\n\
       \add(sum, product) }"
@@ -161,7 +161,7 @@ testParseFunction = describe "parseFunction" $ do
       parseFunction
       ""
       "def fun(a:int, b:int) ->\
-      \int {\nlet y: int = 0\nif y == 0 then if a == 2 then a else b \n else  2+3\n}"
+      \int = {\nlet y: int = 0\nif y == 0 then if a == 2 then a else b \n else  2+3\n}"
       `shouldBe` Right
         ( Function
             "fun"
@@ -193,7 +193,7 @@ testParseFunction = describe "parseFunction" $ do
     parse
       parseFunction
       ""
-      "def lambda() -> bool {\nlambda(x: int) -> if x > threshold then True else False\n}"
+      "def lambda() -> bool = {\nlambda(x: int) -> if x > threshold then True else False\n}"
       `shouldBe` Right
         ( Function
             "lambda"

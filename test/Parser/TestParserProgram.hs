@@ -9,7 +9,7 @@ import Text.Parsec
 testParseProgramElement :: Spec
 testParseProgramElement = describe "parseProgramElement" $ do
     it "parses a function" $ do
-        parse parseProgramElement "" "def add(x: int, y: int) -> int {\n x+y }"
+        parse parseProgramElement "" "def add(x: int, y: int) -> int = {\n x+y }"
             `shouldBe` Right
                 (PEFunction
                     (Function
@@ -27,7 +27,7 @@ testParseProgramElement = describe "parseProgramElement" $ do
         parse parseProgramElement "" "let z:int = foo()" `shouldBe` Right (PELetStatement (LetStatement (TypedIdentifier "z" TInt) (FunctionCall "foo" [])))
 
     it "parses a program" $ do
-        parse parseProgramElement "" "def add(x: int, y: int) -> int {\n x+y }"
+        parse parseProgramElement "" "def add(x: int, y: int) -> int = {\n x+y }"
             `shouldBe` Right
                 (PEFunction
                     (Function
@@ -43,7 +43,7 @@ testParseProgramElement = describe "parseProgramElement" $ do
         parse parseProgramElement "" "let z:int = foo()" `shouldBe` Right (PELetStatement (LetStatement (TypedIdentifier "z" TInt) (FunctionCall "foo" [])))
 
     it "parses a function call" $ do
-        parse parseProgram "" "let x: int = 5\ndef calculate(a: int, b: int) -> int { \
+        parse parseProgram "" "let x: int = 5\ndef calculate(a: int, b: int) -> int = { \
         \let sum: int = add(a, b)\n\
         \let product: int = a * b\n\
         \add(sum, product) }\ncalculate(x, 5)\n" `shouldBe` Right

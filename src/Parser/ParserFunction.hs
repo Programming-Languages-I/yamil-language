@@ -27,7 +27,14 @@ parseFunction =
         )
 
 parseFunctionType :: Parser Type
-parseFunctionType = whiteSpaces *> string "->" *> whiteSpaces *> parseSingleType
+parseFunctionType =
+  whiteSpaces
+    *> string "->"
+    *> whiteSpaces
+    *> parseSingleType
+    <* whiteSpaces
+    <* parseAssignSymbol
+    <* whiteSpaces
 
 parseFunctionParams :: Parser [TypedIdentifier]
 parseFunctionParams =
