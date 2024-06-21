@@ -7,6 +7,7 @@ import           AST
 import           Parser.LexerParser
 import           Parser.ParserExpresions
 import           Parser.ParserValueTypes
+import           Parser.ParserPatternMatching
 
 import           Text.Parsec
 import           Text.Parsec.String      (Parser)
@@ -52,10 +53,8 @@ parseFunctionParams =
 parseFunctionBody :: Parser FunctionBody
 parseFunctionBody =
   FBLambdaExpr <$> try parseLambda
+  <|> FBPatternMatch <$> try (whiteSpaces *> parsePatternMatches <* whiteSpaces)
   <|> FBody <$> (parseFunctionBodyOpts `sepEndBy` parseLineBreak)
-
--- <|> FBPatternMatch <$> pasePatternMatch (TODO: Implement Pattern matching here)
--- parsePatternMatch :: Pattern [Pattern]
 
 parseFunctionBodyOpts :: Parser FunctionBodyOpts
 parseFunctionBodyOpts =

@@ -40,3 +40,12 @@ isPositive(2)
 
 max_of(10, 15, 1)  
 max_of(10, 5, 3)  
+
+def matchNumbers(x: int) -> string = {
+    x -> "Zero"
+    | otherwise -> "Not Found"
+}
+
+matchNumbers(0)
+matchNumbers(1)
+matchNumbers(2)
