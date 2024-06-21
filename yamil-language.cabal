@@ -33,6 +33,7 @@ library
       Parser.ParserFunction
       Parser.ParserOperations
       Parser.ParserProgram     
+      Parser.ParserThenExpr
       Parser.ParserValueTypes
       Parser.ParserPatternMatching
   other-modules:
