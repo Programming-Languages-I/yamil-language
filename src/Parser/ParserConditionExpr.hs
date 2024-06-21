@@ -5,15 +5,6 @@ import Parser.LexerParser(whiteSpaces , reservedOps , parseBoolValues , whiteSpa
 import Parser.ParserValueTypes (parseValue)
 import Text.Parsec ((<|>) )
 import Text.Parsec.String (Parser)
-import Parser.ParserThenExpr ( parseThenExpr )
-
-
-parseIfExpr :: Parser Expr
-parseIfExpr =
-    IfExpr
-        <$> (reservedNa "if" *> whiteSpaces *> parseConditionExpr)
-        <*> (whiteSpaces *> reservedNa "then" *>  whiteSpaces *> parseThenExpr)
-        <*> (whiteSpaces *> reservedNa "else" *>  whiteSpaces *> parseThenExpr)
 
 parseConditionExpr :: Parser ConditionExpr
 parseConditionExpr =

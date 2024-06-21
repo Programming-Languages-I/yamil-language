@@ -32,7 +32,6 @@ library
       Parser.ParserExpresions
       Parser.ParserFunction
       Parser.ParserOperations
-      Parser.ParserThenExpr
       Parser.ParserValueTypes
   other-modules:
       Paths_yamil_language
