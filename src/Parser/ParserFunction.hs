@@ -10,3 +10,4 @@ parseLetStatement :: Parser LetStatement
 parseLetStatement = LetStatement <$>
          (reservedNa "let" *> whiteSpaces *> parseTypedIdentifier) <*> 
          (whiteSpaces *> reservedOps "=" *> whiteSpaces *> parseExpr)
+         

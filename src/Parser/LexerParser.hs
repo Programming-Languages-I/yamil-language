@@ -8,7 +8,7 @@ import Text.Parsec
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
-    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!="]
+    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->"]
     , reservedNames = ["if", "then", "else", "true", "false", "int", "bool", "double", "string", "lambda", "let"]
     , commentLine = "//"
     }
@@ -63,4 +63,3 @@ parseCloseParents = char ')'
 
 parseComma :: Parser Char
 parseComma = char ','
-

@@ -57,6 +57,10 @@ parseTypedIdentifier =
     <$> (parseIdentifier <* whiteSpaces)
     <*> parseType
 
+parseManyTypedIdentifier :: Parser [TypedIdentifier]
+parseManyTypedIdentifier = many1 parseTypedIdentifier
+
+
 parseType :: Parser Type
 parseType =
   parseColon
