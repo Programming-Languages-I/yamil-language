@@ -11,10 +11,10 @@ parsePattern :: Parser Pattern
 parsePattern = (try parsePatternLiteral) <|> parsePatternIdentifier
 
 parsePatternLiteral :: Parser Pattern
-parsePatternLiteral = AST.PLiteral <$> parseLiteral 
+parsePatternLiteral = AST.PLiteral <$> (try parseLiteral)
 
 parsePatternIdentifier :: Parser Pattern
-parsePatternIdentifier = AST.PIdentifier <$> parseIdentifier
+parsePatternIdentifier = AST.PIdentifier <$> (try parseIdentifier)
 
 parsePatternMatches :: Parser [PatternMatch]
 parsePatternMatches = parsePatternMatchUsingGuards `sepBy` reservedOps "|"
