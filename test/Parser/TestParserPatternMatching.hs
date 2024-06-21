@@ -112,6 +112,18 @@ testParsePatternMatchingOtherwiseLit = describe "parseOtherwiseLit" $ do
     it "parses an Otherwise -> String match case" $ do
         parse parseOtherwiseLit "" "otherwise -> \"None\"" `shouldBe`
                         Right (OtherwiseLit (StringLiteral "None"))
+
+-- testParsePatternMatchingIntLiterals :: Spec
+-- testParsePatternMatchingIntLiterals = describe "parsePatternMatchesIntLiteral" $ do
+--     it "parses multiple Integer -> Integer match cases separated by |" $ do
+--         parse parsePatternMatches "" "0 -> 0 | 1 -> 1" `shouldBe` 
+--                         Right [(PatternMatchLit (PLiteral (IntLiteral 0)) (IntLiteral 0))
+--                         , (PatternMatchLit (PLiteral (IntLiteral 1)) (IntLiteral 1))]
+--     it "parses multiple Integer -> Integer match cases separated by otherwise" $ do
+--         parse parsePatternMatches "" "0 -> 0 | otherwise -> 1" `shouldBe` 
+--                         Right [(PatternMatchLit (PLiteral (IntLiteral 0)) (IntLiteral 0))
+--                         , (OtherwiseLit (IntLiteral 1))]
+
     
 testParsePatternMatches :: Spec
 testParsePatternMatches = do 
@@ -121,3 +133,4 @@ testParsePatternMatches = do
   testParsePatternMatchingStringLiteral
   testParsePatternMatchingPIdentifier
   testParsePatternMatchingOtherwiseLit
+--   testParsePatternMatchingIntLiterals
