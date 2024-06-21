@@ -29,7 +29,11 @@ max_of_three(3, 7, 5)
 max_of_three(10, 3, 5) 
 max_of_three(1, 2, 3)  
 
-"def lambda() -> bool {\nlambda(x: int) -> if x > threshold then True else False\n}"
+def isPositive() -> bool {
+      lambda(x: int) -> if x > 0 then True else False
+}
+
+isPositive(2)
 
 filter_greater_than(10, 15)  
 filter_greater_than(10, 5)  
