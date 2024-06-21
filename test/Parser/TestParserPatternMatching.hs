@@ -94,6 +94,24 @@ testParsePatternMatchingPIdentifier = describe "parsePatternMatchesPIdentifier" 
     it "parses an Identifier -> String match case" $ do
         parse parsePatternMatches "" "Zero -> \"Zero\"" `shouldBe`
                         Right [(PatternMatchLit (PIdentifier "Zero")) (StringLiteral "Zero")]
+
+testParsePatternMatchingOtherwiseLit :: Spec
+testParsePatternMatchingOtherwiseLit = describe "parseOtherwiseLit" $ do
+    it "parses an Otherwise -> Integer match case" $ do
+        parse parseOtherwiseLit "" "otherwise -> 2004" `shouldBe`
+                        Right (OtherwiseLit (IntLiteral 2004))
+
+    it "parses an Otherwise -> Bool match case" $ do
+        parse parseOtherwiseLit "" "otherwise -> False" `shouldBe`
+                        Right (OtherwiseLit (BoolLiteral False))
+
+    -- it "parses an Otherwise -> Double match case" $ do
+    --     parse parsePatternMatches "" "otherwise -> 2.5666" `shouldBe`
+    --                     Right (OtherwiseLit (DoubleLiteral 2.5666))
+
+    it "parses an Otherwise -> String match case" $ do
+        parse parseOtherwiseLit "" "otherwise -> \"None\"" `shouldBe`
+                        Right (OtherwiseLit (StringLiteral "None"))
     
 testParsePatternMatches :: Spec
 testParsePatternMatches = do 
@@ -102,3 +120,4 @@ testParsePatternMatches = do
   testParsePatternMatchingBoolLiteral
   testParsePatternMatchingStringLiteral
   testParsePatternMatchingPIdentifier
+  testParsePatternMatchingOtherwiseLit
