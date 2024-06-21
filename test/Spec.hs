@@ -5,7 +5,7 @@ import Parser.TestParserExpresions
 import Parser.TestParserFunction
 import Parser.TestParserConditionExpr
 import Parser.TestParserThenExpr
-import Parser.TestParserFunction
+import Parser.TestParserProgram
 
 
 main :: IO ()
@@ -18,4 +18,4 @@ main = hspec $ do
   testParserIfExpression
   testParseThenExpression
   testParserFunctions
-  
+  testParserProgram
