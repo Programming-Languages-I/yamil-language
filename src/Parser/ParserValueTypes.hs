@@ -2,7 +2,7 @@ module Parser.ParserValueTypes (module Parser.ParserValueTypes) where
 
 import AST
 import Parser.LexerParser
-import Text.Parsec (char, digit, letter, many, many1, noneOf, (<|>))
+import Text.Parsec (char, digit, letter, many, many1, noneOf, (<|>), sepBy)
 import Text.Parsec.String (Parser)
 
 -- Parse Identifier
@@ -48,7 +48,15 @@ parseValue :: Parser Value
 parseValue =
   VLiteral <$> parseLiteral
     <|> VIdentifier <$> parseIdentifier
--- TODO: Add the implementation for parseFunctionCall here
+    <|> VFunctionCall <$> parseIdentifier <*> parseParamsValues
+
+parseParamsValues :: Parser [Value]
+parseParamsValues =
+  parseOpenParents
+    *> whiteSpaces
+    *> parseValue `sepBy` (whiteSpaces *> parseComma <* whiteSpaces)
+    <* whiteSpaces
+    <* parseCloseParents
 
 -- Parse Typed Identifier
 parseTypedIdentifier :: Parser TypedIdentifier
@@ -59,7 +67,6 @@ parseTypedIdentifier =
 
 parseManyTypedIdentifier :: Parser [TypedIdentifier]
 parseManyTypedIdentifier = many1 parseTypedIdentifier
-
 
 parseType :: Parser Type
 parseType =

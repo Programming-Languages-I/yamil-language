@@ -42,7 +42,9 @@ data Expr
     = FunctionCall Identifier [Value]
     | IfExpr ConditionExpr ThenExpr ThenExpr
     | BinaryExpr Value ArithmeticOperator Value
-    | LambdaExpr [TypedIdentifier] Expr
+    deriving (Show, Eq)
+
+data LambdaExpr = LambdaExpr [TypedIdentifier] Expr
     deriving (Show, Eq)
 
 data Value
@@ -93,8 +95,13 @@ data Function = Function Identifier [TypedIdentifier] Type FunctionBody
     deriving (Show, Eq)
 
 data FunctionBody
-    = FBExpr Expr
+    = FBody [FunctionBodyOpts] 
     | FBPatternMatch [PatternMatch]
+    | FBLambdaExpr LambdaExpr
+    deriving (Show, Eq)
+
+data FunctionBodyOpts
+    = FBExpr Expr
     | FBLetStatement LetStatement
     deriving (Show, Eq)
 
