@@ -8,13 +8,13 @@ import Text.Parsec
 testParseThenMainExpr :: Spec
 testParseThenMainExpr = describe "parseThenMainExpr" $ do
   it "parses a valid then expression with two main expressions" $ do
-    parse parseThenMainExpr "" "1 + 2 \n 1+4" `shouldBe` Right (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 2))) (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 4))))
+    parse parseThenMainExpr "" "1 + 2" `shouldBe` Right (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 2))))
 
   it "parses a then expression with a literal" $ do
-    parse parseThenMainExpr "" "123 * 123 \n 123 / 123" `shouldBe`Right (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 123)) Multiply (VLiteral (IntLiteral 123))) (BinaryExpr (VLiteral (IntLiteral 123)) Divide (VLiteral (IntLiteral 123))))
+    parse parseThenMainExpr "" "123 * 123" `shouldBe`Right (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 123)) Multiply (VLiteral (IntLiteral 123))))
 
   it "parses a then expression with an identifier" $ do
-    parse parseThenMainExpr "" "foo() \n 123+1 " `shouldBe` Right (ThenMainExpr (FunctionCall "foo" []) (BinaryExpr (VLiteral (IntLiteral 123)) Add (VLiteral (IntLiteral 1))))
+    parse parseThenMainExpr "" "foo()" `shouldBe` Right (ThenMainExpr (FunctionCall "foo" []))
 testParseThenLiteral :: Spec
 testParseThenLiteral = describe "parseThenLiteral" $ do
   it "parses a then literal expression with an integer literal" $ do

@@ -48,7 +48,6 @@ parseValue :: Parser Value
 parseValue =
   VLiteral <$> parseLiteral
     <|> VIdentifier <$> parseIdentifier
-    <|> VFunctionCall <$> parseIdentifier <*> parseParamsValues
 
 parseParamsValues :: Parser [Value]
 parseParamsValues =
@@ -72,11 +71,13 @@ parseType :: Parser Type
 parseType =
   parseColon
     *> whiteSpaces
-    *> ( parseTypeString
+    *> parseSingleType
+
+parseSingleType :: Parser Type
+parseSingleType = parseTypeString
            <|> parseTypeBool
            <|> parseTypeDouble
            <|> parseTypeInt
-       )
 
 parseTypeString :: Parser Type
 parseTypeString = TString <$ parseStringSym

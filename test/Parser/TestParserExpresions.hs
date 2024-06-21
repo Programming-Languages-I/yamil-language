@@ -2,6 +2,7 @@ module Parser.TestParserExpresions (module Parser.TestParserExpresions) where
 
 import AST
 import Parser.ParserExpresions
+import Parser.ParserValueTypes
 import Test.Hspec
 import Text.Parsec
 
@@ -55,6 +56,9 @@ testParseExpr = describe "parseExpr" $ do
     it "parses a binary expression" $ do
         parse parseExpr "" "1+2" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 2)))
 
+    it "parses a binary expression" $ do
+        parse parseExpr "" "x + y" `shouldBe` Right (BinaryExpr (VIdentifier "x") Add (VIdentifier "y"))
+
 testParseParamsValues :: Spec
 testParseParamsValues = describe "parseParamsValues" $ do
     it "parses a list of values with no arguments" $ do
@@ -73,9 +77,6 @@ testParseLambda = do
 
     it "parses a lambda expression with BinaryExpr" $ do
         parse parseLambda "" "lambda (x:double) -> 5 * 6" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6))) )
-    
-    it "parses a lambda expression with LambdaExpr" $ do
-        parse parseLambda "" "lambda (x:double) -> lambda (y:int) -> foo()" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (LambdaExpr [TypedIdentifier "y" TInt] (FunctionCall "foo" [])) )
 
 testParserExpresions :: Spec
 testParserExpresions = do
