@@ -135,6 +135,27 @@ testParseFunction = describe "parseFunction" $ do
             )
         )
 
+  it "parses a function with binary expresions and return function call" $ do
+    parse
+      parseFunction
+      ""
+      "def calculate(a: int, b: int) -> int { \
+      \let sum: int = add(a, b)\n\
+      \let product: int = a * b\n\
+      \add(sum, product) }"
+      `shouldBe` Right
+        ( Function
+            "calculate"
+            [TypedIdentifier "a" TInt, TypedIdentifier "b" TInt]
+            TInt
+            ( FBody
+                [ FBLetStatement (LetStatement (TypedIdentifier "sum" TInt) (FunctionCall "add" [VIdentifier "a", VIdentifier "b"])),
+                  FBLetStatement (LetStatement (TypedIdentifier "product" TInt) (BinaryExpr (VIdentifier "a") Multiply (VIdentifier "b"))),
+                  FBExpr (FunctionCall "add" [VIdentifier "sum", VIdentifier "product"])
+                ]
+            )
+        )
+
   it "parses a function with ifs and let stmts" $ do
     parse
       parseFunction
