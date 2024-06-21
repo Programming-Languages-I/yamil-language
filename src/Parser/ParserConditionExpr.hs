@@ -1,10 +1,15 @@
-module Parser.ParserConditionExpr (module Parser.ParserConditionExpr) where
+module Parser.ParserConditionExpr
+        ( module Parser.ParserConditionExpr
+        ) where
 
-import AST 
-import Parser.LexerParser(whiteSpaces , reservedOps , parseBoolValues , whiteSpaces ,reservedNa)
-import Parser.ParserValueTypes (parseValue)
-import Text.Parsec ((<|>) )
-import Text.Parsec.String (Parser)
+import           AST
+
+import           Parser.LexerParser      (parseBoolValues, reservedNa,
+                                          reservedOps, whiteSpaces)
+import           Parser.ParserValueTypes (parseValue)
+
+import           Text.Parsec             ((<|>))
+import           Text.Parsec.String      (Parser)
 
 parseConditionExpr :: Parser ConditionExpr
 parseConditionExpr =
@@ -34,7 +39,6 @@ parseComparisonOperator =
     <|> parseEqual
     <|> parseNotEqual
 
-
 parseLessThan :: Parser ComparisonOperator
 parseLessThan = LessThan <$ reservedOps "<"
 
@@ -52,5 +56,3 @@ parseEqual = Equal <$ reservedOps "=="
 
 parseNotEqual :: Parser ComparisonOperator
 parseNotEqual = NotEqual <$ reservedOps "!="
-
-

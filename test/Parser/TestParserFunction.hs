@@ -1,9 +1,14 @@
-module Parser.TestParserFunction (module Parser.TestParserFunction) where
+module Parser.TestParserFunction
+        ( module Parser.TestParserFunction
+        ) where
 
-import AST
-import Parser.ParserFunction
-import Test.Hspec
-import Text.Parsec
+import           AST
+
+import           Parser.ParserFunction
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseLetStatement :: Spec
 testParseLetStatement = describe "parseLetStatement" $ do
@@ -200,9 +205,9 @@ testParseFunction = describe "parseFunction" $ do
             []
             TBool
             ( FBLambdaExpr
-                (LambdaExpr [TypedIdentifier "x" TInt] 
-                    (IfExpr (Condition (VIdentifier "x") GreaterThan (VIdentifier "threshold")) 
-                    (ThenMainExpr (ValueExpr (VLiteral (BoolLiteral True)))) 
+                (LambdaExpr [TypedIdentifier "x" TInt]
+                    (IfExpr (Condition (VIdentifier "x") GreaterThan (VIdentifier "threshold"))
+                    (ThenMainExpr (ValueExpr (VLiteral (BoolLiteral True))))
                     (ThenMainExpr (ValueExpr (VLiteral (BoolLiteral False)))))
                 )
             )

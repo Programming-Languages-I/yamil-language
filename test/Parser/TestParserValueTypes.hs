@@ -1,9 +1,14 @@
-module Parser.TestParserValueTypes (module Parser.TestParserValueTypes) where
+module Parser.TestParserValueTypes
+        ( module Parser.TestParserValueTypes
+        ) where
 
-import AST
-import Parser.ParserValueTypes
-import Test.Hspec
-import Text.Parsec
+import           AST
+
+import           Parser.ParserValueTypes
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseIdentifier :: Spec
 testParseIdentifier = describe "parseIdentifier" $ do
@@ -82,8 +87,8 @@ testParseTypedIdentifier = describe "parseTypedIdentifier" $ do
     parse parseTypedIdentifier "" "a: string" `shouldBe` Right (TypedIdentifier "a" TString)
 
 testParseValueTypes :: Spec
-testParseValueTypes = do 
-  testParseIdentifier 
+testParseValueTypes = do
+  testParseIdentifier
   testParseLiterals
   testParseValue
   testParseType

@@ -1,10 +1,15 @@
-module Parser.TestParserExpresions (module Parser.TestParserExpresions) where
+module Parser.TestParserExpresions
+        ( module Parser.TestParserExpresions
+        ) where
 
-import AST
-import Parser.ParserExpresions
-import Parser.ParserValueTypes
-import Test.Hspec
-import Text.Parsec
+import           AST
+
+import           Parser.ParserExpresions
+import           Parser.ParserValueTypes
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseFunctionCall :: Spec
 testParseFunctionCall = describe "parseFunctionCall" $ do
@@ -20,7 +25,6 @@ testParseFunctionCall = describe "parseFunctionCall" $ do
     it "parses a function call with multiple arguments with spaces in the middle" $ do
         parse parseFunctionCall "" "baz(1, 2, 3)" `shouldBe` Right (FunctionCall "baz" [VLiteral (IntLiteral 1), VLiteral (IntLiteral 2), VLiteral (IntLiteral 3)])
 
-
 testParseBinaryExpr :: Spec
 testParseBinaryExpr = describe "parseBinaryExpr" $ do
     it "parses a binary expression with addition" $ do
@@ -34,7 +38,6 @@ testParseBinaryExpr = describe "parseBinaryExpr" $ do
 
     it "parses a binary expression with division" $ do
         parse parseBinaryExpr "" "7/8" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 7)) Divide (VLiteral (IntLiteral 8)))
-
 
     it "parses a binary expression with addition with spaces in the middle" $ do
         parse parseBinaryExpr "" "1 + 2" `shouldBe` Right (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 2)))
@@ -70,8 +73,8 @@ testParseParamsValues = describe "parseParamsValues" $ do
     it "parses a list of values with multiple arguments" $ do
         parse parseParamsValues "" "(1,2)" `shouldBe` Right [VLiteral (IntLiteral 1), VLiteral (IntLiteral 2)]
 
-testParseLambda :: Spec 
-testParseLambda = do 
+testParseLambda :: Spec
+testParseLambda = do
     it "parses a lambda expression with functionCall" $ do
         parse parseLambda "" "lambda (x:double) -> foo()" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (FunctionCall "foo" []) )
 

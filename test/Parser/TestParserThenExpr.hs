@@ -1,9 +1,14 @@
-module Parser.TestParserThenExpr (module Parser.TestParserThenExpr) where
+module Parser.TestParserThenExpr
+        ( module Parser.TestParserThenExpr
+        ) where
 
-import AST
-import Parser.ParserExpresions
-import Test.Hspec
-import Text.Parsec
+import           AST
+
+import           Parser.ParserExpresions
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseThenMainExpr :: Spec
 testParseThenMainExpr = describe "parseThenMainExpr" $ do
@@ -15,6 +20,7 @@ testParseThenMainExpr = describe "parseThenMainExpr" $ do
 
   it "parses a then expression with an identifier" $ do
     parse parseThenMainExpr "" "foo()" `shouldBe` Right (ThenMainExpr (FunctionCall "foo" []))
+
 testParseThenLiteral :: Spec
 testParseThenLiteral = describe "parseThenLiteral" $ do
   it "parses a then literal expression with an integer literal" $ do
@@ -35,7 +41,7 @@ testParseThenIdentifier = describe "parseThenIdentifier" $ do
     parse parseThenIdentifier "" "identifier" `shouldBe` Right (ThenIdentifier "identifier")
 
 testParseThenExpression :: Spec
-testParseThenExpression = do 
-  testParseThenIdentifier 
+testParseThenExpression = do
+  testParseThenIdentifier
   testParseThenLiteral
   testParseThenMainExpr

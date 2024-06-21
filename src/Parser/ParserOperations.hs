@@ -1,9 +1,13 @@
-module Parser.ParserOperations (module Parser.ParserOperations)where
+module Parser.ParserOperations
+        ( module Parser.ParserOperations
+        ) where
 
-import AST
-import Parser.LexerParser
-import Text.Parsec ((<|>))
-import Text.Parsec.String (Parser)
+import           AST
+
+import           Parser.LexerParser
+
+import           Text.Parsec        ((<|>))
+import           Text.Parsec.String (Parser)
 
 parseArithmeticOperator :: Parser ArithmeticOperator
 parseArithmeticOperator =

@@ -1,10 +1,11 @@
-module Parser.LexerParser (module Parser.LexerParser) where
+module Parser.LexerParser
+        ( module Parser.LexerParser
+        ) where
 
-import Text.Parsec.String
-import Text.Parsec.Language
-import Text.Parsec.Token
-import Text.Parsec 
-
+import           Text.Parsec
+import           Text.Parsec.Language
+import           Text.Parsec.String
+import           Text.Parsec.Token
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
@@ -44,13 +45,13 @@ parseIntSym :: Parser()
 parseIntSym = reservedNa "int"
 
 parseBoolSym :: Parser()
-parseBoolSym = reservedNa "bool" 
+parseBoolSym = reservedNa "bool"
 
 parseDoubleSym :: Parser()
-parseDoubleSym = reservedNa "double" 
+parseDoubleSym = reservedNa "double"
 
 parseStringSym :: Parser()
-parseStringSym = reservedNa "string" 
+parseStringSym = reservedNa "string"
 
 parseBoolValues :: Parser Bool
 parseBoolValues = (True <$ reservedNa "True") <|> (False <$ reservedNa "False")

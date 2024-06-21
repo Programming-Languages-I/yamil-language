@@ -1,9 +1,10 @@
 module Lib
-    ( someFunc
-    ) where
+        ( someFunc
+        ) where
 
-import Text.Parsec
-import Parser.ParserProgram as P
+import           Parser.ParserProgram as P
+
+import           Text.Parsec
 
 someFunc :: IO ()
 someFunc = do

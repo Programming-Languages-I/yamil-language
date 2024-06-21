@@ -1,12 +1,16 @@
-module Parser.ParserFunction (module Parser.ParserFunction) where
+module Parser.ParserFunction
+        ( module Parser.ParserFunction
+        ) where
 
-import AST
-import Parser.LexerParser
-import Parser.ParserExpresions
-import Parser.ParserValueTypes
-import Text.Parsec
-import Text.Parsec.String (Parser)
-import Text.Parsec.Token (GenTokenParser(whiteSpace))
+import           AST
+
+import           Parser.LexerParser
+import           Parser.ParserExpresions
+import           Parser.ParserValueTypes
+
+import           Text.Parsec
+import           Text.Parsec.String      (Parser)
+import           Text.Parsec.Token       (GenTokenParser (whiteSpace))
 
 parseLetStatement :: Parser LetStatement
 parseLetStatement =

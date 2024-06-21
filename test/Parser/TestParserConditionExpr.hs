@@ -1,11 +1,15 @@
-module Parser.TestParserConditionExpr (module Parser.TestParserConditionExpr) where
+module Parser.TestParserConditionExpr
+        ( module Parser.TestParserConditionExpr
+        ) where
 
-import AST
-import Parser.ParserConditionExpr
-import Test.Hspec
-import Text.Parsec
-import Parser.ParserExpresions (parseIfExpr)
+import           AST
 
+import           Parser.ParserConditionExpr
+import           Parser.ParserExpresions    (parseIfExpr)
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseCondition :: Spec
 testParseCondition = describe "parseCondition" $ do
@@ -25,6 +29,7 @@ testParseConditionAnd = describe "parseConditionAnd" $ do
 
   it "parses a simple AND condition" $ do
     parse parseConditionAnd "" "x > 5 && y <= 100" `shouldBe` Right (ConditionAnd (Condition (VIdentifier "x") GreaterThan (VLiteral (IntLiteral 5))) (Condition (VIdentifier "y") LessEqual (VLiteral (IntLiteral 100))))
+
 testParseConditionOr :: Spec
 testParseConditionOr = describe "parseConditionOr" $ do
   it "parses a simple OR condition" $ do
@@ -32,6 +37,7 @@ testParseConditionOr = describe "parseConditionOr" $ do
 
   it "parses a simple OR condition" $ do
     parse parseConditionOr "" "x < 0 || y >= 1" `shouldBe` Right (ConditionOr (Condition (VIdentifier "x") LessThan (VLiteral (IntLiteral 0))) (Condition (VIdentifier "y") GreaterEqual (VLiteral (IntLiteral 1))))
+
 testParseConditionBool :: Spec
 testParseConditionBool = describe "parseConditionBool" $ do
   it "parses a True boolean value" $ do
@@ -40,12 +46,10 @@ testParseConditionBool = describe "parseConditionBool" $ do
   it "parses a False boolean value" $ do
     parse parseConditionBool "" "False" `shouldBe` Right (ConditionBool False)
 
-
 testParseIfExpr :: Spec
 testParseIfExpr = describe "parseIfExpr" $ do
   it "parses a simple if-then expression" $ do
     parse parseIfExpr "" "if y == 0 then 1+1 \n else  2+3 \n" `shouldBe` Right (IfExpr (Condition (VIdentifier "y") Equal (VLiteral (IntLiteral 0))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 1)) Add (VLiteral (IntLiteral 1)))) (ThenMainExpr (BinaryExpr (VLiteral (IntLiteral 2)) Add (VLiteral (IntLiteral 3)))))
-
 
 testParserIfExpression :: Spec
 testParserIfExpression = do

@@ -1,10 +1,14 @@
-module Parser.TestParserProgram (module Parser.TestParserProgram) where
+module Parser.TestParserProgram
+        ( module Parser.TestParserProgram
+        ) where
 
-import AST
-import Parser.ParserProgram
+import           AST
 
-import Test.Hspec
-import Text.Parsec
+import           Parser.ParserProgram
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testParseProgramElement :: Spec
 testParseProgramElement = describe "parseProgramElement" $ do
@@ -47,12 +51,11 @@ testParseProgramElement = describe "parseProgramElement" $ do
         \let sum: int = add(a, b)\n\
         \let product: int = a * b\n\
         \add(sum, product) }\ncalculate(x, 5)\n" `shouldBe` Right
-           (Program [PELetStatement (LetStatement (TypedIdentifier "x" TInt) (ValueExpr (VLiteral (IntLiteral 5)))), 
-           PEFunction (Function "calculate" [TypedIdentifier "a" TInt, TypedIdentifier "b" TInt] TInt (FBody [FBLetStatement (LetStatement (TypedIdentifier "sum" TInt) (FunctionCall "add" [VIdentifier "a", VIdentifier "b"])), 
-           FBLetStatement (LetStatement (TypedIdentifier "product" TInt) (BinaryExpr (VIdentifier "a") Multiply (VIdentifier "b"))), 
-           FBExpr (FunctionCall "add" [VIdentifier "sum", VIdentifier "product"])])), 
+           (Program [PELetStatement (LetStatement (TypedIdentifier "x" TInt) (ValueExpr (VLiteral (IntLiteral 5)))),
+           PEFunction (Function "calculate" [TypedIdentifier "a" TInt, TypedIdentifier "b" TInt] TInt (FBody [FBLetStatement (LetStatement (TypedIdentifier "sum" TInt) (FunctionCall "add" [VIdentifier "a", VIdentifier "b"])),
+           FBLetStatement (LetStatement (TypedIdentifier "product" TInt) (BinaryExpr (VIdentifier "a") Multiply (VIdentifier "b"))),
+           FBExpr (FunctionCall "add" [VIdentifier "sum", VIdentifier "product"])])),
            PEFunctionCall (FunctionCall "calculate" [VIdentifier "x", VLiteral (IntLiteral 5)])])
-
 
 testParserProgram :: Spec
 testParserProgram = do

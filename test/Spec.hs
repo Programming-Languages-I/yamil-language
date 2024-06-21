@@ -1,12 +1,12 @@
-import Test.Hspec
-import Parser.TestParserValueTypes
-import Parser.TestParserOperations
-import Parser.TestParserExpresions
-import Parser.TestParserFunction
-import Parser.TestParserConditionExpr
-import Parser.TestParserThenExpr
-import Parser.TestParserProgram
+import           Parser.TestParserConditionExpr
+import           Parser.TestParserExpresions
+import           Parser.TestParserFunction
+import           Parser.TestParserOperations
+import           Parser.TestParserProgram
+import           Parser.TestParserThenExpr
+import           Parser.TestParserValueTypes
 
+import           Test.Hspec
 
 main :: IO ()
 main = hspec $ do

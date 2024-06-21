@@ -1,9 +1,14 @@
-module Parser.ParserValueTypes (module Parser.ParserValueTypes) where
+module Parser.ParserValueTypes
+        ( module Parser.ParserValueTypes
+        ) where
 
-import AST
-import Parser.LexerParser
-import Text.Parsec (char, digit, letter, many, many1, noneOf, (<|>), sepBy)
-import Text.Parsec.String (Parser)
+import           AST
+
+import           Parser.LexerParser
+
+import           Text.Parsec        (char, digit, letter, many, many1, noneOf,
+                                     sepBy, (<|>))
+import           Text.Parsec.String (Parser)
 
 -- Parse Identifier
 parseIdentifier :: Parser Identifier
