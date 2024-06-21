@@ -61,5 +61,17 @@ parseOpenParents = char '('
 parseCloseParents :: Parser Char
 parseCloseParents = char ')'
 
+parseOpenBraces :: Parser Char
+parseOpenBraces = char '{'
+
+parseCloseBraces :: Parser Char
+parseCloseBraces = char '}'
+
 parseComma :: Parser Char
 parseComma = char ','
+
+parseLineBreak :: Parser Char
+parseLineBreak = char '\n' <|> char '\r'
+
+parseFunctionSym :: Parser ()
+parseFunctionSym = reservedNa "def"

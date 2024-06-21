@@ -2,18 +2,16 @@ module Parser.ParserExpresions (module Parser.ParserExpresions) where
 
 import AST
 import Parser.LexerParser
-import Text.Parsec ((<|>), sepBy) 
+import Text.Parsec ((<|>)) 
 import Text.Parsec.String (Parser)
-import Parser.ParserValueTypes ( parseIdentifier, parseValue, parseManyTypedIdentifier )
+import Parser.ParserValueTypes ( parseIdentifier, parseValue, parseManyTypedIdentifier, parseParamsValues )
 import Parser.ParserOperations
 
 parseExpr :: Parser Expr
 parseExpr =
-    parseLambda
-        <|> parseFunctionCall
+    parseFunctionCall
         <|> parseBinaryExpr
-parseParamsValues :: Parser [Value]
-parseParamsValues = parseOpenParents *> whiteSpaces *> parseValue `sepBy` (whiteSpaces *> parseComma <* whiteSpaces) <* whiteSpaces <* parseCloseParents
+        <|> parseIfExpr
 
 parseFunctionCall :: Parser Expr
 parseFunctionCall =
@@ -22,7 +20,7 @@ parseFunctionCall =
 parseBinaryExpr :: Parser Expr
 parseBinaryExpr = BinaryExpr <$> parseValue <*> (whiteSpaces *> parseArithmeticOperator <* whiteSpaces) <*> parseValue
 
-parseLambda :: Parser Expr
+parseLambda :: Parser LambdaExpr
 parseLambda = LambdaExpr 
               <$> (reservedNa "lambda" *> whiteSpaces *> parseOpenParents *> parseManyTypedIdentifier <* parseCloseParents <* whiteSpaces <* reservedOps "->" <* whiteSpaces )
               <*> parseExpr
