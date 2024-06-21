@@ -4,6 +4,7 @@ import AST
 import Parser.ParserConditionExpr
 import Test.Hspec
 import Text.Parsec
+import Parser.ParserExpresions (parseIfExpr)
 
 
 testParseCondition :: Spec

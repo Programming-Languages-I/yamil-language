@@ -1,7 +1,7 @@
 module Parser.TestParserThenExpr (module Parser.TestParserThenExpr) where
 
 import AST
-import Parser.ParserThenExpr
+import Parser.ParserExpresions
 import Test.Hspec
 import Text.Parsec
 
