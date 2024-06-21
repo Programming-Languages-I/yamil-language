@@ -5,7 +5,7 @@ import Parser.ParserValueTypes
 import Parser.ParserExpresions
 import Parser.LexerParser
 import Text.Parsec.String (Parser)
-import Text.Parsec ((<|>), sepBy, try) 
+import Text.Parsec ((<|>), try, manyTill, lookAhead) 
 
 parsePattern :: Parser Pattern
 parsePattern = (try parsePatternLiteral) <|> parsePatternIdentifier
@@ -16,14 +16,14 @@ parsePatternLiteral = AST.PLiteral <$> (try parseLiteral)
 parsePatternIdentifier :: Parser Pattern
 parsePatternIdentifier = AST.PIdentifier <$> (try parseIdentifier)
 
-parsePatternMatches :: Parser [PatternMatch]
-parsePatternMatches = parsePatternMatchUsingGuards `sepBy` reservedOps "|"
+parsePatternMatches :: Parser PatternMatches
+parsePatternMatches = AST.FullPatternMatch <$> (manyTill (parsePatternMatchUsingGuards <* whiteSpaces <* reservedOps "|" <* whiteSpaces) (try (lookAhead (reservedNa "otherwise")))) <*> parseOtherwiseMatchLit
 
 parsePatternMatchUsingGuards :: Parser PatternMatch
-parsePatternMatchUsingGuards = (try parsePatternMatchLit) <|> (try parseOtherwiseLit)
+parsePatternMatchUsingGuards = (try parsePatternMatchLit)
 
 parsePatternMatchLit :: Parser PatternMatch
-parsePatternMatchLit = AST.PatternMatchLit <$> parsePattern <* (whiteSpaces *> (reservedOps "->") <* whiteSpaces) <*> (parseLiteral)
+parsePatternMatchLit = AST.PatternMatchLit <$> (whiteSpaces *> parsePattern) <*> (whiteSpaces *> reservedOps "->" *> whiteSpaces *> parseLiteral)
 
-parseOtherwiseLit :: Parser PatternMatch
-parseOtherwiseLit = AST.OtherwiseLit <$> (reservedNa "otherwise" *> reservedOps "->" *> parseLiteral)
+parseOtherwiseMatchLit :: Parser OtherwiseMatch
+parseOtherwiseMatchLit = AST.OtherwiseLit <$> (reservedNa "otherwise" *> reservedOps "->" *> parseLiteral)
