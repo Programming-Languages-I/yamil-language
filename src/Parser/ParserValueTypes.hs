@@ -7,7 +7,7 @@ import           AST
 import           Parser.LexerParser
 
 import           Text.Parsec        (char, digit, letter, many, many1, noneOf,
-                                     sepBy, (<|>))
+                                     sepBy, (<|>), try)
 import           Text.Parsec.String (Parser)
 
 -- Parse Identifier
@@ -24,8 +24,8 @@ parseUnderscoreLetter =
 -- Parse Literals
 parseLiteral :: Parser Literal
 parseLiteral =
-  parseIntLiteral
-    <|> parseDoubleLiteral
+  (try parseDoubleLiteral) 
+    <|> (try parseIntLiteral)
     <|> parseBoolLiteral
     <|> parseStringLiteral
 
