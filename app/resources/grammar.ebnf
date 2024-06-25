@@ -1,0 +1,73 @@
+<program> ::= { <function> | <let_statement> | <comment> | <function_call> }
+
+<function> ::= "def" <identifier> "(" <params> ")"
+               "->" <type> "=" "{" <function_body> "}"
+
+<function_body> ::= { <expr>
+                    | <pattern_match>
+                    | <let_statement>
+                    | <comment>
+                    }      
+
+<params> ::= <typed_identifier> { "," <typed_identifier> }
+
+<typed_identifier> ::= <identifier> ":" <type>
+
+<type> ::= "int" | "bool" | "double" | "string"
+
+<function_call> ::= <identifier> "(" <value> { "," <value> } ")"
+
+<value> ::= <literal>
+            | <identifier>
+            | <function_call>
+
+<let_statement> ::= "let" <typed_identifier> "=" <expr>
+
+<expr> ::= <function_call>
+            | <if_expr>
+            | <binary_expr>
+            | <lambda_expr>
+
+<binary_expr> ::= <value> <arithmetic_operator> <value>
+
+<literal> ::= <int_literal>
+            | <bool_literal>
+            | <double_literal>
+            | <string_literal>
+
+<digit> ::= [0-9]
+
+<int_literal> ::= { <digit> }
+
+<bool_literal> ::= "True" | "False"
+
+<double_literal> ::= {<digit>} "." {<digit>}
+
+<letter> ::= [a-zA-Z_]
+
+<character> ::= <letter> | <digit> | " " | <symbol>
+
+<symbol> ::= "!" | "#" | "$" | "%" | "&" | "’" | "(" | ")" | "*" | "+" | ","
+            | "-" | "." | "/" | ":" | ";" | "<" | "=" | ">" | "?" | "@" | "[" 
+            | "]" | "^" | "_" | "‘" | "{" | "|" | "}" | "~"
+            
+<string_literal> ::= " " " { <character> } " " "
+
+<identifier> ::= <letter> { <letter> | <digit> |"_" <letter> }
+
+<lambda_expr> ::= "lambda" "(" <params> ")" "->" <expr>
+
+<if_expr> ::= "if" <condition_expr> "then" <then_expr> "else" <then_expr>
+
+<condition_expr> ::= <value> <comparisonoperator> <value>
+                    | <condition_expr> <comparison_conjuntion_operator> <condition_expr>
+                    | <bool_literal>
+
+<then_expr> ::= ( <expr> | <literal> | <identifier> )
+
+<pattern_match> ::= <pattern> "->" <expr> { "|" <pattern> "->" <expr> }
+                "|" "otherwise" "->" <expr>
+
+<pattern> ::= <literal> | <identifier>
+
+<comment> ::= "//" [^"\n"]* "\n"
