@@ -15,9 +15,9 @@ testParsePatternMatchingIntLiteral = describe "parsePatternMatchLitIntLiteral" $
         parse parsePatternMatchLit "" "0 -> True" `shouldBe` 
                         Right (PatternMatchLit (PLiteral (IntLiteral 0)) (BoolLiteral True))
 
-    -- it "parses an Integer -> Double match case" $ do
-    --     parse parsePatternMatchLit "" "0 -> 1.0" `shouldBe` 
-    --                     Right (PatternMatchLit (PLiteral (IntLiteral 0)) (DoubleLiteral 1.0))
+    it "parses an Integer -> Double match case" $ do
+        parse parsePatternMatchLit "" "0 -> 1.0" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (IntLiteral 0)) (DoubleLiteral 1.0))
 
     it "parses an Integer -> String match case" $ do
         parse parsePatternMatchLit "" "0 -> \"Zero\"" `shouldBe` 
@@ -33,31 +33,31 @@ testParsePatternMatchingBoolLiteral = describe "parsePatternMatchLitBoolLiteral"
         parse parsePatternMatchLit "" "False -> False" `shouldBe` 
                         Right (PatternMatchLit (PLiteral (BoolLiteral False)) (BoolLiteral False))                       
 
-    -- it "parses a Bool -> Double match case" $ do
-    --     parse parsePatternMatchLit "" "True -> 17.0123" `shouldBe` 
-    --                     Right (PatternMatchLit (PLiteral (BoolLiteral True)) (DoubleLiteral 17.0123))                       
+    it "parses a Bool -> Double match case" $ do
+        parse parsePatternMatchLit "" "True -> 17.0123" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (BoolLiteral True)) (DoubleLiteral 17.0123))                       
 
     it "parses a Bool -> String match case" $ do
         parse parsePatternMatchLit "" "True -> \"True\"" `shouldBe` 
                         Right (PatternMatchLit (PLiteral (BoolLiteral True)) (StringLiteral "True"))
 
--- testParsePatternMatchingDoubleLiteral :: Spec
--- testParsePatternMatchingDoubleLiteral = describe "parsePatternMatchLitDoubleLiteral" $ do
---     it "parses a Double -> Integer match case" $ do
---         parse parsePatternMatchLit "" "123.4 -> 123" `shouldBe` 
---                         Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (IntLiteral 123))
+testParsePatternMatchingDoubleLiteral :: Spec
+testParsePatternMatchingDoubleLiteral = describe "parsePatternMatchLitDoubleLiteral" $ do
+    it "parses a Double -> Integer match case" $ do
+        parse parsePatternMatchLit "" "123.4 -> 123" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (IntLiteral 123))
 
---     it "parses a Double -> Bool match case" $ do
---         parse parsePatternMatchLit "" "123.4 -> True" `shouldBe` 
---                         Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (BoolLiteral True))
+    it "parses a Double -> Bool match case" $ do
+        parse parsePatternMatchLit "" "123.4 -> True" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (BoolLiteral True))
 
---     it "parses a Double -> Double match case" $ do
---         parse parsePatternMatchLit "" "123.4 -> 123.4" `shouldBe` 
---                         Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (DoubleLiteral 123.4))
+    it "parses a Double -> Double match case" $ do
+        parse parsePatternMatchLit "" "123.4 -> 123.4" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (DoubleLiteral 123.4))
 
---     it "parses a Double -> String match case" $ do
---         parse parsePatternMatchLit "" "123.4 -> \"Dos . Cinco\"" `shouldBe` 
---                         Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (StringLiteral "Dos . Cinco"))
+    it "parses a Double -> String match case" $ do
+        parse parsePatternMatchLit "" "123.4 -> \"Dos . Cinco\"" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (DoubleLiteral 123.4)) (StringLiteral "Dos . Cinco"))
 
 testParsePatternMatchingStringLiteral :: Spec
 testParsePatternMatchingStringLiteral = describe "parsePatternMatchLitStringLiteral" $ do
@@ -69,9 +69,9 @@ testParsePatternMatchingStringLiteral = describe "parsePatternMatchLitStringLite
         parse parsePatternMatchLit "" "\"Haskell\" -> True" `shouldBe` 
                         Right (PatternMatchLit (PLiteral (StringLiteral "Haskell")) (BoolLiteral True))                       
 
-    -- it "parses a String -> Double match case" $ do
-    --     parse parsePatternMatchLit "" "\"Blue\" -> 2.5" `shouldBe` 
-    --                     Right (PatternMatchLit (PLiteral (StringLiteral "Blue")) (DoubleLiteral 2.5))
+    it "parses a String -> Double match case" $ do
+        parse parsePatternMatchLit "" "\"Blue\" -> 2.5" `shouldBe` 
+                        Right (PatternMatchLit (PLiteral (StringLiteral "Blue")) (DoubleLiteral 2.5))
 
     it "parses a String -> String match case" $ do
         parse parsePatternMatchLit "" "\"Blue\" -> \"Azul\"" `shouldBe` 
@@ -87,9 +87,9 @@ testParsePatternMatchingPIdentifier = describe "parsePatternMatchLitPIdentifier"
         parse parsePatternMatchLit "" "Zero -> True" `shouldBe`
                         Right (PatternMatchLit (PIdentifier "Zero") (BoolLiteral True))
 
-    -- it "parses an Identifier -> Double match case" $ do
-    --     parse parsePatternMatchLit "" "Zero . Punto -> 0.1" `shouldBe`
-    --                     Right (PatternMatchLit (PIdentifier "Zero") (DoubleLiteral 0.1))
+    it "parses an Identifier -> Double match case" $ do
+        parse parsePatternMatchLit "" "ZeroPuntoUno -> 0.1" `shouldBe`
+                        Right (PatternMatchLit (PIdentifier "ZeroPuntoUno") (DoubleLiteral 0.1))
 
     it "parses an Identifier -> String match case" $ do
         parse parsePatternMatchLit "" "Zero -> \"Zero\"" `shouldBe`
@@ -105,9 +105,9 @@ testParsePatternMatchingOtherwiseLit = describe "parseOtherwiseLit" $ do
         parse parseOtherwiseMatchLit "" "otherwise -> False" `shouldBe`
                         Right (OtherwiseLit (BoolLiteral False))
 
-    -- it "parses an Otherwise -> Double match case" $ do
-    --     parse parsePatternMatches "" "otherwise -> 2.5666" `shouldBe`
-    --                     Right (OtherwiseLit (DoubleLiteral 2.5666))
+    it "parses an Otherwise -> Double match case" $ do
+        parse parseOtherwiseMatchLit "" "otherwise -> 2.5666" `shouldBe`
+                        Right (OtherwiseLit (DoubleLiteral 2.5666))
 
     it "parses an Otherwise -> String match case" $ do
         parse parseOtherwiseMatchLit "" "otherwise -> \"None\"" `shouldBe`
@@ -155,17 +155,17 @@ testParseFullPatternMatching = describe "parsePatternMatchesIntLiteral" $ do
                                 [ PatternMatchLit (PLiteral (BoolLiteral True)) (StringLiteral "Hello") ]
                                 (OtherwiseLit (StringLiteral "Bye")))
 
-    -- it "parses multiple Double -> String match cases separated by | and otherwise" $ do
-    --     parse parsePatternMatches "" "55.78 -> \"Hello\" | 65.343 -> \"Hey\" | otherwise -> \"Bye\"" `shouldBe` 
-    --                     Right (FullPatternMatch 
-    --                             [ PatternMatchLit (PLiteral (DoubleLiteral 55.78)) (StringLiteral "Hello")
-    --                             , PatternMatchLit (PLiteral (DoubleLiteral 65.343)) (StringLiteral "Hey") ]
-    --                             (OtherwiseLit (StringLiteral "Bye")))                                                                                         
+    it "parses multiple Double -> String match cases separated by | and otherwise" $ do
+        parse parsePatternMatches "" "55.78 -> \"Hello\" | 65.343 -> \"Hey\" | otherwise -> \"Bye\"" `shouldBe` 
+                        Right (FullPatternMatch 
+                                [ PatternMatchLit (PLiteral (DoubleLiteral 55.78)) (StringLiteral "Hello")
+                                , PatternMatchLit (PLiteral (DoubleLiteral 65.343)) (StringLiteral "Hey") ]
+                                (OtherwiseLit (StringLiteral "Bye")))                                                                                         
     
 testParsePatternMatches :: Spec
 testParsePatternMatches = do 
   testParsePatternMatchingIntLiteral
-  -- testParsePatternMatchingDoubleLiteral
+  testParsePatternMatchingDoubleLiteral
   testParsePatternMatchingBoolLiteral
   testParsePatternMatchingStringLiteral
   testParsePatternMatchingPIdentifier
