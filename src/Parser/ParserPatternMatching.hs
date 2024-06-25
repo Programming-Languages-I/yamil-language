@@ -20,3 +20,6 @@ parsePatternMatchUsingGuards = (try parsePatternMatchLit)
 
 parsePatternMatchLit :: Parser PatternMatch
 parsePatternMatchLit = AST.PatternMatchLit <$> (whiteSpaces *> parsePattern) <*> (whiteSpaces *> reservedOps "->" *> whiteSpaces *> parseLiteral)
+
+parseOtherwiseMatchLit :: Parser OtherwiseMatch
+parseOtherwiseMatchLit = AST.OtherwiseLit <$> (reservedNa "otherwise" *> reservedOps "->" *> parseLiteral)
