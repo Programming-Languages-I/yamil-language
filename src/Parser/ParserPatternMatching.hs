@@ -4,7 +4,7 @@ import AST as AST
 import Parser.ParserValueTypes 
 import Parser.LexerParser
 import Text.Parsec.String (Parser)
-import Text.Parsec ((<|>), try) 
+import Text.Parsec ((<|>), try, manyTill, lookAhead)
 
 parsePattern :: Parser Pattern
 parsePattern = (try parsePatternLiteral) <|> parsePatternIdentifier
@@ -23,3 +23,6 @@ parsePatternMatchLit = AST.PatternMatchLit <$> (whiteSpaces *> parsePattern) <*>
 
 parseOtherwiseMatchLit :: Parser OtherwiseMatch
 parseOtherwiseMatchLit = AST.OtherwiseLit <$> (reservedNa "otherwise" *> reservedOps "->" *> parseLiteral)
+
+parsePatternMatches :: Parser PatternMatches
+parsePatternMatches = AST.FullPatternMatch <$> (manyTill (parsePatternMatchUsingGuards <* whiteSpaces <* reservedOps "|" <* whiteSpaces) (try (lookAhead (reservedNa "otherwise")))) <*> parseOtherwiseMatchLit
