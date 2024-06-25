@@ -9,8 +9,8 @@ import           Text.Parsec.Token
 
 languageDef :: LanguageDef st
 languageDef = emptyDef
-    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "="]
-    , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "def"]
+    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "|", "="]
+    , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "otherwise", "def"]
     , commentLine = "//"
     }
 
