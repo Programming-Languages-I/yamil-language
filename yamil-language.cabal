@@ -32,6 +32,7 @@ library
       Parser.ParserExpresions
       Parser.ParserFunction
       Parser.ParserOperations
+      Parser.ParserPatternMatching
       Parser.ParserProgram
       Parser.ParserValueTypes
   other-modules:
@@ -71,6 +72,7 @@ test-suite yamil-language-test
       Parser.TestParserExpresions
       Parser.TestParserFunction
       Parser.TestParserOperations
+      Parser.TestParserPatternMatching
       Parser.TestParserProgram
       Parser.TestParserThenExpr
       Parser.TestParserValueTypes

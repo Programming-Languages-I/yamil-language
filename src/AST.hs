@@ -9,8 +9,10 @@ module AST
         , LambdaExpr (..)
         , LetStatement (..)
         , Literal (..)
+        , OtherwiseMatch (..)
         , Pattern (..)
         , PatternMatch (..)
+        , PatternMatches (..)
         , Program (..)
         , ProgramElement (..)
         , ThenExpr (..)
@@ -97,9 +99,18 @@ data Pattern
         deriving (Eq, Show)
 
 data PatternMatch
-        = PatternMatch Pattern Expr
-        | Otherwise Expr
-        deriving (Eq, Show)
+        = PatternMatchExp Pattern Expr
+        | PatternMatchLit Pattern Literal
+        deriving (Show, Eq)
+
+data OtherwiseMatch
+        = OtherwiseExp Expr
+        | OtherwiseLit Literal
+        deriving (Show, Eq)
+
+data PatternMatches
+        = FullPatternMatch [PatternMatch] OtherwiseMatch
+        deriving (Show, Eq)                
 
 -- Functions
 data Function
