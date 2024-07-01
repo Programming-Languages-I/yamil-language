@@ -4,6 +4,7 @@ import           Parser.TestParserFunction
 import           Parser.TestParserOperations
 import           Parser.TestParserPatternMatching
 import           Parser.TestParserProgram
+import           Parser.TestSkipComments
 import           Parser.TestParserThenExpr
 import           Parser.TestParserValueTypes
 
