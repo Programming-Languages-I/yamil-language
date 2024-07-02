@@ -72,6 +72,3 @@ def match_letters(x: string) -> bool = {
 match_letters("Hey")
 match_letters("C")
 match_letters("Haskell")
-
-def lambda(x: string) -> bool = {
-}
