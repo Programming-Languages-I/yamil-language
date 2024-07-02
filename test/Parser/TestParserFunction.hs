@@ -198,10 +198,10 @@ testParseFunction = describe "parseFunction" $ do
     parse
       parseFunction
       ""
-      "def lambda() -> bool = {\nlambda(x: int) -> if x > threshold then True else False\n}"
+      "def lambdaFunction() -> bool = {\nlambda(x: int) -> if x > threshold then True else False\n}"
       `shouldBe` Right
         ( Function
-            "lambda"
+            "lambdaFunction"
             []
             TBool
             ( FBLambdaExpr
