@@ -13,9 +13,13 @@ import           Text.Parsec.String (Parser)
 -- Parse Identifier
 parseIdentifier :: Parser Identifier
 parseIdentifier =
-  (++)
-    <$> many1 letter
-    <*> (parseUnderscoreLetter <|> many (letter <|> digit))
+  (++) <$> many1 letter <*> (parseUnderscoreLetter <|> many (letter <|> digit))
+    >>= \identifier -> if identifier `elem` reservedNames
+                       then fail "Reserved word used as identifier"
+                       else return identifier
+  where
+    reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "otherwise", "def"]
+
 
 parseUnderscoreLetter :: Parser String
 parseUnderscoreLetter =
