@@ -6,6 +6,9 @@ import           Parser.ParserProgram as P
 import           Interpreter.CodeTranspiler as CT
 
 import           Text.Parsec
+import Parser.ParserValueTypes
+import Semantic.SemanticAnalyzer
+import qualified Data.Map as Map
 
 someFunc :: IO ()
 someFunc = do
@@ -20,3 +23,9 @@ someFunc = do
                         CT.writePascalFile "./app/resources/code.pas" program
                         
                         putStrLn "Operation successfully."
+
+        -- case parseResult of
+        --         Left parseError -> print parseError
+        --         Right program -> do
+        --         let result2 = analyzeProgram program Map.empty
+        --         print result2
