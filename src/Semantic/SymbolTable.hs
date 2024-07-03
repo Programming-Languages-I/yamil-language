@@ -1,30 +1,22 @@
-module Semantic.SymbolTable(
-                    insertSymbol
-                  , lookupSymbol
-                  , deleteSymbol
-                  , SymbolTable
-                  , Scope(..)
-                  , Symbol(..)
-                  , SymbolValue(SymbolValue)
-                  , Builtype(..)
-                  , nameFromIdentifier
-                  , builtypeFromType
-                  ) where
+module Semantic.SymbolTable (module Semantic.SymbolTable) where
 
+import           AST
 import qualified Data.Map as Map
-import AST
 
 type SymbolTable = Map.Map String Symbol
 
-data Scope = GLOBAL|
-             LOCAL |
-             BLOCK deriving (Show,Eq)
+data Scope = GLOBAL | LOCAL | BLOCK deriving (Show, Eq)
 
-data Builtype = Int | Bool | Double | String deriving (Show, Eq)
+data BuiltInType = INTEGER | DOUBLE | BOOL | STRING deriving (Show, Eq)
 
-data Symbol = Symbol String Builtype SymbolValue deriving (Show, Eq)
+data SymbolValue
+  = IntSymbolValue Int
+  | BoolSymbolValue Bool
+  | DoubleSymbolValue Double
+  | StringSymbolValue String
+  deriving (Show, Eq)
 
-data SymbolValue = SymbolValue Int deriving(Show, Eq)
+data Symbol = Symbol String BuiltInType SymbolValue deriving (Show, Eq)
 
 insertSymbol :: String -> Symbol -> SymbolTable -> SymbolTable
 insertSymbol name symbol symbolTable = Map.insert name symbol symbolTable
@@ -35,11 +27,29 @@ lookupSymbol name table = Map.lookup name table
 deleteSymbol :: String -> SymbolTable -> SymbolTable
 deleteSymbol name symbolTable = Map.delete name symbolTable
 
-builtypeFromType:: Type -> Builtype
-builtypeFromType TInt = Int
-builtypeFromType TBool = Bool
-builtypeFromType TDouble = Double
-builtypeFromType TString = String
+builtInTypeFromLiteral :: Literal -> BuiltInType
+builtInTypeFromLiteral IntLiteral {} = INTEGER
+builtInTypeFromLiteral DoubleLiteral {} = DOUBLE
+builtInTypeFromLiteral BoolLiteral {} = BOOL
+builtInTypeFromLiteral StringLiteral {} = STRING
+
+builtInTypeFromType :: Type -> BuiltInType
+builtInTypeFromType TInt = INTEGER
+builtInTypeFromType TDouble = DOUBLE
+builtInTypeFromType TBool = BOOL
+builtInTypeFromType TString = STRING
 
 nameFromIdentifier :: Identifier -> String
-nameFromIdentifier s = s
+nameFromIdentifier (s) = s
+
+symbolValueFromValue :: Value -> SymbolValue
+symbolValueFromValue (VLiteral (IntLiteral value)) = IntSymbolValue value
+symbolValueFromValue (VLiteral (BoolLiteral value)) = BoolSymbolValue value
+symbolValueFromValue (VLiteral (DoubleLiteral value)) = DoubleSymbolValue value
+symbolValueFromValue (VLiteral (StringLiteral value)) = StringSymbolValue value
+
+valueFromSymbolValue :: SymbolValue -> Literal
+valueFromSymbolValue (IntSymbolValue v) = IntLiteral v
+valueFromSymbolValue (BoolSymbolValue v) = BoolLiteral v
+valueFromSymbolValue (DoubleSymbolValue v) = DoubleLiteral v
+valueFromSymbolValue (StringSymbolValue v) = StringLiteral v
