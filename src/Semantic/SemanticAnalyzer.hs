@@ -28,9 +28,9 @@ analyzeLetStatment statment@(AST.LetStatement typeIndet _) table =
 
 analyzeFuntionOption :: AST.FunctionBodyOpts -> ST.SymbolTable -> (AST.FunctionBodyOpts, ST.SymbolTable)
 --to do : Analisis de expresiones aca 
-analyzeFuntionOption options@(AST.FBExpr _ ) _ = (options, Map.empty)
+analyzeFuntionOption options@(AST.FBExpr _ ) table = (options, table)
 analyzeFuntionOption options@(AST.FBLetStatement letStatment) symbTable = (options, snd (analyzeLetStatment letStatment symbTable))
-analyzeFuntionOption options@(AST.FBEmpty ) _ = (options, Map.empty)
+analyzeFuntionOption options@(AST.FBEmpty ) table = (options, table)
 
 analyzeFuntionOptions :: ST.SymbolTable -> [AST.FunctionBodyOpts] -> ST.SymbolTable
 analyzeFuntionOptions = foldl (\table element -> snd (analyzeFuntionOption element table))
@@ -38,27 +38,31 @@ analyzeFuntionOptions = foldl (\table element -> snd (analyzeFuntionOption eleme
 analyzeFuntionBody :: AST.FunctionBody -> ST.SymbolTable -> (AST.FunctionBody, ST.SymbolTable)
 analyzeFuntionBody fbody@(AST.FBody options) table = (fbody, analyzeFuntionOptions table options)
 --to do : Analisis de pattern aca 
-analyzeFuntionBody fbody@(AST.FBPatternMatch _) _ = (fbody, Map.empty)
+analyzeFuntionBody fbody@(AST.FBPatternMatch _) table = (fbody, table)
 --to do : Analisis de lambda aca 
-analyzeFuntionBody fbody@(AST.FBLambdaExpr _) _ = (fbody, Map.empty)
+analyzeFuntionBody fbody@(AST.FBLambdaExpr _) table = (fbody, table)
 
 analyzeFuntion :: AST.Function -> ST.SymbolTable -> (AST.Function, ST.SymbolTable)
-analyzeFuntion function@(AST.Function fIndentifier typeIndents funcType body ) symTable =
-     (function, 
-      insertFunction (snd (analyzeFuntionBody body (analyzeTypeIndentifiers symTable typeIndents))) fIndentifier) 
-    where 
-        insertFunction table identifier = 
-            let name = ST.nameFromIdentifier identifier
-                symbol = ST.Symbol name (ST.builtInTypeFromType funcType) (ST.IntSymbolValue 0)
-            in case ST.lookupSymbol name table of
-                Just _  -> error (typeIdentAlreadyDefinedError name)
-                Nothing -> ST.insertSymbol name symbol table
+analyzeFuntion function@(AST.Function fIndentifier typeIndents funcType body) symTable =
+    (function, finalTable)
+  where
+    initialTable = analyzeTypeIndentifiers symTable typeIndents
+    (_, bodyTable) = analyzeFuntionBody body initialTable
+    
+    finalTable = insertFunction bodyTable fIndentifier
+
+    insertFunction table identifier =
+        let name = ST.nameFromIdentifier identifier
+            symbol = ST.Symbol name (ST.builtInTypeFromType funcType) (ST.IntSymbolValue 0)
+        in case ST.lookupSymbol name table of
+            Just _  -> error (typeIdentAlreadyDefinedError name)
+            Nothing -> ST.insertSymbol name symbol table
 
 analyzeProgramElem :: AST.ProgramElement -> ST.SymbolTable -> (AST.ProgramElement, ST.SymbolTable)
 analyzeProgramElem programElem@(AST.PEFunction funtion ) table = (programElem, snd (analyzeFuntion funtion table))
 analyzeProgramElem programElem@(AST.PELetStatement statment ) table = (programElem, snd (analyzeLetStatment statment table))
 --to do : Analisis de functions Call aca 
-analyzeProgramElem programElem@(AST.PEFunctionCall _ ) _ = (programElem, Map.empty)
+analyzeProgramElem programElem@(AST.PEFunctionCall _ ) table = (programElem, table)
 
 analyzeProgramElems :: ST.SymbolTable -> [AST.ProgramElement] -> ST.SymbolTable
 analyzeProgramElems = foldl (\table element -> snd (analyzeProgramElem element table))

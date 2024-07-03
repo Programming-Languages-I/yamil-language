@@ -1,7 +1,7 @@
 module TestSymbolTable where
 
 import           Test.Hspec
-import           SymbolTable
+import           Semantic.SymbolTable
 import qualified Data.Map as Map
 import           AST
 

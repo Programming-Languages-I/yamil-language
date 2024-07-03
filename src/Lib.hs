@@ -6,9 +6,6 @@ import           Parser.ParserProgram as P
 import           Interpreter.CodeTranspiler as CT
 
 import           Text.Parsec
-import Parser.ParserValueTypes
-import Semantic.SemanticAnalyzer
-import qualified Data.Map as Map
 
 someFunc :: IO ()
 someFunc = do

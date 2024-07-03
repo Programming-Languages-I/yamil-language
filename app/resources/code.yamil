@@ -10,7 +10,6 @@ def calculate(num1: int, num2: int) -> int = {
 }
 
 let sum: int = a + b
-let sum: int = a + b
 
 calculate(2, 3)
 
