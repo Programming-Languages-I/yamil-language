@@ -8,9 +8,11 @@ import           Parser.TestParserThenExpr
 import           Parser.TestParserValueTypes
 
 import           Test.Hspec
+import           TestSymbolTable
 
 main :: IO ()
 main = hspec $ do
+  -- Parser tests
   testParseValueTypes
   testParseOperations
   testParserExpresions
@@ -21,3 +23,5 @@ main = hspec $ do
   testParserFunctions
   testParserProgram
   testParsePatternMatches
+  -- Symbol table tests
+  testSymbolTable

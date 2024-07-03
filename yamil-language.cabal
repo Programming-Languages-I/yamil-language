@@ -79,6 +79,7 @@ test-suite yamil-language-test
       Parser.TestParserProgram
       Parser.TestParserThenExpr
       Parser.TestParserValueTypes
+      TestSymbolTable
       Paths_yamil_language
   autogen-modules:
       Paths_yamil_language

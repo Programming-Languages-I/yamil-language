@@ -1,7 +1,7 @@
-module SymbolTable(module SymbolTable) where
+module SymbolTable (module SymbolTable) where
 
+import           AST
 import qualified Data.Map as Map
-import AST 
 
 type SymbolTable = Map.Map String Symbol
 
@@ -9,11 +9,12 @@ data Scope = GLOBAL | LOCAL | BLOCK deriving (Show, Eq)
 
 data BuiltInType = INTEGER | DOUBLE | BOOL | STRING deriving (Show, Eq)
 
-data SymbolValue = IntSymbolValue Int
-                 | BoolSymbolValue Bool
-                 | DoubleSymbolValue Double
-                 | StringSymbolValue String
-                 deriving (Show, Eq)
+data SymbolValue
+  = IntSymbolValue Int
+  | BoolSymbolValue Bool
+  | DoubleSymbolValue Double
+  | StringSymbolValue String
+  deriving (Show, Eq)
 
 data Symbol = Symbol String BuiltInType SymbolValue deriving (Show, Eq)
 
@@ -27,10 +28,10 @@ deleteSymbol :: String -> SymbolTable -> SymbolTable
 deleteSymbol name symbolTable = Map.delete name symbolTable
 
 builtInTypeFromLiteral :: Literal -> BuiltInType
-builtInTypeFromLiteral IntLiteral{} = INTEGER
-builtInTypeFromLiteral DoubleLiteral{} = DOUBLE
-builtInTypeFromLiteral BoolLiteral{} = BOOL
-builtInTypeFromLiteral StringLiteral{} = STRING
+builtInTypeFromLiteral IntLiteral {} = INTEGER
+builtInTypeFromLiteral DoubleLiteral {} = DOUBLE
+builtInTypeFromLiteral BoolLiteral {} = BOOL
+builtInTypeFromLiteral StringLiteral {} = STRING
 
 nameFromIdentifier :: Identifier -> String
 nameFromIdentifier (s) = s
