@@ -24,6 +24,7 @@ dependencies:
 - parsec
 - hspec
 - containers
+- parsec-numbers
 
 ghc-options:
 - -Wall
