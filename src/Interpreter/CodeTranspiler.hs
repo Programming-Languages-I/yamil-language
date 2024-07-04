@@ -4,6 +4,9 @@ import AST
 import Prettyprinter
 import Prettyprinter.Render.String (renderString)
 
+identifierToPascal :: Identifier -> Doc ann
+identifierToPascal = pretty
+
 literalToPascal :: Literal -> Doc ann
 literalToPascal (IntLiteral n)    = pretty n
 -- literalToPascal (BoolLiteral b)   = if b then "True" else "False"
