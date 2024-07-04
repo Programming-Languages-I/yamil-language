@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       AST
+      Interpreter.CodeTranspiler
       Lib
       Parser.LexerParser
       Parser.ParserConditionExpr
