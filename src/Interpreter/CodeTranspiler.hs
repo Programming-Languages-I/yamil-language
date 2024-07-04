@@ -14,10 +14,10 @@ literalsToPascal :: [Literal] -> Doc ann
 literalsToPascal literals = vsep (map literalToPascal literals)
 
 typeToPascal :: Type -> Doc ann
-typeToPascal TInt    = "Integer"
-typeToPascal TBool   = "Boolean"
-typeToPascal TDouble = "Real"
-typeToPascal TString = "String"
+typeToPascal TInt    = pretty "Integer"
+typeToPascal TBool   = pretty "Boolean"
+typeToPascal TDouble = pretty "Real"
+typeToPascal TString = pretty "String"
 
 generatePascalProgram :: [Literal] -> Doc ann
 generatePascalProgram literals =
