@@ -26,7 +26,6 @@ source-repository head
 library
   exposed-modules:
       AST
-      Interpreter.CodeTranspiler
       Lib
       Parser.LexerParser
       Parser.ParserConditionExpr
@@ -50,6 +49,7 @@ library
     , hspec
     , parsec
     , parsec-numbers
+    , prettyprinter
   default-language: Haskell2010
 
 executable yamil-language-exe
@@ -67,6 +67,7 @@ executable yamil-language-exe
     , hspec
     , parsec
     , parsec-numbers
+    , prettyprinter
     , yamil-language
   default-language: Haskell2010
 
@@ -95,5 +96,6 @@ test-suite yamil-language-test
     , hspec
     , parsec
     , parsec-numbers
+    , prettyprinter
     , yamil-language
   default-language: Haskell2010
