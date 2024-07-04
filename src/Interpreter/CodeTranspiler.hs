@@ -1,4 +1,4 @@
-module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars) where
+module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements) where
 
 import AST
 import Prettyprinter
@@ -43,11 +43,16 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
 exprToPascal :: Expr -> Doc ann
 exprToPascal (ValueExpr value) = valueToPascal value
 
-generatePascalProgram :: [TypedIdentifier] -> [Literal] -> Doc ann
-generatePascalProgram vars literals =
+letStatementToPascal :: LetStatement -> Doc ann
+letStatementToPascal (LetStatement (TypedIdentifier name t) expr) =
+    identifierToPascal name <+> pretty ":" <+> typeToPascal t <> pretty " = " <> exprToPascal expr <> pretty ";"
+
+generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> Doc ann
+generatePascalProgram vars literals lets =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
+       , indent 2 (vsep (map letStatementToPascal lets))
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
        , pretty "end." 
@@ -59,7 +64,10 @@ exampleLiterals = [IntLiteral 42, DoubleLiteral 3.14, StringLiteral "Hello, Pasc
 exampleVars :: [TypedIdentifier]
 exampleVars = [TypedIdentifier "a" TInt, TypedIdentifier "b" TBool]
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> IO ()
-writePascalFile filePath vars literals = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals
+exampleLetStatements :: [LetStatement]
+exampleLetStatements = [LetStatement (TypedIdentifier "y" TInt) (ValueExpr (VLiteral (IntLiteral 10)))]
+
+writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> IO ()
+writePascalFile filePath vars literals lets = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets
     writeFile filePath pascalCode
