@@ -29,6 +29,17 @@ typedIdentifierToPascal (TypedIdentifier name t) =
 typedIdentifiersToPascal :: [TypedIdentifier] -> Doc ann
 typedIdentifiersToPascal vars = vsep (map typedIdentifierToPascal vars)    
 
+valueToPascal :: Value -> Doc ann
+valueToPascal (VLiteral lit)          = literalToPascal lit
+valueToPascal (VIdentifier ident)     = identifierToPascal ident
+valueToPascal (VFunctionCall ident args) = 
+    identifierToPascal ident <> parens (hsep (punctuate (pretty ", ") (map valueToPascal args)))
+
+valuesToPascal :: [Value] -> Doc ann
+valuesToPascal values = vsep (map (writeln . valueToPascal) values)
+  where
+    writeln doc = pretty "writeln(" <> doc <> pretty ");"
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> Doc ann
 generatePascalProgram vars literals =
   vsep [ pretty "program Yamil;"
