@@ -13,6 +13,12 @@ literalToPascal (StringLiteral s) = dquotes $ pretty s
 literalsToPascal :: [Literal] -> Doc ann
 literalsToPascal literals = vsep (map literalToPascal literals)
 
+typeToPascal :: Type -> Doc ann
+typeToPascal TInt    = "Integer"
+typeToPascal TBool   = "Boolean"
+typeToPascal TDouble = "Real"
+typeToPascal TString = "String"
+
 generatePascalProgram :: [Literal] -> Doc ann
 generatePascalProgram literals =
   vsep [ pretty "program Yamil;"
