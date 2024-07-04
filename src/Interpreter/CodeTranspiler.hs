@@ -24,10 +24,10 @@ typeToPascal TString = pretty "string"
 
 typedIdentifierToPascal :: TypedIdentifier -> Doc ann
 typedIdentifierToPascal (TypedIdentifier name t) =
-    pretty name <> pretty ": " <> typeToPascal t <> pretty ";"
+    identifierToPascal name <> pretty ": " <> typeToPascal t <> pretty ";"
 
 typedIdentifiersToPascal :: [TypedIdentifier] -> Doc ann
-typedIdentifiersToPascal vars = vsep (map typedIdentifierToPascal vars)    
+typedIdentifiersToPascal vars = vsep (map typedIdentifierToPascal vars)
 
 valueToPascal :: Value -> Doc ann
 valueToPascal (VLiteral lit)          = literalToPascal lit
