@@ -1,7 +1,7 @@
 module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals) where
 
 import AST
-import Data.Text.Prettyprint.Doc
+import Prettyprinter
 import Prettyprinter.Render.String (renderString)
 
 literalToPascal :: Literal -> Doc ann
