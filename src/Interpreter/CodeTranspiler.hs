@@ -40,6 +40,9 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
   where
     writeln doc = pretty "writeln(" <> doc <> pretty ");"
 
+exprToPascal :: Expr -> Doc ann
+exprToPascal (ValueExpr value) = valueToPascal value
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> Doc ann
 generatePascalProgram vars literals =
   vsep [ pretty "program Yamil;"
