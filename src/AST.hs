@@ -39,16 +39,9 @@ data Type
         | TString
         deriving (Eq, Show)
 
--- Expressions
-data Expr
-        = FunctionCall Identifier [Value]
-        | IfExpr ConditionExpr ThenExpr ThenExpr
-        | BinaryExpr Value ArithmeticOperator Value
-        | ValueExpr Value
-        deriving (Eq, Show)
-
-data LambdaExpr
-        = LambdaExpr [TypedIdentifier] Expr
+-- Parameters and types
+data TypedIdentifier
+        = TypedIdentifier Identifier Type
         deriving (Eq, Show)
 
 data Value
@@ -57,23 +50,10 @@ data Value
         | VFunctionCall Identifier [Value]
         deriving (Eq, Show)
 
-data ConditionExpr
-        = Condition Value ComparisonOperator Value
-        | ConditionAnd ConditionExpr ConditionExpr
-        | ConditionOr ConditionExpr ConditionExpr
-        | ConditionBool Bool
-        deriving (Eq, Show)
-
-data ThenExpr
-        = ThenMainExpr Expr
-        | ThenLiteral Literal
-        | ThenIdentifier Identifier
-        deriving (Eq, Show)
-
--- Parameters and types
-data TypedIdentifier
-        = TypedIdentifier Identifier Type
-        deriving (Eq, Show)
+-- Let Statement
+data LetStatement
+        = LetStatement TypedIdentifier Expr
+        deriving (Eq, Show)     
 
 -- Operators
 data ArithmeticOperator
@@ -90,6 +70,31 @@ data ComparisonOperator
         | GreaterEqual
         | Equal
         | NotEqual
+        deriving (Eq, Show)           
+
+-- Expressions
+data Expr
+        = FunctionCall Identifier [Value]
+        | IfExpr ConditionExpr ThenExpr ThenExpr
+        | BinaryExpr Value ArithmeticOperator Value
+        | ValueExpr Value
+        deriving (Eq, Show)
+
+data LambdaExpr
+        = LambdaExpr [TypedIdentifier] Expr
+        deriving (Eq, Show)
+
+data ConditionExpr
+        = Condition Value ComparisonOperator Value
+        | ConditionAnd ConditionExpr ConditionExpr
+        | ConditionOr ConditionExpr ConditionExpr
+        | ConditionBool Bool
+        deriving (Eq, Show)
+
+data ThenExpr
+        = ThenMainExpr Expr
+        | ThenLiteral Literal
+        | ThenIdentifier Identifier
         deriving (Eq, Show)
 
 -- Pattern matching
@@ -127,11 +132,6 @@ data FunctionBodyOpts
         = FBExpr Expr
         | FBLetStatement LetStatement
         | FBEmpty
-        deriving (Eq, Show)
-
--- Let Statement
-data LetStatement
-        = LetStatement TypedIdentifier Expr
         deriving (Eq, Show)
 
 -- Program (start)
