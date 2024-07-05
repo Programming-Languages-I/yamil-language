@@ -1,5 +1,7 @@
+// this is a let statmnet
 let variable: int = 2
 
+// this is a function 
 def calculate(num1: int, num2: int) -> int = {
     let sum: int = num1 + num2
     let product: int = num1 * num2
@@ -9,6 +11,7 @@ def calculate(num1: int, num2: int) -> int = {
         sum
 }
 
+// this is a let statmnet
 let sum: int = a + b
 
 calculate(2, 3)

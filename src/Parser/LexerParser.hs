@@ -1,17 +1,19 @@
 module Parser.LexerParser
-        ( module Parser.LexerParser
-        ) where
+  ( module Parser.LexerParser,
+  )
+where
 
-import           Text.Parsec
-import           Text.Parsec.Language
-import           Text.Parsec.String
-import           Text.Parsec.Token
+import Text.Parsec
+import Text.Parsec.Language
+import Text.Parsec.String
+import Text.Parsec.Token
 
 languageDef :: LanguageDef st
-languageDef = emptyDef
-    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "|", "="]
-    , reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "otherwise", "def"]
-    , commentLine = "//"
+languageDef =
+  emptyDef
+    { reservedOpNames = ["+", "-", "*", "/", "<", ">", "<=", ">=", "==", "!=", "(", ")", "->", "|", "="],
+      reservedNames = ["if", "then", "else", "True", "False", "int", "bool", "double", "string", "lambda", "let", "otherwise", "def"],
+      commentLine = "//"
     }
 
 lexer :: TokenParser st
@@ -26,8 +28,11 @@ reservedOps = Text.Parsec.Token.reservedOp lexer
 reservedNa :: String -> Parser ()
 reservedNa = Text.Parsec.Token.reserved lexer
 
-parseAssignSymbol :: Parser()
+parseAssignSymbol :: Parser ()
 parseAssignSymbol = reservedOps "="
+
+skipComments :: Parser ()
+skipComments = skipMany (string "//" *> many (noneOf "\n") *> newline)
 
 parseDot :: Parser Char
 parseDot = char '.'
@@ -41,16 +46,16 @@ parseUnderscore = char '_'
 parseQuotationMarks :: Parser Char
 parseQuotationMarks = char '"'
 
-parseIntSym :: Parser()
+parseIntSym :: Parser ()
 parseIntSym = reservedNa "int"
 
-parseBoolSym :: Parser()
+parseBoolSym :: Parser ()
 parseBoolSym = reservedNa "bool"
 
-parseDoubleSym :: Parser()
+parseDoubleSym :: Parser ()
 parseDoubleSym = reservedNa "double"
 
-parseStringSym :: Parser()
+parseStringSym :: Parser ()
 parseStringSym = reservedNa "string"
 
 parseBoolValues :: Parser Bool

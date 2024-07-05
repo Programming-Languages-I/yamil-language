@@ -85,6 +85,7 @@ test-suite yamil-language-test
       Parser.TestParserProgram
       Parser.TestParserThenExpr
       Parser.TestParserValueTypes
+      Parser.TestSkipComments
       TestSemanticAnalyzer
       TestSymbolTable
       Paths_yamil_language
