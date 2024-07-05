@@ -12,13 +12,13 @@ var
      if sum > 10 
     then calculate := product else calculate := sum
   end;
-  function isPositive(): boolean;
+  function isPositive(i: integer): boolean;
 
 
   procedure operation(t: integer); begin   if t > 0 
                                            then isPositive := True else isPositive := False end;
   begin
-    operation(2);
+    operation(i);
   end;
   function add(x: integer; y: integer): integer;
 
@@ -73,7 +73,7 @@ var
 begin
   
   writeln(calculate(2, 3));
-  writeln(isPositive());
+  writeln(isPositive(2));
   writeln(add(4, 5));
   writeln(max_of(3, 7, 5));
   writeln(max_of(10, 3, 5));
@@ -85,7 +85,7 @@ begin
   writeln(match_letters('C'));
   writeln(match_letters('Haskell'));
   writeln(calculate(2, 3));
-  writeln(isPositive());
+  writeln(isPositive(2));
   writeln(add(4, 5));
   writeln(max_of(3, 7, 5));
   writeln(max_of(10, 3, 5));
