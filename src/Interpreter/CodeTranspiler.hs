@@ -190,15 +190,17 @@ functionToPascal (Function ident args functionType body) =
 
 functionBodyToPascal :: FunctionBody -> Identifier -> Doc ann
 functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts) <+> exprListsToPascalFromFunc name (extractExprsF opts)
-    where
-        extractExprsF :: [FunctionBodyOpts] -> [Expr]
-        extractExprsF [] = []
-        extractExprsF (FBExpr expr : rest) = expr : extractExprsF rest
-        extractExprsF (_ : rest) = extractExprsF rest
 functionBodyToPascal (FBPatternMatch patternMatches) ident = 
     patternMatchesToPascalCase patternMatches ident
-functionBodyToPascal (FBLambdaExpr lambdaExpr _) _ = emptyDoc
+functionBodyToPascal (FBLambdaExpr lambdaExpr opts) _ = 
+    vsep (map (`exprToPascal` "") (extractExprsF opts))
     
+
+extractExprsF :: [FunctionBodyOpts] -> [Expr]
+extractExprsF [] = []
+extractExprsF (FBExpr expr : rest) = expr : extractExprsF rest
+extractExprsF (_ : rest) = extractExprsF rest
+
 
 letStatementInFuncToPascal :: LetStatement -> Doc ann
 letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =

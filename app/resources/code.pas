@@ -18,7 +18,7 @@ var
   procedure operation(t: integer); begin   if t > 0 
                                            then isPositive := True else isPositive := False end;
   begin
-    
+    operation(2);
   end;
   function add(x: integer; y: integer): integer;
 

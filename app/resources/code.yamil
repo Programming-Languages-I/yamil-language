@@ -19,7 +19,7 @@ def isPositive() -> bool = {
     operation(2)
 }
 
-isPositive(2)
+isPositive()
 
 def add(x: int, y: int) -> int = {
     x + y
