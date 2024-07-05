@@ -236,9 +236,21 @@ extractLetStatements :: ProgramElement -> [LetStatement]
 extractLetStatements (PELetStatement letStmt) = [letStmt]
 extractLetStatements _ = []
 
-extractLambdas :: ProgramElement -> [LambdaExpr]
-extractLambdas (PEFunction (Function _ _ _ (FBLambdaExpr lambda))) = [lambda]
-extractLambdas _ = []
+extractLambdasFromBody :: FunctionBody -> [LambdaExpr]
+extractLambdasFromBody (FBLambdaExpr lambda) = [lambda]
+extractLambdasFromBody (FBPatternMatch _) = []
+extractLambdasFromBody (FBody opts) = extractLambdasFromOpts opts
+
+extractLambdasFromOpts :: [FunctionBodyOpts] -> [LambdaExpr]
+extractLambdasFromOpts opts = concatMap extractLambdaFromOpt opts
+  where
+    extractLambdaFromOpt :: FunctionBodyOpts -> [LambdaExpr]
+    extractLambdaFromOpt (FBLetStatement _) = []
+    extractLambdaFromOpt (FBExpr _) = []
+    extractLambdaFromOpt FBEmpty = []
+
+extractLambdas :: [FunctionBody] -> [LambdaExpr]
+extractLambdas bodies = concatMap extractLambdasFromBody bodies
 
 extractExprs :: ProgramElement -> [Expr]
 extractExprs (PEFunctionCall expr) = [expr]
