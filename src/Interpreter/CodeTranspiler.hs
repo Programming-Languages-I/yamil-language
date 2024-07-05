@@ -145,6 +145,14 @@ patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
     indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
     pretty "end;"
 
+functionToPascal :: Function -> Doc ann
+functionToPascal (Function ident args functionType body) =
+    vsep [ pretty "function" <+> pretty ident <> parens (hsep (punctuate comma (map typedIdentifierToPascal args))) <> colon <+> typeToPascal functionType <> semi
+         , pretty "begin"
+         , indent 2 (functionBodyToPascal body)
+         , pretty "end;"
+         ]
+
 functionBodyToPascal :: FunctionBody -> Doc ann
 functionBodyToPascal (FBody opts) = vsep (map functionBodyOptsToPascal opts)
 functionBodyToPascal (FBPatternMatch patternMatches) = patternMatchesToPascalCase patternMatches
