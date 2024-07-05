@@ -208,6 +208,11 @@ functionBodyOptsToPascal (FBExpr expr) = emptyDoc
 functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementInFuncToPascal letStmt
 functionBodyOptsToPascal FBEmpty = emptyDoc
 
+programElementToPascal :: ProgramElement -> Doc ann
+programElementToPascal (PEFunction func) = functionToPascal func
+programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
+programElementToPascal (PEFunctionCall expr) = exprToPascal expr
+
 extractVars :: ProgramElement -> [TypedIdentifier]
 extractVars (PEFunction (Function _ args _ _)) = args
 extractVars _ = []
@@ -244,7 +249,6 @@ collectTopLevelFunctionCalls (Program elems) = concatMap extractFunctionCalls el
     extractFunctionCalls (PELetStatement _) = []
     extractFunctionCalls (PEFunctionCall expr) = [expr]
 
-
 programToPascal :: Program -> Doc ann
 programToPascal (Program elems) =
   vsep [ pretty "program Yamil;"
@@ -265,11 +269,6 @@ programToPascal (Program elems) =
     exprs = concatMap extractExprs elems
     functions = concatMap extractFunctions elems
     topLevelFunctionCalls = collectTopLevelFunctionCalls (Program elems)
-
-programElementToPascal :: ProgramElement -> Doc ann
-programElementToPascal (PEFunction func) = functionToPascal func
-programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
-programElementToPascal (PEFunctionCall expr) = exprToPascal expr
 
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs patternMatches functions =
