@@ -67,6 +67,7 @@ exprToPascal :: Expr -> Doc ann
 exprToPascal (IfExpr conds thens1 thens2) = 
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "then" <+> thenExprToPascal thens1 <+>
+    pretty "else" <+> thenExprToPascal thens2
 exprToPascal (BinaryExpr val1 op val2) = binaryExprToPascal val1 op val2
 exprToPascal (ValueExpr value) = valueToPascal value
 
