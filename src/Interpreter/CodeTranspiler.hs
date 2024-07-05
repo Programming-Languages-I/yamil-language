@@ -145,6 +145,11 @@ patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
     indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
     pretty "end;"
 
+functionBodyToPascal :: FunctionBody -> Doc ann
+functionBodyToPascal (FBody opts) = vsep (map functionBodyOptsToPascal opts)
+functionBodyToPascal (FBPatternMatch patternMatches) = patternMatchesToPascalCase patternMatches
+functionBodyToPascal (FBLambdaExpr lambdaExpr) = lambdaToPascal lambdaExpr
+
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
 functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr <> semi
 functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt <> semi
