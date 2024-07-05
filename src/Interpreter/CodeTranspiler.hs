@@ -25,7 +25,7 @@ literalToPascal :: Literal -> Doc ann
 literalToPascal (IntLiteral n)    = pretty n
 literalToPascal (BoolLiteral b)   = if b then pretty "True" else pretty "False"
 literalToPascal (DoubleLiteral d) = pretty d
-literalToPascal (StringLiteral s) = dquotes $ pretty s
+literalToPascal (StringLiteral s) = squotes $ pretty s
 
 literalsToPascal :: [Literal] -> Doc ann
 literalsToPascal literals = vsep (map literalToPascal literals)
@@ -130,11 +130,11 @@ patternToPascal :: Pattern -> Doc ann
 patternToPascal (PLiteral lit) = literalToPascal lit
 patternToPascal (PIdentifier ident) = pretty ident
 
-patternMatchToPascalCase :: PatternMatch -> Doc ann
-patternMatchToPascalCase (PatternMatchExp pattern expr) =
-    patternToPascal pattern <> pretty ":" <+> pretty "WriteLn" <> parens (exprToPascal expr) <> pretty ";"
-patternMatchToPascalCase (PatternMatchLit pattern lit) =
-    patternToPascal pattern <> pretty ":" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
+patternMatchToPascalCase :: PatternMatch -> Identifier -> Doc ann
+patternMatchToPascalCase (PatternMatchExp pattern expr) ident =
+    patternToPascal pattern <> pretty ":" <+> pretty ident <+> pretty ":="  <>  exprToPascal expr <> pretty ";"
+patternMatchToPascalCase (PatternMatchLit pattern lit) ident =
+    patternToPascal pattern <> pretty ":" <+> pretty ident <+> pretty ":=" <> literalToPascal lit <> pretty ";"
 
 otherwiseMatchToPascalElse :: OtherwiseMatch -> Doc ann
 otherwiseMatchToPascalElse (OtherwiseExp expr) =
@@ -142,10 +142,10 @@ otherwiseMatchToPascalElse (OtherwiseExp expr) =
 otherwiseMatchToPascalElse (OtherwiseLit lit) =
     pretty "else" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
 
-patternMatchesToPascalCase :: PatternMatches -> Doc ann
-patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
+patternMatchesToPascalCase :: PatternMatches -> Identifier -> Doc ann
+patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) ident =
     pretty "case" <+> identifierToPascal "p" <+> pretty "of" <> line <>
-    indent 2 (vsep (map patternMatchToPascalCase patternMatches)) <> line <>
+    indent 2 (vsep (map (\pm -> patternMatchToPascalCase pm ident) patternMatches)) <> line <>
     indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
     pretty "end;"
 
@@ -183,7 +183,8 @@ functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts
         extractExprsF [] = []
         extractExprsF (FBExpr expr : rest) = expr : extractExprsF rest
         extractExprsF (_ : rest) = extractExprsF rest
-functionBodyToPascal (FBPatternMatch patternMatches) _ = patternMatchesToPascalCase patternMatches
+functionBodyToPascal (FBPatternMatch patternMatches) ident = 
+    patternMatchesToPascalCase patternMatches ident
 functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = lambdaToPascal lambdaExpr
     
 
@@ -258,7 +259,6 @@ programToPascal (Program elems) =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (vsep (map letStatementToPascal lets))
-       , indent 2 (vsep  (map lambdaToPascal lambdas))
        , indent 2 (vsep (map functionToPascal functions))
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
@@ -286,7 +286,7 @@ generatePascalProgram vars literals lets lambdas exprs patternMatches functions 
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
        , indent 2 (exprListsToPascal exprs)
-       , indent 2 (patternMatchesToPascalCase patternMatches)
+       , indent 2 (patternMatchesToPascalCase patternMatches "h")
        , indent 2 (vsep (map functionToPascal functions))
        , pretty "end." 
        ]

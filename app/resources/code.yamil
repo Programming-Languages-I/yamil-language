@@ -16,4 +16,33 @@ def add(x: int, y: int) -> int = {
 }
 
 add(4, 5)
- 
+
+def match_digit(p: int) -> string = {
+    1 -> "One"
+    | 2 -> "Two"
+    | 3 -> "Three"
+    | 4 -> "Four"
+    | 5 -> "Five"
+    | 6 -> "Six"
+    | 7 -> "Seven"
+    | 8 -> "Eight"
+    | 9 -> "Nine"
+    | 10 -> "Ten"
+    | otherwise -> "Not Found"
+}
+
+match_digit(1)
+match_digit(2)
+match_digit(3)
+
+def match_letters(p: string) -> bool = {
+    "Haskell" -> True
+    | "Java" -> False
+    | "C" -> True
+    | "Go" -> False
+    | otherwise -> False
+}
+
+match_letters("Hey")
+match_letters("C")
+match_letters("Haskell")
