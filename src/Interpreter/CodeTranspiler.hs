@@ -67,7 +67,7 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
 
 exprToPascal :: Expr -> Identifier -> Doc ann
 exprToPascal (FunctionCall ident args) _ = 
-    pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
+    pretty "writeln(" <> pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ");"
 exprToPascal (IfExpr conds thens1 thens2) ident = 
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "\nthen" <+> thenExprToPascal thens1 ident <+>

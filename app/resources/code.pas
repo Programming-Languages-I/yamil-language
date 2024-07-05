@@ -1,7 +1,6 @@
 program Yamil;
 var
   variable : integer = 2;
-  sum : integer = a + b;
   function calculate(num1: integer; num2: integer): integer;
   var
     sum: integer;
@@ -9,24 +8,20 @@ var
   begin
     sum := num1 + num2;
     product := num1 * num2;
-     if sum > 10 
-    then calculate := product else calculate := sum
+     
   end;
   function add(x: integer; y: integer): integer;
 
 
   begin
     
-     add := add := x + y;
+     
   end;
   function max_of(a: integer; b: integer; c: integer): integer;
 
 
   begin
-     if a > b 
-    then if a > c 
-    then max_of := a else max_of := c else if b > c 
-    then max_of := b else max_of := c
+     
   end;
   function match_digit(p: integer): string;
 
@@ -60,26 +55,26 @@ var
   end;
 begin
   
-  calculate(2, 3);
-  add(4, 5);
-  max_of(3, 7, 5);
-  max_of(10, 3, 5);
-  max_of(1, 2, 3);
-  match_digit(1);
-  match_digit(2);
-  match_digit(3);
-  match_letters('Hey');
-  match_letters('C');
-  match_letters('Haskell');
-  calculate(2, 3);
-  add(4, 5);
-  max_of(3, 7, 5);
-  max_of(10, 3, 5);
-  max_of(1, 2, 3);
-  match_digit(1);
-  match_digit(2);
-  match_digit(3);
-  match_letters('Hey');
-  match_letters('C');
-  match_letters('Haskell');
+  writeln(calculate(2, 3));
+  writeln(add(4, 5));
+  writeln(max_of(3, 7, 5));
+  writeln(max_of(10, 3, 5));
+  writeln(max_of(1, 2, 3));
+  writeln(match_digit(1));
+  writeln(match_digit(2));
+  writeln(match_digit(3));
+  writeln(match_letters('Hey'));
+  writeln(match_letters('C'));
+  writeln(match_letters('Haskell'));
+  writeln(calculate(2, 3));
+  writeln(add(4, 5));
+  writeln(max_of(3, 7, 5));
+  writeln(max_of(10, 3, 5));
+  writeln(max_of(1, 2, 3));
+  writeln(match_digit(1));
+  writeln(match_digit(2));
+  writeln(match_digit(3));
+  writeln(match_letters('Hey'));
+  writeln(match_letters('C'));
+  writeln(match_letters('Haskell'));
 end.
