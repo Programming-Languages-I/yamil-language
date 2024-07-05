@@ -145,6 +145,11 @@ patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
     indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
     pretty "end;"
 
+functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
+functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr <> semi
+functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt <> semi
+functionBodyOptsToPascal FBEmpty = emptyDoc
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs patternMatches =
   vsep [ pretty "program Yamil;"
