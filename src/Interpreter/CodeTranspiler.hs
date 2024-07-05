@@ -64,9 +64,11 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
     writeln doc = pretty "writeln(" <> doc <> pretty ");"
 
 exprToPascal :: Expr -> Doc ann
+exprToPascal (IfExpr conds thens1 thens2) = 
+    pretty "if" <+> conditionExprToPascal conds <+> 
+    pretty "then" <+> thenExprToPascal thens1 <+>
 exprToPascal (BinaryExpr val1 op val2) = binaryExprToPascal val1 op val2
 exprToPascal (ValueExpr value) = valueToPascal value
-exprToPascal (IfExpr conds thens1 thens2) = pretty "if" <+> conditionExprToPascal conds <+> pretty "then" <+> thenExprToPascal thens1
 
 exprListsToPascal :: [Expr] -> Doc ann
 exprListsToPascal exprs = vsep (map exprToPascal exprs)
