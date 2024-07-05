@@ -13,5 +13,5 @@ someFunc = do
         let result = parse (P.parseProgram) "./app/resources/code.yamil" content
         print result
 
-        interpreter <- (CT.writePascalFile) "./app/resources/code.pas" exampleVars exampleLiterals exampleLetStatements exampleLambdaExp exampleIfExpr exampleConditionExpr exampleThenExpr
+        interpreter <- (CT.writePascalFile) "./app/resources/code.pas" exampleVars exampleLiterals exampleLetStatements exampleLambdaExp exampleBinaryExpr
         print interpreter
