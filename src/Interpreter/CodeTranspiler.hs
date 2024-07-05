@@ -72,8 +72,16 @@ exprToPascal (IfExpr conds thens1 thens2) ident =
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "\nthen" <+> thenExprToPascal thens1 ident <+>
     pretty "else" <+> thenExprToPascal thens2 ident
-exprToPascal (BinaryExpr val1 op val2) _ = binaryExprToPascal val1 op val2
-exprToPascal (ValueExpr value) _ = valueToPascal value
+exprToPascal (BinaryExpr val1 op val2) ident =  
+    if ident == "" 
+        then binaryExprToPascal val1 op val2 
+    else
+        pretty ident <+> pretty ":=" <+> binaryExprToPascal val1 op val2 
+exprToPascal (ValueExpr value) ident = 
+    if ident == "" 
+        then valueToPascal value
+    else
+        pretty ident <+> pretty ":=" <+> valueToPascal value
 
 exprListsToPascal :: [Expr] -> Doc ann
 exprListsToPascal exprs = vsep (map (\expr -> exprToPascal expr "") exprs)
@@ -122,10 +130,11 @@ conditionExprToPascal (ConditionBool bool) = pretty $ boolToString bool
     boolToString False = "False"
 
 thenExprToPascal :: ThenExpr -> Identifier -> Doc ann
-thenExprToPascal (ThenMainExpr expr) identF =  exprToPascal expr identF
 thenExprToPascal (ThenLiteral lit) identF = 
     pretty identF <+> pretty ":=" <+> literalToPascal lit
-thenExprToPascal (ThenIdentifier ident) identF = pretty "a"
+thenExprToPascal (ThenIdentifier ident) identF =
+    pretty identF <+> pretty ":=" <+> identifierToPascal ident
+thenExprToPascal (ThenMainExpr expr) identF =  exprToPascal expr identF
 
 patternToPascal :: Pattern -> Doc ann
 patternToPascal (PLiteral lit) = literalToPascal lit
@@ -195,7 +204,7 @@ letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =
 
 exprListsToPascalFromFunc :: Identifier -> [Expr] -> Doc ann
 exprListsToPascalFromFunc _ [] = emptyDoc
-exprListsToPascalFromFunc name exprs = vsep (map (\expr -> exprToPascal expr "") (init exprs) ++ [returnExprToPascal name (last exprs)])
+exprListsToPascalFromFunc name exprs = vsep (map (\expr -> exprToPascal expr name) (init exprs))
   where
     returnExprToPascal :: Identifier -> Expr -> Doc ann
     returnExprToPascal name expr = case expr of
@@ -268,7 +277,6 @@ programToPascal (Program elems) =
     vars = concatMap extractVars elems
     literals = concatMap extractLiterals elems
     lets = concatMap extractLetStatements elems
-    lambdas = concatMap extractLambdas elems
     exprs = concatMap extractExprs elems
     functions = concatMap extractFunctions elems
     topLevelFunctionCalls = collectTopLevelFunctionCalls (Program elems)
