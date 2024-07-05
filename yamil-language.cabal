@@ -38,7 +38,6 @@ library
       Parser.ParserValueTypes
       Semantic.SemanticAnalyzer
       Semantic.SymbolTable
-      SymbolTable
   other-modules:
       Paths_yamil_language
   autogen-modules:

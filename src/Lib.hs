@@ -4,6 +4,8 @@ module Lib
 
 import           Parser.ParserProgram as P
 import           Interpreter.CodeTranspiler as CT
+import qualified Data.Map as Map
+import Semantic.SemanticAnalyzer
 
 import           Text.Parsec
 
@@ -12,7 +14,7 @@ someFunc = do
         content <- readFile "./app/resources/code.yamil"
         let parseResult = parse (P.parseProgram) "./app/resources/code.yamil" content
         print parseResult
-
+        
         case parseResult of
                 Left err -> do
                         putStrLn "Parsing failed:"

@@ -1,4 +1,4 @@
-module Semantic.SemanticAnalyzer(module Semantic.SemanticAnalyzer) where
+module Semantic.SemanticAnalyzer (module Semantic.SemanticAnalyzer) where
 
 import qualified Semantic.SymbolTable as ST
 import qualified AST as AST 
