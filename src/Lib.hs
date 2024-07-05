@@ -10,8 +10,13 @@ import           Text.Parsec
 someFunc :: IO ()
 someFunc = do
         content <- readFile "./app/resources/code.yamil"
-        let result = parse (P.parseProgram) "./app/resources/code.yamil" content
-        print result
+        let parseResult = parse (P.parseProgram) "./app/resources/code.yamil" content
+        print parseResult
 
-        interpreter <- (CT.writePascalFile) "./app/resources/code.pas" exampleVars exampleLiterals exampleLetStatements exampleLambdaExp exampleExprs examplePatternMatches exampleFunction
-        print interpreter
+        case parseResult of
+                Left err -> do
+                        putStrLn "Parsing failed:"
+                Right program -> do
+                        CT.writePascalFile "./app/resources/code.pas" program
+                        
+                        putStrLn "Operation successfully."
