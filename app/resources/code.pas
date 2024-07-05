@@ -1,6 +1,7 @@
 program Yamil;
 var
   variable : integer = 2;
+  sum : integer = a + b;
   function calculate(num1: integer; num2: integer): integer;
   var
     sum: integer;
@@ -8,7 +9,8 @@ var
   begin
     sum := num1 + num2;
     product := num1 * num2;
-     if sum > 10 then calculate := product else calculate := sum
+     if sum > 10 
+    then product else sum
   end;
   function add(x: integer; y: integer): integer;
 
