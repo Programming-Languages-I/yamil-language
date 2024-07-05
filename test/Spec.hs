@@ -18,11 +18,11 @@ main = hspec $ do
   testParseValueTypes
   testParseOperations
   testParserExpresions
-  -- testParseLetStatement
+  testParseLetStatement
   testParseLambda
   testParserIfExpression
   testParseThenExpression
-  -- testParserFunctions
+  testParserFunctions
   testParserProgram
   testParsePatternMatches
   testSkipComments
