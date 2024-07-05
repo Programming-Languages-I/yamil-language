@@ -9,6 +9,7 @@ module Interpreter.CodeTranspiler
         , exampleBinaryExpr
         , exampleLambdaExp
         , exampleExprs
+        , examplePatternMatches
         ) where
 
 import AST
@@ -134,8 +135,15 @@ otherwiseMatchToPascalElse (OtherwiseExp expr) =
 otherwiseMatchToPascalElse (OtherwiseLit lit) =
     pretty "else" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
 
-generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> Doc ann
-generatePascalProgram vars literals lets lambdas exprs =
+patternMatchesToPascalCase :: PatternMatches -> Doc ann
+patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
+    pretty "case" <+> identifierToPascal "x" <+> pretty "of" <> line <>
+    indent 2 (vsep (map patternMatchToPascalCase patternMatches)) <> line <>
+    indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
+    pretty "end;"
+
+generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> Doc ann
+generatePascalProgram vars literals lets lambdas exprs patternMatches =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
@@ -144,6 +152,7 @@ generatePascalProgram vars literals lets lambdas exprs =
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
        , indent 2 (exprListsToPascal exprs)
+       , indent 2 (patternMatchesToPascalCase patternMatches)
        , pretty "end." 
        ]
 
@@ -174,7 +183,22 @@ exampleIfExpr = IfExpr exampleConditionExpr exampleThenExpr exampleThenExpr
 exampleBinaryExpr :: Expr
 exampleBinaryExpr = BinaryExpr (VIdentifier "a") Add (VIdentifier "b")
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> IO ()
-writePascalFile filePath vars literals lets lambda exprs = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda exprs
+examplePatternMatches :: PatternMatches
+examplePatternMatches = FullPatternMatch
+  [ PatternMatchLit (PLiteral (IntLiteral 0)) (StringLiteral "Zero")
+  , PatternMatchLit (PLiteral (IntLiteral 1)) (StringLiteral "One")
+  , PatternMatchLit (PLiteral (IntLiteral 2)) (StringLiteral "Two")
+  , PatternMatchLit (PLiteral (IntLiteral 3)) (StringLiteral "Three")
+  , PatternMatchLit (PLiteral (IntLiteral 4)) (StringLiteral "Four")
+  , PatternMatchLit (PLiteral (IntLiteral 5)) (StringLiteral "Five")
+  , PatternMatchLit (PLiteral (IntLiteral 6)) (StringLiteral "Six")
+  , PatternMatchLit (PLiteral (IntLiteral 7)) (StringLiteral "Seven")
+  , PatternMatchLit (PLiteral (IntLiteral 8)) (StringLiteral "Eight")
+  , PatternMatchLit (PLiteral (IntLiteral 9)) (StringLiteral "Nine")
+  , PatternMatchLit (PLiteral (IntLiteral 10)) (StringLiteral "Ten")
+  ] (OtherwiseLit (StringLiteral "Not Found"))
+
+writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> IO ()
+writePascalFile filePath vars literals lets lambda exprs matches = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda exprs matches
     writeFile filePath pascalCode
