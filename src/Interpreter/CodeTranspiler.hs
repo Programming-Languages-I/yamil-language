@@ -64,6 +64,8 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
     writeln doc = pretty "writeln(" <> doc <> pretty ");"
 
 exprToPascal :: Expr -> Doc ann
+exprToPascal (FunctionCall ident args) = 
+    pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
 exprToPascal (IfExpr conds thens1 thens2) = 
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "then" <+> thenExprToPascal thens1 <+>
@@ -178,7 +180,7 @@ exampleThenExpr :: ThenExpr
 exampleThenExpr = ThenMainExpr (ValueExpr (VLiteral (IntLiteral 5)))
 
 exampleExprs :: [Expr]
-exampleExprs = [IfExpr exampleConditionExpr exampleThenExpr exampleThenExpr, BinaryExpr (VIdentifier "a") Add (VIdentifier "b")]
+exampleExprs = [(FunctionCall "match_letters" [VLiteral (StringLiteral "Haskell")]), IfExpr exampleConditionExpr exampleThenExpr exampleThenExpr, BinaryExpr (VIdentifier "a") Add (VIdentifier "b")]
 
 exampleIfExpr :: Expr
 exampleIfExpr = IfExpr exampleConditionExpr exampleThenExpr exampleThenExpr
