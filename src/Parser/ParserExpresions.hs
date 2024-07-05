@@ -30,8 +30,9 @@ parseBinaryExpr = BinaryExpr <$> parseValue <*> (whiteSpaces *> parseArithmeticO
 
 parseLambda :: Parser LambdaExpr
 parseLambda = LambdaExpr
-              <$> (reservedNa "lambda" *> whiteSpaces *> parseOpenParents *> parseManyTypedIdentifier <* parseCloseParents <* whiteSpaces <* reservedOps "->" <* whiteSpaces )
-              <*> parseExpr
+              <$> (reservedNa "lambda" *> whiteSpaces *> parseIdentifier <* whiteSpaces)
+              <*> (parseOpenParents *> parseManyTypedIdentifier <* parseCloseParents <* whiteSpaces)
+              <*> (reservedOps "->" *> whiteSpaces *> parseExpr)
 
 parseIfExpr :: Parser Expr
 parseIfExpr =

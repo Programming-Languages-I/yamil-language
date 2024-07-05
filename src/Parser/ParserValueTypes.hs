@@ -7,7 +7,7 @@ import           AST
 import           Parser.LexerParser
 
 import           Text.Parsec        (char, digit, letter, many, many1, noneOf,
-                                     sepBy, (<|>), try)
+                                     sepBy, (<|>), try, sepBy1)
 import           Text.Parsec.String (Parser)
 
 -- Parse Identifier
@@ -74,7 +74,7 @@ parseTypedIdentifier =
     <*> parseType
 
 parseManyTypedIdentifier :: Parser [TypedIdentifier]
-parseManyTypedIdentifier = many1 parseTypedIdentifier
+parseManyTypedIdentifier = parseTypedIdentifier `sepBy1` (whiteSpaces *> parseComma <* whiteSpaces)
 
 parseType :: Parser Type
 parseType =

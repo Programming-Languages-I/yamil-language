@@ -94,10 +94,10 @@ testParseFunctionBody = describe "parseFunction" $ do
     parse
       parseFunctionBody
       ""
-      "lambda(x: int) -> if x > threshold then True else False"
+      "lambda condicional(x: int) -> if x > threshold then True else False"
       `shouldBe` Right
         ( FBLambdaExpr
-            ( LambdaExpr
+            ( LambdaExpr "condicional"
                 [TypedIdentifier "x" TInt]
                 ( IfExpr
                     (Condition (VIdentifier "x") GreaterThan (VIdentifier "threshold"))
@@ -198,14 +198,14 @@ testParseFunction = describe "parseFunction" $ do
     parse
       parseFunction
       ""
-      "def lambdaFunction() -> bool = {\nlambda(x: int) -> if x > threshold then True else False\n}"
+      "def lambdaFunction() -> bool = {\nlambda condicional(x: int) -> if x > threshold then True else False\n}"
       `shouldBe` Right
         ( Function
             "lambdaFunction"
             []
             TBool
             ( FBLambdaExpr
-                (LambdaExpr [TypedIdentifier "x" TInt]
+                (LambdaExpr "condicional" [TypedIdentifier "x" TInt]
                     (IfExpr (Condition (VIdentifier "x") GreaterThan (VIdentifier "threshold"))
                     (ThenMainExpr (ValueExpr (VLiteral (BoolLiteral True))))
                     (ThenMainExpr (ValueExpr (VLiteral (BoolLiteral False)))))
