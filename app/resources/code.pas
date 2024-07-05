@@ -10,4 +10,6 @@ begin
   42
   3.14
   "Hello, Pascal!"
+  5 > 3
+  5
 end.

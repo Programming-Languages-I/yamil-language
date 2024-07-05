@@ -1,8 +1,9 @@
-module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements,exampleLambdaExp) where
+module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements, exampleConditionExpr, exampleThenExpr ,exampleLambdaExp) where
 
 import AST
 import Prettyprinter
 import Prettyprinter.Render.String (renderString)
+import Test.Hspec (example)
 
 identifierToPascal :: Identifier -> Doc ann
 identifierToPascal = pretty
@@ -54,6 +55,7 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
 exprToPascal :: Expr -> Doc ann
 exprToPascal (ValueExpr value) = valueToPascal value
 
+
 letStatementToPascal :: LetStatement -> Doc ann
 letStatementToPascal (LetStatement (TypedIdentifier name t) expr) =
     identifierToPascal name <+> pretty ":" <+> typeToPascal t <> pretty " = " <> exprToPascal expr <> pretty ";"
@@ -82,8 +84,26 @@ lambdaToPascal (LambdaExpr name params expr) =
     indent 2 (exprToPascal expr) <+>
     pretty "end;"
 
-generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> Doc ann
-generatePascalProgram vars literals lets lambdas =
+
+conditionExprToPascal :: ConditionExpr -> Doc ann
+conditionExprToPascal (Condition value1 op value2) =
+    valueToPascal value1 <+> comparisonOperator op <+> valueToPascal value2
+conditionExprToPascal (ConditionAnd cond1 cond2) =
+    conditionExprToPascal cond1 <+> pretty "&" <+> conditionExprToPascal cond2
+conditionExprToPascal (ConditionOr cond1 cond2) =
+    conditionExprToPascal cond1 <+> pretty "|" <+> conditionExprToPascal cond2
+conditionExprToPascal (ConditionBool bool) = pretty $ boolToString bool
+  where
+    boolToString True = "True"
+    boolToString False = "False"
+
+thenExprToPascal :: ThenExpr -> Doc ann
+thenExprToPascal (ThenMainExpr expr) = exprToPascal expr
+thenExprToPascal (ThenLiteral lit) = literalToPascal lit
+thenExprToPascal (ThenIdentifier ident) = identifierToPascal ident
+
+generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> ConditionExpr -> ThenExpr -> Doc ann
+generatePascalProgram vars literals lets lambdas conds thens =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
@@ -91,6 +111,8 @@ generatePascalProgram vars literals lets lambdas =
        , vsep (map lambdaToPascal lambdas)
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
+       , indent 2 (conditionExprToPascal conds)
+       , indent 2 (thenExprToPascal thens)
        , pretty "end." 
        ]
 
@@ -104,10 +126,16 @@ exampleLetStatements :: [LetStatement]
 exampleLetStatements = [LetStatement (TypedIdentifier "y" TInt) (ValueExpr (VLiteral (IntLiteral 10)))]
 
 exampleLambdaExp :: [LambdaExpr]
-exampleLambdaExp = [LambdaExpr "operation" [TypedIdentifier "x" TInt,TypedIdentifier "y" TInt ,TypedIdentifier "y" TInt] (ValueExpr (VIdentifier "x"))]
+exampleLambdaExp = [LambdaExpr "operation" [TypedIdentifier "x" TInt,TypedIdentifier "y" TInt ,TypedIdentifier "z" TInt] (ValueExpr (VIdentifier "x"))]
 
+exampleConditionExpr :: ConditionExpr
+exampleConditionExpr = Condition (VLiteral (IntLiteral 5)) GreaterThan (VLiteral (IntLiteral 3))
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> IO ()
-writePascalFile filePath vars literals lets lambdas = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambdas
+exampleThenExpr :: ThenExpr
+exampleThenExpr = ThenMainExpr (ValueExpr (VLiteral (IntLiteral 5)))
+
+writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr]-> ConditionExpr -> ThenExpr -> IO ()
+writePascalFile filePath vars literals lets lambda conds thens = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda conds thens
     writeFile filePath pascalCode
+
