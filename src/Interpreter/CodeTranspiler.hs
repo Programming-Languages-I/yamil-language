@@ -187,7 +187,6 @@ functionBodyToPascal (FBPatternMatch patternMatches) ident =
     patternMatchesToPascalCase patternMatches ident
 functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = lambdaToPascal lambdaExpr
     
-
 letStatementInFuncToPascal :: LetStatement -> Doc ann
 letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =
     identifierToPascal name <+> pretty ":=" <+> exprToPascal expr <> pretty ";"
@@ -204,18 +203,10 @@ exprListsToPascalFromFunc name exprs = vsep (map exprToPascal (init exprs) ++ [r
             pretty "else" <+> align (pretty name  <+> pretty ":= " <> thenExprToPascal thens2)
         _ -> pretty name  <+> pretty ":= " <> exprToPascal expr <> semi
 
-
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
 functionBodyOptsToPascal (FBExpr expr) = emptyDoc
 functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementInFuncToPascal letStmt
 functionBodyOptsToPascal FBEmpty = emptyDoc
-
-
-programElementToPascal :: ProgramElement -> Doc ann
-programElementToPascal (PEFunction func) = functionToPascal func
-programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
-programElementToPascal (PEFunctionCall expr) = exprToPascal expr
-
 
 extractVars :: ProgramElement -> [TypedIdentifier]
 extractVars (PEFunction (Function _ args _ _)) = args
@@ -275,6 +266,10 @@ programToPascal (Program elems) =
     functions = concatMap extractFunctions elems
     topLevelFunctionCalls = collectTopLevelFunctionCalls (Program elems)
 
+programElementToPascal :: ProgramElement -> Doc ann
+programElementToPascal (PEFunction func) = functionToPascal func
+programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
+programElementToPascal (PEFunctionCall expr) = exprToPascal expr
 
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs patternMatches functions =
