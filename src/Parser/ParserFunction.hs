@@ -52,7 +52,7 @@ parseFunctionParams =
 
 parseFunctionBody :: Parser FunctionBody
 parseFunctionBody =
-  FBLambdaExpr <$> try parseLambda
+  FBLambdaExpr <$> try parseLambda <*> try parseFunctionBodyOpts `sepEndBy` parseLineBreak
   <|> FBPatternMatch <$> try (whiteSpaces *> parsePatternMatches <* whiteSpaces)
   <|> FBody <$> (parseFunctionBodyOpts `sepEndBy` parseLineBreak)
 

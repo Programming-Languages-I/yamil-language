@@ -125,7 +125,7 @@ data Function
 data FunctionBody
         = FBody [FunctionBodyOpts]
         | FBPatternMatch PatternMatches
-        | FBLambdaExpr LambdaExpr
+        | FBLambdaExpr LambdaExpr [FunctionBodyOpts]
         deriving (Eq, Show)
 
 data FunctionBodyOpts

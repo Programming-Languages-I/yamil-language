@@ -11,16 +11,38 @@ def calculate(num1: int, num2: int) -> int = {
         sum
 }
 
-// this is a let statmnet
-let sum: int = a + b
-
+// this is a function call
 calculate(2, 3)
+
+def isPositive() -> bool = {
+    lambda operation(t: int) -> if t > 0 then True else False
+    operation(2)
+}
+
+isPositive()
 
 def add(x: int, y: int) -> int = {
     x + y
 }
 
 add(4, 5)
+
+def max_of(a: int, b: int, c: int) -> int = {
+    if a > b then
+        if a > c then
+            a
+        else
+            c
+    else
+        if b > c then
+            b
+        else
+            c
+}
+
+max_of(3, 7, 5) 
+max_of(10, 3, 5) 
+max_of(1, 2, 3) 
 
 def match_digit(p: int) -> string = {
     1 -> "One"
