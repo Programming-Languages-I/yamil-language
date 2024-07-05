@@ -1,8 +1,12 @@
-module Parser.TestSkipComments (module Parser.TestSkipComments) where
+module Parser.TestSkipComments
+        ( module Parser.TestSkipComments
+        ) where
 
-import Parser.LexerParser
-import Test.Hspec
-import Text.Parsec
+import           Parser.LexerParser
+
+import           Test.Hspec
+
+import           Text.Parsec
 
 testSkipCommentsLine :: Spec
 testSkipCommentsLine = describe "skipComments" $ do

@@ -1,9 +1,12 @@
 module TestSymbolTable where
 
-import           Test.Hspec
-import           Semantic.SymbolTable
-import qualified Data.Map as Map
 import           AST
+
+import qualified Data.Map             as Map
+
+import           Semantic.SymbolTable
+
+import           Test.Hspec
 
 testInsertSymbolInST :: Spec
 testInsertSymbolInST = describe "ST_insertSymbol" $ do
@@ -23,7 +26,7 @@ testLookUpSymbolInST = describe "ST_lookupSymbol" $ do
       let symbolTable = Map.empty
       lookupSymbol "z" symbolTable `shouldBe` Nothing
 
-testDeleteSymbolFromST :: Spec 
+testDeleteSymbolFromST :: Spec
 testDeleteSymbolFromST = describe "ST_deleteSymbol" $ do
     it "deletes a symbol from the symbol table" $ do
       let symbol = Symbol "w" STRING (StringSymbolValue "hello")
@@ -31,7 +34,7 @@ testDeleteSymbolFromST = describe "ST_deleteSymbol" $ do
       let updatedTable = deleteSymbol "w" symbolTable
       lookupSymbol "w" updatedTable `shouldBe` Nothing
 
-testBuiltInTypeFromLiteral :: Spec 
+testBuiltInTypeFromLiteral :: Spec
 testBuiltInTypeFromLiteral = describe "ST_builtInTypeFromLiteral" $ do
     it "returns INTEGER for IntLiteral" $ do
       builtInTypeFromLiteral (IntLiteral 42) `shouldBe` INTEGER
@@ -45,7 +48,7 @@ testBuiltInTypeFromLiteral = describe "ST_builtInTypeFromLiteral" $ do
     it "returns STRING for StringLiteral" $ do
       builtInTypeFromLiteral (StringLiteral "test") `shouldBe` STRING
 
-testSymbolValueFromValue :: Spec 
+testSymbolValueFromValue :: Spec
 testSymbolValueFromValue = describe "ST_symbolValueFromValue" $ do
     it "returns IntSymbolValue for IntLiteral value" $ do
       symbolValueFromValue (VLiteral (IntLiteral 42)) `shouldBe` IntSymbolValue 42
@@ -73,7 +76,7 @@ testValueFromSymbolValue = describe "ST_valueFromSymbolValue" $ do
     it "returns StringLiteral for StringSymbolValue" $ do
       valueFromSymbolValue (StringSymbolValue "test") `shouldBe` StringLiteral "test"
 
-testSymbolTable :: Spec 
+testSymbolTable :: Spec
 testSymbolTable = do
     testInsertSymbolInST
     testDeleteSymbolFromST

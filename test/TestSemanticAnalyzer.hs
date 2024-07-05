@@ -1,12 +1,16 @@
-module TestSemanticAnalyzer ( module TestSemanticAnalyzer
+module TestSemanticAnalyzer
+        ( module TestSemanticAnalyzer
         ) where
 
-import           Test.Hspec
-import           Semantic.SemanticAnalyzer
-import qualified Semantic.SymbolTable as ST
-import qualified Data.Map as Map
 import           AST
-    
+
+import qualified Data.Map                  as Map
+
+import           Semantic.SemanticAnalyzer
+import qualified Semantic.SymbolTable      as ST
+
+import           Test.Hspec
+
 defaultSymbolTable :: ST.SymbolTable
 defaultSymbolTable = Map.empty
 
@@ -84,7 +88,7 @@ testProgram = describe "analyzeProgram" $ do
         analyzeProgram program defaultSymbolTable `shouldBe` (program, expectedMap)
 
 
-testSemanticAnalyzer :: Spec 
+testSemanticAnalyzer :: Spec
 testSemanticAnalyzer = do
     testTypeIdentifier
     testLetStatement

@@ -53,7 +53,7 @@ data Value
 -- Let Statement
 data LetStatement
         = LetStatement TypedIdentifier Expr
-        deriving (Eq, Show)     
+        deriving (Eq, Show)
 
 -- Operators
 data ArithmeticOperator
@@ -70,7 +70,7 @@ data ComparisonOperator
         | GreaterEqual
         | Equal
         | NotEqual
-        deriving (Eq, Show)           
+        deriving (Eq, Show)
 
 -- Expressions
 data Expr
@@ -106,16 +106,16 @@ data Pattern
 data PatternMatch
         = PatternMatchExp Pattern Expr
         | PatternMatchLit Pattern Literal
-        deriving (Show, Eq)
+        deriving (Eq, Show)
 
 data OtherwiseMatch
         = OtherwiseExp Expr
         | OtherwiseLit Literal
-        deriving (Show, Eq)
+        deriving (Eq, Show)
 
 data PatternMatches
         = FullPatternMatch [PatternMatch] OtherwiseMatch
-        deriving (Show, Eq)                
+        deriving (Eq, Show)
 
 -- Functions
 data Function

@@ -10,8 +10,8 @@ import           Parser.ParserPatternMatching
 import           Parser.ParserValueTypes
 
 import           Text.Parsec
-import           Text.Parsec.String      (Parser)
-import           Text.Parsec.Token       (GenTokenParser (whiteSpace))
+import           Text.Parsec.String           (Parser)
+import           Text.Parsec.Token            (GenTokenParser (whiteSpace))
 
 parseLetStatement :: Parser LetStatement
 parseLetStatement =

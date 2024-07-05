@@ -1,12 +1,11 @@
 module Parser.LexerParser
-  ( module Parser.LexerParser,
-  )
-where
+        ( module Parser.LexerParser
+        ) where
 
-import Text.Parsec
-import Text.Parsec.Language
-import Text.Parsec.String
-import Text.Parsec.Token
+import           Text.Parsec
+import           Text.Parsec.Language
+import           Text.Parsec.String
+import           Text.Parsec.Token
 
 languageDef :: LanguageDef st
 languageDef =

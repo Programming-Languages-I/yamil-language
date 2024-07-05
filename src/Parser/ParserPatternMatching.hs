@@ -1,10 +1,12 @@
 module Parser.ParserPatternMatching where
 
-import AST as AST
-import Parser.ParserValueTypes 
-import Parser.LexerParser
-import Text.Parsec.String (Parser)
-import Text.Parsec ((<|>), try, manyTill, lookAhead)
+import           AST                     as AST
+
+import           Parser.LexerParser
+import           Parser.ParserValueTypes
+
+import           Text.Parsec             (lookAhead, manyTill, try, (<|>))
+import           Text.Parsec.String      (Parser)
 
 parsePattern :: Parser Pattern
 parsePattern = (try parsePatternLiteral) <|> parsePatternIdentifier
