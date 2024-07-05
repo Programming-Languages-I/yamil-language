@@ -1,4 +1,4 @@
-module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements) where
+module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements,exampleLambdaExp) where
 
 import AST
 import Prettyprinter
@@ -62,15 +62,24 @@ arithmeticOperatorPascal Subtract    = pretty "-"
 arithmeticOperatorPascal Multiply    = pretty "*"
 arithmeticOperatorPascal Divide    = pretty "/"
 
+lambdaToPascal :: LambdaExpr -> Doc ann
+lambdaToPascal (LambdaExpr name params expr) =
+    pretty "procedure" <+> identifierToPascal name <>
+    parens (typedIdentifiersToPascal params) <>
+    pretty ";" <+>
+    pretty "begin" <+>
+    indent 2 (exprToPascal expr) <+>
+    pretty "end;"
 
-generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> Doc ann
-generatePascalProgram vars literals lets =
+generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> Doc ann
+generatePascalProgram vars literals lets lambdas =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
        , indent 2 (vsep (map letStatementToPascal lets))
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
+       , vsep (map lambdaToPascal lambdas)
        , pretty "end." 
        ]
 
@@ -83,7 +92,11 @@ exampleVars = [TypedIdentifier "a" TInt, TypedIdentifier "b" TBool]
 exampleLetStatements :: [LetStatement]
 exampleLetStatements = [LetStatement (TypedIdentifier "y" TInt) (ValueExpr (VLiteral (IntLiteral 10)))]
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> IO ()
-writePascalFile filePath vars literals lets = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets
+exampleLambdaExp :: [LambdaExpr]
+exampleLambdaExp = [LambdaExpr "NAME" [TypedIdentifier "x" TInt] (ValueExpr (VLiteral (IntLiteral 3)))]
+
+
+writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> IO ()
+writePascalFile filePath vars literals lets lambdas = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambdas
     writeFile filePath pascalCode

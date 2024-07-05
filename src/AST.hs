@@ -81,7 +81,7 @@ data Expr
         deriving (Eq, Show)
 
 data LambdaExpr
-        = LambdaExpr [TypedIdentifier] Expr
+        = LambdaExpr Identifier [TypedIdentifier] Expr
         deriving (Eq, Show)
 
 data ConditionExpr
