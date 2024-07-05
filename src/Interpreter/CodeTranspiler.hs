@@ -67,7 +67,7 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
 
 exprToPascal :: Expr -> Identifier -> Doc ann
 exprToPascal (FunctionCall ident args) _ = 
-    pretty "writeln(" <> pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ");"
+    pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
 exprToPascal (IfExpr conds thens1 thens2) ident = 
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "\nthen" <+> thenExprToPascal thens1 ident <+>
@@ -177,10 +177,12 @@ functionToPascal (Function ident args functionType body) =
     let
         letStmts = extractLetStatementsFromFunc body
         localVars = letStatementsToTypedIdentifiers letStmts
+        lambdas = extractLambdasFromBody body
     in
     vsep [ pretty "function" <+> pretty ident <> parens (hsep (punctuate semi (map typedIdentifierToPascal args))) <> colon <+> typeToPascal functionType <> semi
          , if null localVars then emptyDoc else pretty "var"
          , if null localVars then emptyDoc else indent 2 (typedIdentifiersToPascal localVars)
+         , vsep (map lambdaToPascal lambdas)
          , pretty "begin"
          , indent 2 (functionBodyToPascal body ident)
          , pretty "end;"
@@ -195,17 +197,21 @@ functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts
         extractExprsF (_ : rest) = extractExprsF rest
 functionBodyToPascal (FBPatternMatch patternMatches) ident = 
     patternMatchesToPascalCase patternMatches ident
-functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = lambdaToPascal lambdaExpr
+functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = emptyDoc
     
 
 letStatementInFuncToPascal :: LetStatement -> Doc ann
 letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =
     identifierToPascal name <+> pretty ":=" <+> exprToPascal expr "" <> pretty ";"
 
-
 exprListsToPascalFromFunc :: Identifier -> [Expr] -> Doc ann
 exprListsToPascalFromFunc _ [] = emptyDoc
-exprListsToPascalFromFunc name exprs = vsep (map (\expr -> exprToPascal expr name) (init exprs))
+exprListsToPascalFromFunc name exprs = vsep (map (\expr -> exprToPascal expr "") (init exprs) ++ [returnExprToPascal name (last exprs)])
+  where
+    returnExprToPascal :: Identifier -> Expr -> Doc ann
+    returnExprToPascal name expr = case expr of
+        IfExpr conds thens1 thens2 -> exprToPascal expr name 
+        _ -> exprToPascal expr name <> semi
 
 
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
