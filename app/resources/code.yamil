@@ -1,6 +1,6 @@
-def calculate(a: int, b: int) -> int = {
-    let sum: int = a + b
-    let product: int = a * b
+def calculate(num1: int, num2: int) -> int = {
+    let sum: int = num1 + num2
+    let product: int = num1 * num2
     if sum > 10 then
         product
     else
@@ -33,7 +33,7 @@ max_of(10, 3, 5)
 max_of(1, 2, 3)  
 
 def isPositive() -> bool = {
-    lambda operation(x: int) -> if x > 0 then True else False
+    lambda operation(t: int) -> if t > 0 then True else False
 }
 
 isPositive(2)
@@ -41,8 +41,8 @@ isPositive(2)
 max_of(10, 15, 1)  
 max_of(10, 5, 3)  
 
-def match_digit(x: int) -> string = {
-    x -> "Zero"
+def match_digit(p: int) -> string = {
+    p -> "Zero"
     | 1 -> "One"
     | 2 -> "Two"
     | 3 -> "Three"
@@ -60,8 +60,8 @@ match_digit(1)
 match_digit(2)
 match_digit(3)
 
-def match_letters(x: string) -> bool = {
-    x -> True
+def match_letters(l: string) -> bool = {
+    l -> True
     | "Haskell" -> True
     | "Java" -> False
     | "C" -> True

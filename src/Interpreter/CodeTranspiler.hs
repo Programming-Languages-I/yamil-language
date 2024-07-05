@@ -10,7 +10,8 @@ module Interpreter.CodeTranspiler
         , exampleLambdaExp
         , exampleExprs
         , examplePatternMatches
-        , exampleFunction
+        , exampleFunction,
+        programToPascal
         ) where
 
 import AST
@@ -22,7 +23,7 @@ identifierToPascal = pretty
 
 literalToPascal :: Literal -> Doc ann
 literalToPascal (IntLiteral n)    = pretty n
--- literalToPascal (BoolLiteral b)   = if b then "True" else "False"
+literalToPascal (BoolLiteral b)   = if b then pretty "True" else pretty "False"
 literalToPascal (DoubleLiteral d) = pretty d
 literalToPascal (StringLiteral s) = dquotes $ pretty s
 
@@ -162,9 +163,45 @@ functionBodyToPascal (FBPatternMatch patternMatches) = patternMatchesToPascalCas
 functionBodyToPascal (FBLambdaExpr lambdaExpr) = lambdaToPascal lambdaExpr
 
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
-functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr <> semi
-functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt <> semi
+functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr
+functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt
 functionBodyOptsToPascal FBEmpty = emptyDoc
+
+
+programElementToPascal :: ProgramElement -> Doc ann
+programElementToPascal (PEFunction func) = functionToPascal func
+programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
+programElementToPascal (PEFunctionCall expr) = exprToPascal expr
+
+
+collectVars :: [ProgramElement] -> [TypedIdentifier]
+collectVars = concatMap collectVar
+  where
+    collectVar (PEFunction (Function _ args _ _)) = args
+    collectVar (PELetStatement (LetStatement var _)) = [var]
+    collectVar _ = []
+
+collectLets :: [ProgramElement] -> [LetStatement]
+collectLets = concatMap collectLet
+  where
+    collectLet (PELetStatement letStmt) = [letStmt]
+    collectLet _ = []
+
+
+programToPascal :: Program -> Doc ann
+programToPascal (Program elements) =
+  let vars = collectVars elements
+      lets = collectLets elements
+  in vsep
+    [ pretty "program Yamil;"
+    , pretty "var"
+    , indent 2 (typedIdentifiersToPascal vars)
+    , indent 2 (vsep (map letStatementToPascal lets))
+    , pretty "begin"
+    , indent 2 (vsep (map programElementToPascal elements))
+    , pretty "end."
+    ]
+
 
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs patternMatches functions =
@@ -229,7 +266,7 @@ exampleFunction = [Function "add"
                         TInt 
                         (FBody [FBExpr (BinaryExpr (VIdentifier "x") Add (VIdentifier "y"))])]
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> IO ()
-writePascalFile filePath vars literals lets lambda exprs matches functions = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda exprs matches functions
+writePascalFile :: FilePath -> Program -> IO ()
+writePascalFile filePath program = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ programToPascal program
     writeFile filePath pascalCode
