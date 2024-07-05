@@ -128,6 +128,12 @@ patternMatchToPascalCase (PatternMatchExp pattern expr) =
 patternMatchToPascalCase (PatternMatchLit pattern lit) =
     patternToPascal pattern <> pretty ":" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
 
+otherwiseMatchToPascalElse :: OtherwiseMatch -> Doc ann
+otherwiseMatchToPascalElse (OtherwiseExp expr) =
+    pretty "else" <+> pretty "WriteLn" <> parens (exprToPascal expr) <> pretty ";"
+otherwiseMatchToPascalElse (OtherwiseLit lit) =
+    pretty "else" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs =
   vsep [ pretty "program Yamil;"
