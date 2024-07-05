@@ -1,4 +1,15 @@
-module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars, exampleLetStatements, exampleConditionExpr, exampleThenExpr, exampleIfExpr, exampleLambdaExp, exampleBinaryExpr, exampleExprs) where
+module Interpreter.CodeTranspiler 
+        ( writePascalFile
+        , exampleLiterals
+        , exampleVars
+        , exampleLetStatements
+        , exampleConditionExpr
+        , exampleThenExpr
+        , exampleIfExpr
+        , exampleBinaryExpr
+        , exampleLambdaExp
+        , exampleExprs
+        ) where
 
 import AST
 import Prettyprinter
@@ -106,6 +117,16 @@ thenExprToPascal :: ThenExpr -> Doc ann
 thenExprToPascal (ThenMainExpr expr) = exprToPascal expr
 thenExprToPascal (ThenLiteral lit) = literalToPascal lit
 thenExprToPascal (ThenIdentifier ident) = identifierToPascal ident
+
+patternToPascal :: Pattern -> Doc ann
+patternToPascal (PLiteral lit) = literalToPascal lit
+patternToPascal (PIdentifier ident) = pretty ident
+
+patternMatchToPascalCase :: PatternMatch -> Doc ann
+patternMatchToPascalCase (PatternMatchExp pattern expr) =
+    patternToPascal pattern <> pretty ":" <+> pretty "WriteLn" <> parens (exprToPascal expr) <> pretty ";"
+patternMatchToPascalCase (PatternMatchLit pattern lit) =
+    patternToPascal pattern <> pretty ":" <+> pretty "WriteLn" <> parens (literalToPascal lit) <> pretty ";"
 
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> Doc ann
 generatePascalProgram vars literals lets lambdas exprs =
