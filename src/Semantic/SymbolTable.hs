@@ -1,4 +1,4 @@
-module SymbolTable (module SymbolTable) where
+module Semantic.SymbolTable (module Semantic.SymbolTable) where
 
 import           AST
 import qualified Data.Map as Map
@@ -32,6 +32,12 @@ builtInTypeFromLiteral IntLiteral {} = INTEGER
 builtInTypeFromLiteral DoubleLiteral {} = DOUBLE
 builtInTypeFromLiteral BoolLiteral {} = BOOL
 builtInTypeFromLiteral StringLiteral {} = STRING
+
+builtInTypeFromType :: Type -> BuiltInType
+builtInTypeFromType TInt = INTEGER
+builtInTypeFromType TDouble = DOUBLE
+builtInTypeFromType TBool = BOOL
+builtInTypeFromType TString = STRING
 
 nameFromIdentifier :: Identifier -> String
 nameFromIdentifier (s) = s

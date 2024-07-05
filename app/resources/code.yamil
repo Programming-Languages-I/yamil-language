@@ -9,6 +9,8 @@ def calculate(num1: int, num2: int) -> int = {
         sum
 }
 
+let sum: int = a + b
+
 calculate(2, 3)
 
 def add(x: int, y: int) -> int = {

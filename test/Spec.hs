@@ -9,6 +9,7 @@ import           Parser.TestParserValueTypes
 
 import           Test.Hspec
 import           TestSymbolTable
+import           TestSemanticAnalyzer
 
 main :: IO ()
 main = hspec $ do
@@ -23,5 +24,6 @@ main = hspec $ do
   testParserFunctions
   testParserProgram
   testParsePatternMatches
-  -- Symbol table tests
+  -- Semantic tests
   testSymbolTable
+  testSemanticAnalyzer
