@@ -29,6 +29,17 @@ typedIdentifierToPascal (TypedIdentifier name t) =
 typedIdentifiersToPascal :: [TypedIdentifier] -> Doc ann
 typedIdentifiersToPascal vars = vsep (map typedIdentifierToPascal vars)
 
+typedIdentifiersToPascalWithoutLastSemicolon :: [TypedIdentifier] -> Doc ann
+typedIdentifiersToPascalWithoutLastSemicolon vars =
+    vsep $ map (\(idx, var) -> 
+        if idx == length vars - 1 
+        then identifierToPascal (name var) <> pretty ": " <> typeToPascal (typ var) 
+        else typedIdentifierToPascal var
+    ) (zip [0..] vars)
+  where
+    name (TypedIdentifier n _) = n
+    typ (TypedIdentifier _ t) = t
+
 valueToPascal :: Value -> Doc ann
 valueToPascal (VLiteral lit)          = literalToPascal lit
 valueToPascal (VIdentifier ident)     = identifierToPascal ident
@@ -65,7 +76,7 @@ arithmeticOperatorPascal Divide    = pretty "/"
 lambdaToPascal :: LambdaExpr -> Doc ann
 lambdaToPascal (LambdaExpr name params expr) =
     pretty "procedure" <+> identifierToPascal name <>
-    parens (typedIdentifiersToPascal params) <>
+    parens (typedIdentifiersToPascalWithoutLastSemicolon params) <>
     pretty ";" <+>
     pretty "begin" <+>
     indent 2 (exprToPascal expr) <+>
@@ -77,9 +88,9 @@ generatePascalProgram vars literals lets lambdas =
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
        , indent 2 (vsep (map letStatementToPascal lets))
+       , vsep (map lambdaToPascal lambdas)
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
-       , vsep (map lambdaToPascal lambdas)
        , pretty "end." 
        ]
 
@@ -93,7 +104,7 @@ exampleLetStatements :: [LetStatement]
 exampleLetStatements = [LetStatement (TypedIdentifier "y" TInt) (ValueExpr (VLiteral (IntLiteral 10)))]
 
 exampleLambdaExp :: [LambdaExpr]
-exampleLambdaExp = [LambdaExpr "NAME" [TypedIdentifier "x" TInt] (ValueExpr (VLiteral (IntLiteral 3)))]
+exampleLambdaExp = [LambdaExpr "operation" [TypedIdentifier "x" TInt,TypedIdentifier "y" TInt ,TypedIdentifier "y" TInt] (ValueExpr (VIdentifier "x"))]
 
 
 writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> IO ()
