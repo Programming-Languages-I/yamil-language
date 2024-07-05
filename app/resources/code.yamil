@@ -1,3 +1,5 @@
+let variable: int = 2
+
 def calculate(num1: int, num2: int) -> int = {
     let sum: int = num1 + num2
     let product: int = num1 * num2
@@ -14,61 +16,4 @@ def add(x: int, y: int) -> int = {
 }
 
 add(4, 5)
-
-def max_of(a: int, b: int, c: int) -> int = {
-    if a > b then
-        if a > c then
-            a
-        else
-            c
-    else
-        if b > c then
-            b
-        else
-            c
-}
-
-max_of(3, 7, 5) 
-max_of(10, 3, 5) 
-max_of(1, 2, 3)  
-
-def isPositive() -> bool = {
-    lambda operation(t: int) -> if t > 0 then True else False
-}
-
-isPositive(2)
-
-max_of(10, 15, 1)  
-max_of(10, 5, 3)  
-
-def match_digit(p: int) -> string = {
-    p -> "Zero"
-    | 1 -> "One"
-    | 2 -> "Two"
-    | 3 -> "Three"
-    | 4 -> "Four"
-    | 5 -> "Five"
-    | 6 -> "Six"
-    | 7 -> "Seven"
-    | 8 -> "Eight"
-    | 9 -> "Nine"
-    | 10 -> "Ten"
-    | otherwise -> "Not Found"
-}
-
-match_digit(1)
-match_digit(2)
-match_digit(3)
-
-def match_letters(l: string) -> bool = {
-    l -> True
-    | "Haskell" -> True
-    | "Java" -> False
-    | "C" -> True
-    | "Go" -> False
-    | otherwise -> False
-}
-
-match_letters("Hey")
-match_letters("C")
-match_letters("Haskell")
+ 

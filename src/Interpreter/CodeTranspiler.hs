@@ -38,10 +38,10 @@ typeToPascal TString = pretty "string"
 
 typedIdentifierToPascal :: TypedIdentifier -> Doc ann
 typedIdentifierToPascal (TypedIdentifier name t) =
-    identifierToPascal name <> pretty ": " <> typeToPascal t <> pretty ";"
+    identifierToPascal name <> pretty ": " <> typeToPascal t
 
 typedIdentifiersToPascal :: [TypedIdentifier] -> Doc ann
-typedIdentifiersToPascal vars = vsep (map typedIdentifierToPascal vars)
+typedIdentifiersToPascal vars = vsep (map (\var -> typedIdentifierToPascal var <> semi) vars)
 
 typedIdentifiersToPascalWithoutLastSemicolon :: [TypedIdentifier] -> Doc ann
 typedIdentifiersToPascalWithoutLastSemicolon vars =
@@ -70,7 +70,7 @@ exprToPascal (FunctionCall ident args) =
     pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
 exprToPascal (IfExpr conds thens1 thens2) = 
     pretty "if" <+> conditionExprToPascal conds <+> 
-    pretty "then" <+> thenExprToPascal thens1 <+>
+    pretty "\nthen" <+> thenExprToPascal thens1 <+>
     pretty "else" <+> thenExprToPascal thens2
 exprToPascal (BinaryExpr val1 op val2) = binaryExprToPascal val1 op val2
 exprToPascal (ValueExpr value) = valueToPascal value
@@ -144,27 +144,69 @@ otherwiseMatchToPascalElse (OtherwiseLit lit) =
 
 patternMatchesToPascalCase :: PatternMatches -> Doc ann
 patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) =
-    pretty "case" <+> identifierToPascal "x" <+> pretty "of" <> line <>
+    pretty "case" <+> identifierToPascal "p" <+> pretty "of" <> line <>
     indent 2 (vsep (map patternMatchToPascalCase patternMatches)) <> line <>
     indent 2 (otherwiseMatchToPascalElse otherwiseMatch) <> line <>
     pretty "end;"
 
+extractLetStatementsFromFunc :: FunctionBody -> [LetStatement]
+extractLetStatementsFromFunc (FBody opts) = concatMap extractLetFromOpts opts
+extractLetStatementsFromFunc (FBPatternMatch _) = []
+extractLetStatementsFromFunc (FBLambdaExpr _) = []
+
+extractLetFromOpts :: FunctionBodyOpts -> [LetStatement]
+extractLetFromOpts (FBExpr _) = []
+extractLetFromOpts (FBLetStatement letStmt) = [letStmt]
+extractLetFromOpts FBEmpty = []
+
+letStatementsToTypedIdentifiers :: [LetStatement] -> [TypedIdentifier]
+letStatementsToTypedIdentifiers = map (\(LetStatement tid _) -> tid)
+
 functionToPascal :: Function -> Doc ann
 functionToPascal (Function ident args functionType body) =
-    vsep [ pretty "function" <+> pretty ident <> parens (hsep (punctuate comma (map typedIdentifierToPascal args))) <> colon <+> typeToPascal functionType <> semi
+    let
+        letStmts = extractLetStatementsFromFunc body
+        localVars = letStatementsToTypedIdentifiers letStmts
+    in
+    vsep [ pretty "function" <+> pretty ident <> parens (hsep (punctuate semi (map typedIdentifierToPascal args))) <> colon <+> typeToPascal functionType <> semi
+         , if null localVars then emptyDoc else pretty "var"
+         , if null localVars then emptyDoc else indent 2 (typedIdentifiersToPascal localVars)
          , pretty "begin"
-         , indent 2 (functionBodyToPascal body)
+         , indent 2 (functionBodyToPascal body ident)
          , pretty "end;"
          ]
 
-functionBodyToPascal :: FunctionBody -> Doc ann
-functionBodyToPascal (FBody opts) = vsep (map functionBodyOptsToPascal opts)
-functionBodyToPascal (FBPatternMatch patternMatches) = patternMatchesToPascalCase patternMatches
-functionBodyToPascal (FBLambdaExpr lambdaExpr) = lambdaToPascal lambdaExpr
+functionBodyToPascal :: FunctionBody -> Identifier -> Doc ann
+functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts) <+> exprListsToPascalFromFunc name (extractExprsF opts)
+    where
+        extractExprsF :: [FunctionBodyOpts] -> [Expr]
+        extractExprsF [] = []
+        extractExprsF (FBExpr expr : rest) = expr : extractExprsF rest
+        extractExprsF (_ : rest) = extractExprsF rest
+functionBodyToPascal (FBPatternMatch patternMatches) _ = patternMatchesToPascalCase patternMatches
+functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = lambdaToPascal lambdaExpr
+    
+
+letStatementInFuncToPascal :: LetStatement -> Doc ann
+letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =
+    identifierToPascal name <+> pretty ":=" <+> exprToPascal expr <> pretty ";"
+
+exprListsToPascalFromFunc :: Identifier -> [Expr] -> Doc ann
+exprListsToPascalFromFunc _ [] = emptyDoc
+exprListsToPascalFromFunc name exprs = vsep (map exprToPascal (init exprs) ++ [returnExprToPascal name (last exprs)])
+  where
+    returnExprToPascal :: Identifier -> Expr -> Doc ann
+    returnExprToPascal name expr = case expr of
+        IfExpr conds thens1 thens2 -> 
+            pretty "if" <+> conditionExprToPascal conds <+> 
+            pretty "then" <+> align (pretty name  <+> pretty ":= " <> thenExprToPascal thens1) <+>
+            pretty "else" <+> align (pretty name  <+> pretty ":= " <> thenExprToPascal thens2)
+        _ -> pretty name  <+> pretty ":= " <> exprToPascal expr <> semi
+
 
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
-functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr
-functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt
+functionBodyOptsToPascal (FBExpr expr) = emptyDoc
+functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementInFuncToPascal letStmt
 functionBodyOptsToPascal FBEmpty = emptyDoc
 
 
@@ -174,33 +216,64 @@ programElementToPascal (PELetStatement letStmt) = letStatementToPascal letStmt
 programElementToPascal (PEFunctionCall expr) = exprToPascal expr
 
 
-collectVars :: [ProgramElement] -> [TypedIdentifier]
-collectVars = concatMap collectVar
-  where
-    collectVar (PEFunction (Function _ args _ _)) = args
-    collectVar (PELetStatement (LetStatement var _)) = [var]
-    collectVar _ = []
+extractVars :: ProgramElement -> [TypedIdentifier]
+extractVars (PEFunction (Function _ args _ _)) = args
+extractVars _ = []
 
-collectLets :: [ProgramElement] -> [LetStatement]
-collectLets = concatMap collectLet
+extractLiterals :: ProgramElement -> [Literal]
+extractLiterals (PEFunction (Function _ _ _ (FBody bodyOpts))) = concatMap bodyOptLiterals bodyOpts
+extractLiterals _ = []
+
+bodyOptLiterals :: FunctionBodyOpts -> [Literal]
+bodyOptLiterals (FBExpr (ValueExpr (VLiteral lit))) = [lit]
+bodyOptLiterals _ = []
+
+extractLetStatements :: ProgramElement -> [LetStatement]
+extractLetStatements (PELetStatement letStmt) = [letStmt]
+extractLetStatements _ = []
+
+extractLambdas :: ProgramElement -> [LambdaExpr]
+extractLambdas (PEFunction (Function _ _ _ (FBLambdaExpr lambda))) = [lambda]
+extractLambdas _ = []
+
+extractExprs :: ProgramElement -> [Expr]
+extractExprs (PEFunctionCall expr) = [expr]
+extractExprs _ = []
+
+extractFunctions :: ProgramElement -> [Function]
+extractFunctions (PEFunction func) = [func]
+extractFunctions _ = []
+
+collectTopLevelFunctionCalls :: Program -> [Expr]
+collectTopLevelFunctionCalls (Program elems) = concatMap extractFunctionCalls elems
   where
-    collectLet (PELetStatement letStmt) = [letStmt]
-    collectLet _ = []
+    extractFunctionCalls :: ProgramElement -> [Expr]
+    extractFunctionCalls (PEFunction _) = []
+    extractFunctionCalls (PELetStatement _) = []
+    extractFunctionCalls (PEFunctionCall expr) = [expr]
 
 
 programToPascal :: Program -> Doc ann
-programToPascal (Program elements) =
-  let vars = collectVars elements
-      lets = collectLets elements
-  in vsep
-    [ pretty "program Yamil;"
-    , pretty "var"
-    , indent 2 (typedIdentifiersToPascal vars)
-    , indent 2 (vsep (map letStatementToPascal lets))
-    , pretty "begin"
-    , indent 2 (vsep (map programElementToPascal elements))
-    , pretty "end."
-    ]
+programToPascal (Program elems) =
+  vsep [ pretty "program Yamil;"
+       , pretty "var"
+       , indent 2 (vsep (map letStatementToPascal lets))
+       , indent 2 (vsep  (map lambdaToPascal lambdas))
+       , indent 2 (vsep (map functionToPascal functions))
+       , pretty "begin"
+       , indent 2 (literalsToPascal literals)
+       , indent 2 (exprListsToPascal exprs)
+       , indent 2 (vsep (map exprToPascal topLevelFunctionCalls))
+       , pretty "end."
+       ]
+  where
+    vars = concatMap extractVars elems
+    literals = concatMap extractLiterals elems
+    lets = concatMap extractLetStatements elems
+    lambdas = concatMap extractLambdas elems
+    exprs = concatMap extractExprs elems
+    functions = concatMap extractFunctions elems
+    topLevelFunctionCalls = collectTopLevelFunctionCalls (Program elems)
 
 
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> Doc ann
