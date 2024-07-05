@@ -47,6 +47,22 @@ letStatementToPascal :: LetStatement -> Doc ann
 letStatementToPascal (LetStatement (TypedIdentifier name t) expr) =
     identifierToPascal name <+> pretty ":" <+> typeToPascal t <> pretty " = " <> exprToPascal expr <> pretty ";"
 
+comparisonOperator :: ComparisonOperator -> Doc ann
+comparisonOperator Equal = pretty "="
+comparisonOperator NotEqual = pretty "<>"
+comparisonOperator LessThan = pretty "<"
+comparisonOperator GreaterThan = pretty ">"
+comparisonOperator LessEqual = pretty "<="
+comparisonOperator GreaterEqual = pretty ">=" 
+
+
+arithmeticOperatorPascal :: ArithmeticOperator -> Doc ann
+arithmeticOperatorPascal Add    = pretty "+"
+arithmeticOperatorPascal Subtract    = pretty "-"
+arithmeticOperatorPascal Multiply    = pretty "*"
+arithmeticOperatorPascal Divide    = pretty "/"
+
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> Doc ann
 generatePascalProgram vars literals lets =
   vsep [ pretty "program Yamil;"
