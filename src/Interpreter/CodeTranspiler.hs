@@ -3,8 +3,6 @@ module Interpreter.CodeTranspiler (writePascalFile, exampleLiterals, exampleVars
 import AST
 import Prettyprinter
 import Prettyprinter.Render.String (renderString)
-import Test.Hspec (example)
-import System.IO.Error (isEOFError)
 
 identifierToPascal :: Identifier -> Doc ann
 identifierToPascal = pretty
@@ -69,7 +67,6 @@ comparisonOperator LessThan = pretty "<"
 comparisonOperator GreaterThan = pretty ">"
 comparisonOperator LessEqual = pretty "<="
 comparisonOperator GreaterEqual = pretty ">=" 
-
 
 arithmeticOperatorPascal :: ArithmeticOperator -> Doc ann
 arithmeticOperatorPascal Add    = pretty "+"
