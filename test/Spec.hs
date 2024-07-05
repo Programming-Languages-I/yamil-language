@@ -15,17 +15,17 @@ import           TestSemanticAnalyzer
 main :: IO ()
 main = hspec $ do
   -- Parser tests
-  -- testParseValueTypes
-  -- testParseOperations
-  -- testParserExpresions
+  testParseValueTypes
+  testParseOperations
+  testParserExpresions
   -- testParseLetStatement
-  -- testParseLambda
-  -- testParserIfExpression
-  -- testParseThenExpression
+  testParseLambda
+  testParserIfExpression
+  testParseThenExpression
   -- testParserFunctions
-  -- testParserProgram
-  -- testParsePatternMatches
+  testParserProgram
+  testParsePatternMatches
   testSkipComments
   -- Semantic tests
-  -- testSymbolTable
-  -- testSemanticAnalyzer
+  testSymbolTable
+  testSemanticAnalyzer
