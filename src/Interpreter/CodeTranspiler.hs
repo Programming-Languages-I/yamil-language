@@ -55,6 +55,14 @@ comparisonOperator GreaterThan = pretty ">"
 comparisonOperator LessEqual = pretty "<="
 comparisonOperator GreaterEqual = pretty ">=" 
 
+
+arithmeticOperatorPascal :: ArithmeticOperator -> Doc ann
+arithmeticOperatorPascal Add    = pretty "+"
+arithmeticOperatorPascal Subtract    = pretty "-"
+arithmeticOperatorPascal Multiply    = pretty "*"
+arithmeticOperatorPascal Divide    = pretty "/"
+
+
 generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> Doc ann
 generatePascalProgram vars literals lets =
   vsep [ pretty "program Yamil;"
