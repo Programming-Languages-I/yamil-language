@@ -16,6 +16,7 @@ calculate(2, 3)
 
 def isPositive() -> bool = {
     lambda operation(t: int) -> if t > 0 then True else False
+    operation(2)
 }
 
 isPositive(2)

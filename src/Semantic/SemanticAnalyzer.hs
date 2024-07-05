@@ -40,7 +40,7 @@ analyzeFuntionBody fbody@(AST.FBody options) table = (fbody, analyzeFuntionOptio
 --to do : Analisis de pattern aca 
 analyzeFuntionBody fbody@(AST.FBPatternMatch _) table = (fbody, table)
 --to do : Analisis de lambda aca 
-analyzeFuntionBody fbody@(AST.FBLambdaExpr _) table = (fbody, table)
+analyzeFuntionBody fbody@(AST.FBLambdaExpr _ _) table = (fbody, table)
 
 analyzeFuntion :: AST.Function -> ST.SymbolTable -> (AST.Function, ST.SymbolTable)
 analyzeFuntion function@(AST.Function fIndentifier typeIndents funcType body) symTable =

@@ -16,7 +16,7 @@ var
 
 
   procedure operation(t: integer); begin   if t > 0 
-                                           then True else False end;
+                                           then isPositive := True else isPositive := False end;
   begin
     
   end;

@@ -104,13 +104,13 @@ arithmeticOperatorPascal Subtract    = pretty "-"
 arithmeticOperatorPascal Multiply    = pretty "*"
 arithmeticOperatorPascal Divide    = pretty "/"
 
-lambdaToPascal :: LambdaExpr -> Doc ann
-lambdaToPascal (LambdaExpr name params expr) =
+lambdaToPascal :: LambdaExpr -> Identifier -> Doc ann
+lambdaToPascal (LambdaExpr name params expr) ident =
     pretty "procedure" <+> identifierToPascal name <>
     parens (typedIdentifiersToPascalWithoutLastSemicolon params) <>
     pretty ";" <+>
     pretty "begin" <+>
-    indent 2 (exprToPascal expr "") <+>
+    indent 2 (exprToPascal expr ident) <+>
     pretty "end;"
 
 binaryExprToPascal :: Value -> ArithmeticOperator -> Value -> Doc ann
@@ -162,7 +162,7 @@ patternMatchesToPascalCase (FullPatternMatch patternMatches otherwiseMatch) iden
 extractLetStatementsFromFunc :: FunctionBody -> [LetStatement]
 extractLetStatementsFromFunc (FBody opts) = concatMap extractLetFromOpts opts
 extractLetStatementsFromFunc (FBPatternMatch _) = []
-extractLetStatementsFromFunc (FBLambdaExpr _) = []
+extractLetStatementsFromFunc (FBLambdaExpr _ _) = []
 
 extractLetFromOpts :: FunctionBodyOpts -> [LetStatement]
 extractLetFromOpts (FBExpr _) = []
@@ -182,7 +182,7 @@ functionToPascal (Function ident args functionType body) =
     vsep [ pretty "function" <+> pretty ident <> parens (hsep (punctuate semi (map typedIdentifierToPascal args))) <> colon <+> typeToPascal functionType <> semi
          , if null localVars then emptyDoc else pretty "var"
          , if null localVars then emptyDoc else indent 2 (typedIdentifiersToPascal localVars)
-         , vsep (map lambdaToPascal lambdas)
+         , vsep (map (\lmb -> lambdaToPascal lmb ident) lambdas)
          , pretty "begin"
          , indent 2 (functionBodyToPascal body ident)
          , pretty "end;"
@@ -197,7 +197,7 @@ functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts
         extractExprsF (_ : rest) = extractExprsF rest
 functionBodyToPascal (FBPatternMatch patternMatches) ident = 
     patternMatchesToPascalCase patternMatches ident
-functionBodyToPascal (FBLambdaExpr lambdaExpr) _ = emptyDoc
+functionBodyToPascal (FBLambdaExpr lambdaExpr _) _ = emptyDoc
     
 
 letStatementInFuncToPascal :: LetStatement -> Doc ann
@@ -243,7 +243,7 @@ extractLetStatements (PELetStatement letStmt) = [letStmt]
 extractLetStatements _ = []
 
 extractLambdasFromBody :: FunctionBody -> [LambdaExpr]
-extractLambdasFromBody (FBLambdaExpr lambda) = [lambda]
+extractLambdasFromBody (FBLambdaExpr lambda _) = [lambda]
 extractLambdasFromBody (FBPatternMatch _) = []
 extractLambdasFromBody (FBody opts) = extractLambdasFromOpts opts
 
@@ -302,7 +302,7 @@ generatePascalProgram vars literals lets lambdas exprs patternMatches functions 
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
        , indent 2 (vsep (map letStatementToPascal lets))
-       , indent 2 (vsep  (map lambdaToPascal lambdas))
+    --    , indent 2 (vsep  (map lambdaToPascal lambdas))
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
        , indent 2 (exprListsToPascal exprs)
