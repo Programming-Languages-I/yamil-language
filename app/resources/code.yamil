@@ -33,7 +33,7 @@ max_of(10, 3, 5)
 max_of(1, 2, 3)  
 
 def isPositive() -> bool = {
-    lambda(x: int) -> if x > 0 then True else False
+    lambda operation(x: int , y:int) -> if x > 0 then x else False
 }
 
 isPositive(2)
