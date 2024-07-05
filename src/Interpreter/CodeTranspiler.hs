@@ -10,6 +10,7 @@ module Interpreter.CodeTranspiler
         , exampleLambdaExp
         , exampleExprs
         , examplePatternMatches
+        , exampleFunction
         ) where
 
 import AST
@@ -163,8 +164,8 @@ functionBodyOptsToPascal (FBExpr expr) = exprToPascal expr <> semi
 functionBodyOptsToPascal (FBLetStatement letStmt) = letStatementToPascal letStmt <> semi
 functionBodyOptsToPascal FBEmpty = emptyDoc
 
-generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> Doc ann
-generatePascalProgram vars literals lets lambdas exprs patternMatches =
+generatePascalProgram :: [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> Doc ann
+generatePascalProgram vars literals lets lambdas exprs patternMatches functions =
   vsep [ pretty "program Yamil;"
        , pretty "var"
        , indent 2 (typedIdentifiersToPascal vars)
@@ -174,6 +175,7 @@ generatePascalProgram vars literals lets lambdas exprs patternMatches =
        , indent 2 (literalsToPascal literals)
        , indent 2 (exprListsToPascal exprs)
        , indent 2 (patternMatchesToPascalCase patternMatches)
+       , indent 2 (vsep (map functionToPascal functions))
        , pretty "end." 
        ]
 
@@ -219,7 +221,13 @@ examplePatternMatches = FullPatternMatch
   , PatternMatchLit (PLiteral (IntLiteral 10)) (StringLiteral "Ten")
   ] (OtherwiseLit (StringLiteral "Not Found"))
 
-writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> IO ()
-writePascalFile filePath vars literals lets lambda exprs matches = do
-    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda exprs matches
+exampleFunction :: [Function]
+exampleFunction = [Function "add" 
+                    [TypedIdentifier "x" TInt, TypedIdentifier "y" TInt] 
+                        TInt 
+                        (FBody [FBExpr (BinaryExpr (VIdentifier "x") Add (VIdentifier "y"))])]
+
+writePascalFile :: FilePath -> [TypedIdentifier] -> [Literal] -> [LetStatement] -> [LambdaExpr] -> [Expr] -> PatternMatches -> [Function] -> IO ()
+writePascalFile filePath vars literals lets lambda exprs matches functions = do
+    let pascalCode = renderString $ layoutPretty defaultLayoutOptions $ generatePascalProgram vars literals lets lambda exprs matches functions
     writeFile filePath pascalCode
