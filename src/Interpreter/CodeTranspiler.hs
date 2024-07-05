@@ -66,8 +66,11 @@ valuesToPascal values = vsep (map (writeln . valueToPascal) values)
     writeln doc = pretty "writeln(" <> doc <> pretty ");"
 
 exprToPascal :: Expr -> Identifier -> Doc ann
-exprToPascal (FunctionCall ident args) _ = 
-    pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
+exprToPascal (FunctionCall ident args) nameF = 
+    if nameF == ""
+        then pretty "writeln(" <> pretty ident 
+            <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ");"
+    else pretty ident <> parens (hsep (punctuate comma (map valueToPascal args))) <> pretty ";"
 exprToPascal (IfExpr conds thens1 thens2) ident = 
     pretty "if" <+> conditionExprToPascal conds <+> 
     pretty "\nthen" <+> thenExprToPascal thens1 ident <+>
@@ -192,8 +195,8 @@ functionBodyToPascal :: FunctionBody -> Identifier -> Doc ann
 functionBodyToPascal (FBody opts) name = vsep (map functionBodyOptsToPascal opts) <+> exprListsToPascalFromFunc name (extractExprsF opts)
 functionBodyToPascal (FBPatternMatch patternMatches) ident = 
     patternMatchesToPascalCase patternMatches ident
-functionBodyToPascal (FBLambdaExpr lambdaExpr opts) _ = 
-    vsep (map (`exprToPascal` "") (extractExprsF opts))
+functionBodyToPascal (FBLambdaExpr lambdaExpr opts) ident = 
+    vsep (map (`exprToPascal` ident) (extractExprsF opts))
     
 
 extractExprsF :: [FunctionBodyOpts] -> [Expr]
