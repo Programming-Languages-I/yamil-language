@@ -76,10 +76,10 @@ testParseParamsValues = describe "parseParamsValues" $ do
 testParseLambda :: Spec
 testParseLambda = do
     it "parses a lambda expression with functionCall" $ do
-        parse parseLambda "" "lambda (x:double) -> foo()" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (FunctionCall "foo" []) )
+        parse parseLambda "" "lambda operation (x:double) -> foo()" `shouldBe` Right (LambdaExpr "operation" [TypedIdentifier "x" TDouble] (FunctionCall "foo" []) )
 
     it "parses a lambda expression with BinaryExpr" $ do
-        parse parseLambda "" "lambda (x:double) -> 5 * 6" `shouldBe` Right (LambdaExpr [TypedIdentifier "x" TDouble] (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6))) )
+        parse parseLambda "" "lambda operations(x:double) -> 5 * 6" `shouldBe` Right (LambdaExpr "operations" [TypedIdentifier "x" TDouble] (BinaryExpr (VLiteral (IntLiteral 5)) Multiply (VLiteral (IntLiteral 6))) )
 
 testParserExpresions :: Spec
 testParserExpresions = do
