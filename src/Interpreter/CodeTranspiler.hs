@@ -202,14 +202,10 @@ letStatementInFuncToPascal :: LetStatement -> Doc ann
 letStatementInFuncToPascal (LetStatement (TypedIdentifier name _) expr) =
     identifierToPascal name <+> pretty ":=" <+> exprToPascal expr "" <> pretty ";"
 
+
 exprListsToPascalFromFunc :: Identifier -> [Expr] -> Doc ann
 exprListsToPascalFromFunc _ [] = emptyDoc
 exprListsToPascalFromFunc name exprs = vsep (map (\expr -> exprToPascal expr name) (init exprs))
-  where
-    returnExprToPascal :: Identifier -> Expr -> Doc ann
-    returnExprToPascal name expr = case expr of
-        IfExpr conds thens1 thens2 -> exprToPascal expr name 
-        _ -> pretty name  <+> pretty ":= " <> exprToPascal expr name <> semi
 
 
 functionBodyOptsToPascal :: FunctionBodyOpts -> Doc ann
