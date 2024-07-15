@@ -289,7 +289,7 @@ programToPascal (Program elems) =
        , indent 2 (vsep (map functionToPascal functions))
        , pretty "begin"
        , indent 2 (literalsToPascal literals)
-       , indent 2 (exprListsToPascal exprs)
+    --    , indent 2 (exprListsToPascal exprs)
        , indent 2 (vsep (map (\expr -> exprToPascal expr "") topLevelFunctionCalls))
        , pretty "end."
        ]
